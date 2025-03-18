@@ -1,10 +1,15 @@
-﻿namespace ResourceServer.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ResourceServer.Data.Models
 {
-	public enum OrderStatus
+	public class OrderStatus
 	{
-		Received,
-		InDelivery,
-		InPreparation,
-		Delivered
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public required int Id { get; set; }
+
+		[Required]
+		public required string Name { get; set; }
 	}
 }

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ResourceServer.Data.Models
+namespace AuthServer.Data.Models
 {
-	public class ProductCategory
+	public class Role
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

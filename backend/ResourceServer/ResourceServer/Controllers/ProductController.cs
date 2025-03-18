@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ResourceServer.Data;
 using ResourceServer.Data.Models;
+using ResourceServer.Data.ProductRepository;
 
 namespace ResourceServer.Controllers
 {
@@ -8,20 +9,19 @@ namespace ResourceServer.Controllers
 	[ApiController]
 	public class ProductController : ControllerBase
 	{
-		// TODO: Replace with repositories
-		private readonly AppDbContext _context;
+		private readonly ProductRepository _productRepository;
 
 
-		public ProductController(AppDbContext context)
+		public ProductController(ProductRepository productRepository)
 		{
-			_context = context;
+			_productRepository = productRepository;
 		}
 
 
 		[HttpGet("/all")]
 		public ActionResult<List<Product>> GetAll()
 		{
-			var products = _context.Products.ToList();
+			var products = _productRepository.GetAll();
 			return Ok(products);
 		}
 	}

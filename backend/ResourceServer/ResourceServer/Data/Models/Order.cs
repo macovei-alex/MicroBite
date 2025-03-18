@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ResourceServer.Data.Models
 {
-	[Table(name: "order")]
 	public class Order
 	{
 		[Key]
