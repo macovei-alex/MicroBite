@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ResourceServer.Data;
+using ResourceServer.Data.Models;
 
 namespace ResourceServer.Controllers
 {
@@ -18,7 +19,7 @@ namespace ResourceServer.Controllers
 
 
 		[HttpGet("/all")]
-		public ActionResult<List<ProductController>> GetAll()
+		public ActionResult<List<Product>> GetAll()
 		{
 			var products = _context.Products.ToList();
 			return Ok(products);
