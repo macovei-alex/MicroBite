@@ -4,18 +4,17 @@ namespace ResourceServer.Data.Repositories;
 
 public class ProductRepository(AppDbContext context)
 {
-    private readonly AppDbContext _context = context;
+	private readonly AppDbContext _context = context;
 
-    // examples
-    public List<Product> GetAll()
-    {
-        return _context.Products.ToList();
-    }
+	public List<Product> GetAll()
+	{
+		return _context.Products.ToList();
+	}
 
-    public Product? GetById(int id)
-    {
-        return _context.Products.FirstOrDefault(p => p.Id == id);
-    }
+	public Product? GetById(int id)
+	{
+		return _context.Products.FirstOrDefault(p => p.Id == id);
+	}
 
-    // TODO: Implement repository methods
+	// TODO: Implement repository methods
 }

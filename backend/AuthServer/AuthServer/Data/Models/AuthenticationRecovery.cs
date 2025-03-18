@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AuthServer.Data.Models
+namespace AuthServer.Data.Models;
+
+public class AuthenticationRecovery
 {
-	public class AuthenticationRecovery
-	{
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int Id { get; set; }
 
-		[Required]
-		public required string SecurityQuestion { get; set; }
+	[Required]
+	public required string SecurityQuestion { get; set; }
 
-		[Required]
-		public required string SecurityAnswerHash { get; set; }
-	}
+	[Required]
+	public required string SecurityAnswerHash { get; set; }
 }

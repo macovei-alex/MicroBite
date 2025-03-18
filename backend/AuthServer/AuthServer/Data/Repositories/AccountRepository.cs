@@ -1,12 +1,13 @@
-﻿namespace AuthServer.Data.Repositories
-{
-	public class AccountRepository
-	{
-		private readonly AppDbContext _context;
+﻿using AuthServer.Data.Models;
 
-		public AccountRepository(AppDbContext context)
-		{
-			_context = context;
-		}
+namespace AuthServer.Data.Repositories;
+
+public class AccountRepository(AppDbContext context)
+{
+	private readonly AppDbContext _context = context;
+
+	public List<Account> GetAll()
+	{
+		return _context.Accounts.ToList();
 	}
 }

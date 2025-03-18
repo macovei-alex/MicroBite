@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using ResourceServer.Data;
 using ResourceServer.Data.Repositories;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,16 +13,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("ResourceDb"));
-});
-
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "ResourceServer",
-        Version = "v1"
-    });
+	options.UseNpgsql(builder.Configuration.GetConnectionString("ResourceDb"));
 });
 
 builder.Services.AddScoped<ProductRepository>();
@@ -31,17 +22,26 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "ResourceServer v1");
-    });
+	app.MapOpenApi();
+
+	// scalar UI
+	app.MapScalarApiReference();
+
+	// swagger UI
+	app.UseSwaggerUI(options =>
+	{
+		options.SwaggerEndpoint("/openapi/v1.json", "ResourceServer v1");
+	});
+
+	// toggle between launchUrl in launchSettings.json to change the default documentation UI
 }
 
 app.UseHttpsRedirection();
 
-//app.UseRouting(); // forgot what it does
+// forgot what it does
+// i never knew what it did but it was in the file template,
+// so i ll leave it there just in case :)
+app.UseRouting();
 
 app.UseAuthorization();
 
