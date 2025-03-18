@@ -1,19 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ResourceServer.Data.Models;
 
-namespace ResourceServer.Data
+namespace ResourceServer.Data;
+
+public class AppDbContext(DbContextOptions contextOptions) : DbContext(contextOptions)
 {
-	public class AppDbContext : DbContext
-	{
-		public DbSet<Product> Products { get; set; }
-		public DbSet<ProductCategory> ProductCategories { get; set; }
-		public DbSet<Order> Orders { get; set; }
-		public DbSet<OrderItem> OrderItems { get; set; }
-		public DbSet<OrderStatus> OrderStatuses { get; set; }
-
-		public AppDbContext(DbContextOptions contextOptions) : base(contextOptions)
-		{
-
-		}
-	}
+    public DbSet<Product> Products { get; set; }
+    public DbSet<ProductCategory> ProductCategories { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<OrderStatus> OrderStatuses { get; set; }
 }

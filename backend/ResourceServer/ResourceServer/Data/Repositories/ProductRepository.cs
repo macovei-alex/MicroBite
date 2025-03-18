@@ -1,28 +1,21 @@
 ﻿using ResourceServer.Data.Models;
 
-namespace ResourceServer.Data.ProductRepository
+namespace ResourceServer.Data.Repositories;
+
+public class ProductRepository(AppDbContext context)
 {
-	public class ProductRepository
-	{
-		private readonly AppDbContext _context;
+    private readonly AppDbContext _context = context;
 
+    // examples
+    public List<Product> GetAll()
+    {
+        return _context.Products.ToList();
+    }
 
-		public ProductRepository(AppDbContext context)
-		{
-			_context = context;
-		}
+    public Product? GetById(int id)
+    {
+        return _context.Products.FirstOrDefault(p => p.Id == id);
+    }
 
-		// examples
-		public List<Product> GetAll()
-		{
-			return _context.Products.ToList();
-		}
-
-		public Product? GetById(int id)
-		{
-			return _context.Products.FirstOrDefault(p => p.Id == id);
-		}
-
-		// TODO: Implement repository methods
-	}
+    // TODO: Implement repository methods
 }
