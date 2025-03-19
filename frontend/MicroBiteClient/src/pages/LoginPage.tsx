@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { api } from "../api";
+import { useNavigate } from "react-router";
 
 export default function LoginPage() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -22,6 +24,7 @@ export default function LoginPage() {
     try {
       const data = await api.login(email, password);
       console.log(data);
+      navigate("/menu");
     } catch (error) {
       console.error(error);
     }
