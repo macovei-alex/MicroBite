@@ -16,6 +16,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<AccountRepository>();
+builder.Services.AddScoped<AuthenticationRecoveryRepository>();
+builder.Services.AddScoped<RoleRepository>();
 
 var app = builder.Build();
 
