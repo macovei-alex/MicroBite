@@ -1,4 +1,5 @@
 ﻿using AuthServer.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.Data.Repositories;
 
@@ -10,4 +11,9 @@ public class AccountRepository(AppDbContext context)
 	{
 		return _context.Accounts.ToList();
 	}
+
+	public Account GetById(int id)
+    {
+        return _context.Accounts.Find(id);
+    }
 }

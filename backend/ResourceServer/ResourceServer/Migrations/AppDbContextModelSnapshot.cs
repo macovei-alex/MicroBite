@@ -166,7 +166,7 @@ namespace ResourceServer.Migrations
             modelBuilder.Entity("ResourceServer.Data.Models.OrderItem", b =>
                 {
                     b.HasOne("ResourceServer.Data.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
                     b.HasOne("ResourceServer.Data.Models.Product", "Product")
@@ -181,12 +181,22 @@ namespace ResourceServer.Migrations
             modelBuilder.Entity("ResourceServer.Data.Models.Product", b =>
                 {
                     b.HasOne("ResourceServer.Data.Models.ProductCategory", "Category")
-                        .WithMany()
+                        .WithMany("Product")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("ResourceServer.Data.Models.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("ResourceServer.Data.Models.ProductCategory", b =>
+                {
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

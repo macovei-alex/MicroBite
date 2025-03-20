@@ -24,4 +24,6 @@ public class Order
     public DateTime? DeliveryTime { get; set; }
 
     public string? AdditionalNotes { get; set; }
+
+    public List<OrderItem> OrderItems { get; set; } = new();
 }
