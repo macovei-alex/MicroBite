@@ -1,7 +1,5 @@
-import * as loginFunctions from "./login";
-import { config } from "./config";
+import axios from "axios";
 
-export const api = {
-  config,
-  ...loginFunctions,
-};
+export const api = axios.create({
+  withCredentials: true,
+});

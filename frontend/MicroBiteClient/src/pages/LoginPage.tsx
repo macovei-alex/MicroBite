@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { api } from "../api";
 import { useNavigate } from "react-router";
+import { useAuthContext } from "../auth/AuthContext";
 
 export default function LoginPage() {
+  const authContext = useAuthContext();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -22,7 +24,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const data = await api.login(email, password);
+      const data = await api.post("/login", { email, password });
       console.log(data);
       navigate("/menu");
     } catch (error) {
@@ -66,6 +68,15 @@ export default function LoginPage() {
           </button>
         </form>
       </div>
+
+      <button
+        onClick={() => {
+          authContext.authenticate("some access token");
+        }}
+        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-500 cursor-pointer"
+      >
+        Get Auth-ed
+      </button>
     </div>
   );
 }
