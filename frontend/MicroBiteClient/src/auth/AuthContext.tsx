@@ -31,18 +31,12 @@ export function useAuthContext() {
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null | undefined>(undefined);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const authenticate = useCallback(
     (token: string) => {
       setAccessToken(token);
-      const origin = location.state?.from;
-      if (origin) {
-        navigate(origin);
-      }
     },
-    [navigate, location]
+    [setAccessToken]
   );
 
   // TODO: Implement the actual authentication and interceptors mechanism

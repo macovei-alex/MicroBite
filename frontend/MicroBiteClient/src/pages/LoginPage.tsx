@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { api } from "../api";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useAuthContext } from "../auth/AuthContext";
 
 export default function LoginPage() {
   const authContext = useAuthContext();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -33,7 +34,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96 pb-12">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         <form onSubmit={handleSubmit}>
@@ -72,10 +73,16 @@ export default function LoginPage() {
       <button
         onClick={() => {
           authContext.authenticate("some access token");
+          const origin = location.state?.from;
+          if (origin) {
+            navigate(origin);
+          } else {
+            navigate("/");
+          }
         }}
-        className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-500 cursor-pointer"
+        className="bg-blue-500 mt-8 text-white p-2 rounded hover:bg-blue-600 transition duration-500 cursor-pointer"
       >
-        Get Auth-ed
+        Development Get Authentication
       </button>
     </div>
   );
