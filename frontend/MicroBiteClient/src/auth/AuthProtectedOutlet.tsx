@@ -4,9 +4,12 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 export default function AuthProtectedOutlet({ redirectTo }: { redirectTo: string }) {
   const authContext = useAuthContext();
   const location = useLocation();
-  return authContext.isAuthenticated() ? (
-    <Outlet />
-  ) : (
-    <Navigate to={redirectTo} replace state={{ from: location }} />
-  );
+
+  if (authContext.isAuthenticated()) {
+    return <Outlet />;
+  } else if (authContext.isAuthenticating) {
+    return <div>Authenticating</div>;
+  } else {
+    return <Navigate to={redirectTo} replace state={{ from: location }} />;
+  }
 }

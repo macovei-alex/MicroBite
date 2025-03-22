@@ -6,17 +6,16 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useState,
 } from "react";
 import { config } from "../api/config";
 import { api } from "../api";
-import { useLocation, useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   accessToken: string | null | undefined;
-  authenticate: (token: string) => void;
   isAuthenticated: () => boolean;
+  isAuthenticating: boolean;
+  login: (email: string, password: string) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,34 +30,29 @@ export function useAuthContext() {
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null | undefined>(undefined);
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-  const authenticate = useCallback(
-    (token: string) => {
-      setAccessToken(token);
-    },
-    [setAccessToken]
-  );
-
-  // TODO: Implement the actual authentication and interceptors mechanism
-
-  /*
   useEffect(() => {
+    setIsAuthenticating(() => true);
     axios
-      .get(`${config.AUTH_BASE_URL}/refresh`, { withCredentials: true })
+      .post(`${config.AUTH_BASE_URL}/refresh`, {}, { withCredentials: true })
       .then((res) => {
         if (res.status === axios.HttpStatusCode.Ok) {
           console.log("Access token received: ", res.data.accessToken);
-          setAccessToken(res.data.accessToken);
+          setAccessToken(() => res.data.accessToken);
         } else {
-          console.error("Access token refresh failed: ", res);
-          setAccessToken(null);
+          console.log("Access token refresh failed: ", res);
+          setAccessToken(() => null);
         }
       })
       .catch((error) => {
         console.error("Access token refresh failed: ", error);
-        setAccessToken(null);
+        setAccessToken(() => null);
+      })
+      .finally(() => {
+        setIsAuthenticating(() => false);
       });
-  }, []);
+  }, [setAccessToken]);
 
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use((config) => {
@@ -78,49 +72,54 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-
-        // If unauthorized (401) and not a retry, attempt token refresh
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
-          try {
-            // DO NOT USE LOCAL STORAGE
-            const refreshToken = localStorage.getItem("refresh_token"); // Get refresh token
-            if (!refreshToken) {
-              throw new Error("No refresh token available");
-            }
+          const originalResult = await axios
+            .post(`${config.AUTH_BASE_URL}/refresh`, {}, { withCredentials: true })
+            .then((res) => {
+              console.log(`Refresh endpoint response: ${res}`);
 
-            // Call API to refresh token
-            const { data } = await axios.post(`${config.AUTH_BASE_URL}/refresh`, {
-              refresh_token: refreshToken,
+              setAccessToken(() => res.data.accessToken);
+              originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+              return api(originalRequest);
+            })
+            .catch((refreshError) => {
+              console.log("Token refresh failed:", refreshError);
+              setAccessToken(() => null);
+              return Promise.reject(refreshError);
             });
-
-            // Store new token
-            // DO NOT USE LOCAL STORAGE
-            localStorage.setItem("access_token", data.access_token);
-
-            // Retry original request with new token
-            originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
-            return api(originalRequest);
-          } catch (refreshError) {
-            console.error("Token refresh failed:", refreshError);
-            localStorage.removeItem("access_token"); // Clear tokens if refresh fails
-            localStorage.removeItem("refresh_token");
-            return Promise.reject(refreshError);
-          }
+          return originalResult;
         }
 
         return Promise.reject(error);
       }
     );
-  }, [accessToken]);
-  */
+  }, [setAccessToken]);
 
   const isAuthenticated = useCallback(() => {
     return accessToken !== null && accessToken !== undefined;
   }, [accessToken]);
 
+  const login = useCallback(
+    async (email: string, password: string) => {
+      setIsAuthenticating(() => true);
+      await axios
+        .post(`${config.AUTH_BASE_URL}/login`, { email, password })
+        .then((res) => {
+          setAccessToken(() => res.data.accessToken);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setIsAuthenticating(() => false);
+        });
+    },
+    [setAccessToken]
+  );
+
   return (
-    <AuthContext.Provider value={{ accessToken, authenticate, isAuthenticated }}>
+    <AuthContext.Provider value={{ accessToken, isAuthenticated, isAuthenticating, login }}>
       {children}
     </AuthContext.Provider>
   );
