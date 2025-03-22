@@ -13,7 +13,7 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 
 
 	[HttpPost("login")]
-	public async Task<IActionResult> Login([FromBody] LoginPayloadDto loginPayload)
+	public async Task<ActionResult<AccessTokenDto>> Login([FromBody] LoginPayloadDto loginPayload)
 	{
 		await _requestLogger.PrintRequest(nameof(Login), Request);
 
@@ -29,16 +29,15 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 			HttpOnly = true,
 			Secure = false,
 			SameSite = SameSiteMode.Strict,
-			Expires = DateTime.UtcNow.AddMinutes(1)
+			// TODO: Change the duration to ~30 days for production environments
+			Expires = DateTime.UtcNow.AddHours(1)
 		});
 
-		var response = Ok(new { accessToken });
-
-		return response;
+		return Ok(new AccessTokenDto { AccessToken = accessToken });
 	}
 
 	[HttpPost("refresh")]
-	public async Task<IActionResult> Refresh()
+	public async Task<ActionResult<AccessTokenDto>> Refresh()
 	{
 		await _requestLogger.PrintRequest(nameof(Refresh), Request);
 
@@ -58,19 +57,20 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 		// set the generated refresh token in the database
 		// send the access token in the payload and refresh tokens as an HttpOnly cookie
 
-		return Ok(new { accessToken = "TODO: generate access token" });
+		return Ok(new AccessTokenDto { AccessToken = "TODO: generate access token" });
 	}
 
-	[HttpGet("check-cookies")]
-	public async Task<IActionResult> CheckCookies()
+	[HttpGet("check-tokens")]
+	public async Task<ActionResult<TokenPairDto>> CheckCookies()
 	{
 		await _requestLogger.PrintRequest(nameof(CheckCookies), Request);
 
-		// TODO: Remove this after testing slow response times frontend handling
+		// TODO: Remove this after testing slow server response times on frontend
 		await Task.Delay(3000);
 
 		var refreshToken = Request.Cookies["refreshToken"];
-		var accessToken = Request.Headers.Authorization;
+		var accessToken = Request.Headers.Authorization
+			.FirstOrDefault(auth => auth?.StartsWith("Bearer") ?? false);
 
 		string message = string.Empty;
 
@@ -87,9 +87,13 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 		if (message != string.Empty)
 		{
 			message = message.Substring(0, message.Length - 2);
-			return Unauthorized(new { message });
+			return BadRequest(new { message });
 		}
 
-		return Ok(new { accessToken, refreshToken });
+		return Ok(new TokenPairDto
+		{
+			AccessToken = accessToken,
+			RefreshToken = refreshToken
+		});
 	}
 }

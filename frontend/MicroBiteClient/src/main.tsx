@@ -4,9 +4,9 @@ import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "./pages/LoginPage.tsx";
 import MenuPage from "./pages/MenuPage.tsx";
-import { AuthContextProvider } from "./auth/AuthContext.tsx";
 import HomePage from "./pages/HomePage.tsx";
 import AuthProtectedOutlet from "./auth/AuthProtectedOutlet.tsx";
+import { AuthContextProvider } from "./auth/context/AuthContextProvider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

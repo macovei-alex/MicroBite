@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { api, config } from "../api";
-import { useAuthContext } from "../auth/AuthContext";
+import { useAuthContext } from "../auth/context/useAuthContext";
 
 export default function MenuPage() {
   const authContext = useAuthContext();
@@ -22,8 +22,8 @@ export default function MenuPage() {
       >
         Check tokens
       </button>
-      <p>{authContext.accessToken}</p>
-      <p>{response}</p>
+      <p>Access token from memory: {authContext.accessToken}</p>
+      <p>Tokens mirrored by the server: {response}</p>
     </>
   );
 }

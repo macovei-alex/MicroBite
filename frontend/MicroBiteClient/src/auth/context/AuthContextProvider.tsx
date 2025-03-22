@@ -1,31 +1,7 @@
+import { ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { api, config } from "../../api";
 import axios from "axios";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
-import { api, config } from "../api";
-
-type AuthContextType = {
-  accessToken: string | null | undefined;
-  isAuthenticated: () => boolean;
-  isAuthenticating: boolean;
-  login: (email: string, password: string) => Promise<void>;
-};
-
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export function useAuthContext() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuthContext must be used within a AuthContextProvider");
-  }
-  return context;
-}
+import { AuthContext } from "./AuthContext";
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null | undefined>(undefined);
