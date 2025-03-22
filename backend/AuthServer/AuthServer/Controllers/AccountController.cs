@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AuthServer.Data.Models;
 using AuthServer.Data.Repositories;
+using Isopoh.Cryptography.Argon2;
 
 namespace AuthServer.Controllers;
 
@@ -24,10 +25,41 @@ public class AccountController(AccountRepository repository) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Account>> Create([FromBody] Account account)
+    public async Task<IActionResult> Create([FromBody] CreateAccountDto accountDto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var existingAccount = await _repository.GetByEmailOrPhoneAsync(accountDto.Email, accountDto.PhoneNumber);
+        if (existingAccount != null)
+            return Conflict("An account with the same email or phone number already exists.");
+
+        var passwordHash = Argon2.Hash(accountDto.Password);
+        var recoveryAnswerHash = Argon2.Hash(accountDto.RecoveryAnswer);
+
+        var account = new Account
+        {
+            Id = Guid.NewGuid(),
+            FirstName = accountDto.FirstName,
+            LastName = accountDto.LastName,
+            Email = accountDto.Email,
+            PhoneNumber = accountDto.PhoneNumber,
+            Role = accountDto.Role,
+            PasswordHash = passwordHash,
+            AuthenticationRecovery = new AuthenticationRecovery
+            {
+                SecurityQuestion = accountDto.RecoveryQuestion,
+                SecurityAnswerHash = recoveryAnswerHash
+            }
+        };
+
         var createdAccount = await _repository.AddAsync(account);
-        return CreatedAtAction(nameof(GetById), new { id = createdAccount.Id }, createdAccount);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = createdAccount.Id },
+            createdAccount
+        );
     }
 
     [HttpPut("{id}")]
