@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ResourceServer.Data.Models;
 
@@ -11,6 +12,7 @@ public class OrderItem
 
     public Product? Product { get; set; }
 
+    [JsonIgnore] //crapa get-u fara asta
     public Order? Order { get; set; }
 
     [Required]

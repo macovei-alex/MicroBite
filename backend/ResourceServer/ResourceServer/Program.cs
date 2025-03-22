@@ -17,6 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<ProductRepository>();
+builder.Services.AddScoped<ProductCategoryRepository>();
+builder.Services.AddScoped<OrderRepository>();
+builder.Services.AddScoped<OrderItemRepository>();
+builder.Services.AddScoped<OrderStatusRepository>();
 
 var app = builder.Build();
 
