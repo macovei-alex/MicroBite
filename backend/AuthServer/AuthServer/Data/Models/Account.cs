@@ -25,4 +25,7 @@ public class Account
 
 	[Required]
 	public required string PhoneNumber { get; set; }
+
+    [Required]
+    public required string PasswordHash { get; set; }
 }
