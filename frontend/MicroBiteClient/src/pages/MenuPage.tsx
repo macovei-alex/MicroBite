@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { api } from "../api";
-import { config } from "../api/config";
+import { api, config } from "../api";
 import { useAuthContext } from "../auth/AuthContext";
 
 export default function MenuPage() {
@@ -9,7 +8,7 @@ export default function MenuPage() {
 
   function checkCookies() {
     api
-      .get(`${config.AUTH_BASE_URL}/check-cookies`, { withCredentials: true })
+      .get(`${config.AUTH_BASE_URL}/check-tokens`, { withCredentials: true })
       .then((res) => setResponse(() => JSON.stringify(res.data)))
       .catch((error) => setResponse(() => JSON.stringify(error)));
   }
@@ -17,7 +16,12 @@ export default function MenuPage() {
   return (
     <>
       <p>Menu Page</p>
-      <button onClick={checkCookies}>Check cookies</button>
+      <button
+        onClick={checkCookies}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-500 cursor-pointer"
+      >
+        Check tokens
+      </button>
       <p>{authContext.accessToken}</p>
       <p>{response}</p>
     </>

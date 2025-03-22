@@ -1,7 +1,11 @@
 import axios from "axios";
-import { config } from "./config";
+
+const AUTH_BASE_URL = "http://localhost:5095/api/auth";
+const RES_BASE_URL = "";
+
+export const config = Object.freeze({ AUTH_BASE_URL, RES_BASE_URL });
 
 export const api = axios.create({
   baseURL: config.RES_BASE_URL,
-  withCredentials: true,
+  withCredentials: false,
 });

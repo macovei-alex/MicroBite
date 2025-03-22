@@ -20,6 +20,7 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 		// TODO: Remove this after testing slow response times frontend handling
 		await Task.Delay(3000);
 
+		// TODO: Generate actual tokens
 		var accessToken = loginPayload.Email;
 		var refreshToken = loginPayload.Password;
 
@@ -41,7 +42,7 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 	{
 		await _requestLogger.PrintRequest(nameof(Refresh), Request);
 
-		// TODO: Remove this after testing slow response times frontend handling
+		// TODO: Remove this after testing the frontend for slow response times
 		await Task.Delay(3000);
 
 		var refreshToken = Request.Cookies["refreshToken"];
@@ -53,9 +54,9 @@ public class AuthController(RequestLogger requestLogger) : ControllerBase
 		}
 
 		// find the account associated with the refresh token
-		// generate new access [and refresh] tokens
-		// [set the generated refresh token in the database]
-		// send the access [and refresh] tokens
+		// generate new access and refresh tokens
+		// set the generated refresh token in the database
+		// send the access token in the payload and refresh tokens as an HttpOnly cookie
 
 		return Ok(new { accessToken = "TODO: generate access token" });
 	}

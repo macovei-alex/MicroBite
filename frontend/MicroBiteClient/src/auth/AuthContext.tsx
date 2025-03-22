@@ -8,8 +8,7 @@ import {
   useLayoutEffect,
   useState,
 } from "react";
-import { config } from "../api/config";
-import { api } from "../api";
+import { api, config } from "../api";
 
 type AuthContextType = {
   accessToken: string | null | undefined;
@@ -32,33 +31,39 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null | undefined>(undefined);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
 
-  useEffect(() => {
-    setIsAuthenticating(() => true);
-    axios
-      .post(`${config.AUTH_BASE_URL}/refresh`, {}, { withCredentials: true })
-      .then((res) => {
-        if (res.status === axios.HttpStatusCode.Ok) {
-          console.log("Access token received: ", res.data.accessToken);
-          setAccessToken(() => res.data.accessToken);
-        } else {
-          console.log("Access token refresh failed: ", res);
-          setAccessToken(() => null);
-        }
-      })
-      .catch((error) => {
-        console.error("Access token refresh failed: ", error);
-        setAccessToken(() => null);
-      })
-      .finally(() => {
-        setIsAuthenticating(() => false);
-      });
+  const isAuthenticated = useCallback(() => {
+    return accessToken !== null && accessToken !== undefined;
+  }, [accessToken]);
+
+  const tryRefreshAccessToken = useCallback(async () => {
+    try {
+      const response = await axios.post(
+        `${config.AUTH_BASE_URL}/refresh`,
+        {},
+        { withCredentials: true }
+      );
+      console.log("Access token received: ", response.data.accessToken);
+      setAccessToken(() => response.data.accessToken);
+    } catch (error) {
+      console.warn("Access token refresh failed: ", error);
+      setAccessToken(() => null);
+    }
   }, [setAccessToken]);
+
+  useEffect(() => {
+    (async function () {
+      setIsAuthenticating(() => true);
+      await tryRefreshAccessToken();
+      setIsAuthenticating(() => false);
+    })();
+  }, [setIsAuthenticating, tryRefreshAccessToken]);
 
   useLayoutEffect(() => {
     const authInterceptor = api.interceptors.request.use((config) => {
       config.headers.Authorization = accessToken
         ? `Bearer ${accessToken}`
         : config.headers.Authorization;
+      console.log("Request headers: ", config.headers);
       return config;
     });
 
@@ -68,54 +73,44 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }, [accessToken]);
 
   useLayoutEffect(() => {
-    api.interceptors.response.use(
+    const authResponseInterceptor = api.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
         if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
-          const originalResult = await axios
-            .post(`${config.AUTH_BASE_URL}/refresh`, {}, { withCredentials: true })
-            .then((res) => {
-              console.log(`Refresh endpoint response: ${res}`);
-
-              setAccessToken(() => res.data.accessToken);
-              originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
-              return api(originalRequest);
-            })
-            .catch((refreshError) => {
-              console.log("Token refresh failed:", refreshError);
-              setAccessToken(() => null);
-              return Promise.reject(refreshError);
-            });
-          return originalResult;
+          await tryRefreshAccessToken();
+          if (isAuthenticated()) {
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            return api(originalRequest);
+          }
         }
-
-        return Promise.reject(error);
+        return error;
       }
     );
-  }, [setAccessToken]);
 
-  const isAuthenticated = useCallback(() => {
-    return accessToken !== null && accessToken !== undefined;
-  }, [accessToken]);
+    return () => {
+      api.interceptors.response.eject(authResponseInterceptor);
+    };
+  }, [accessToken, setAccessToken, isAuthenticated, tryRefreshAccessToken]);
 
   const login = useCallback(
     async (email: string, password: string) => {
       setIsAuthenticating(() => true);
-      await axios
-        .post(`${config.AUTH_BASE_URL}/login`, { email, password })
-        .then((res) => {
-          setAccessToken(() => res.data.accessToken);
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setIsAuthenticating(() => false);
-        });
+      try {
+        const response = await axios.post(
+          `${config.AUTH_BASE_URL}/login`,
+          { email, password },
+          { withCredentials: true }
+        );
+        setAccessToken(() => response.data.accessToken);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsAuthenticating(() => false);
+      }
     },
-    [setAccessToken]
+    [setAccessToken, setIsAuthenticating]
   );
 
   return (
