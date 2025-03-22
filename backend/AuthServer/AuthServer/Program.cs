@@ -1,5 +1,6 @@
 using AuthServer.Data;
 using AuthServer.Data.Repositories;
+using AuthServer.Service;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -16,6 +17,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<AccountRepository>();
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAnyOrigin",
+		builder =>
+		{
+			builder.SetIsOriginAllowed(_ => true)
+				   .AllowAnyMethod()
+				   .AllowAnyHeader()
+				   .AllowCredentials();
+		});
+});
+
+builder.Services.AddSingleton<RequestLogger>();
 
 var app = builder.Build();
 
@@ -36,10 +51,9 @@ if (app.Environment.IsDevelopment())
 	// toggle between launchUrl in launchSettings.json to change the default documentation UI
 }
 
+app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
