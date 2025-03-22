@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuthServer.Data.Models;
 
@@ -25,4 +24,7 @@ public class Account
 
 	[Required]
 	public required string PhoneNumber { get; set; }
+
+    [Required]
+    public required string PasswordHash { get; set; }
 }
