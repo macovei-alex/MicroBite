@@ -11,41 +11,39 @@ public class JwtKeysService(IMemoryCache cache, IConfiguration config)
 	private readonly IMemoryCache _cache = cache;
 	private readonly string _jwkUrl = config["JwtSettings:JwksUrl"]!;
 
-	public async Task<SecurityKey> GetSecurityKeyAsync(string kid)
+	public async Task<SecurityKey> GetSecurityKeyAsync(string keyId, string algorithm)
 	{
 		var jwtKeys = await GetSecurityKeysAsync();
-		var securityKey = jwtKeys.FirstOrDefault(jwtKey => jwtKey.KeyId == kid)
-			?? throw new KeyNotFoundException(kid);
+		var securityKey = jwtKeys.FirstOrDefault(jwtKey => jwtKey.KeyId == keyId)
+			?? throw new KeyNotFoundException(keyId);
 
-		if (!securityKey.IsSupportedAlgorithm("RS256"))
+		if (!securityKey.IsSupportedAlgorithm(algorithm))
 		{
-			throw new NotImplementedException($"The key with id ( {kid} ) does not support the algorithm RS256");
+			throw new NotImplementedException($"The key with id ( {keyId} ) does not support the ( {algorithm} ) algorithm");
 		}
 
 		return securityKey;
 	}
 
-	private async Task<IEnumerable<SecurityKey>> GetSecurityKeysAsync()
+	private async Task<List<SecurityKey>> GetSecurityKeysAsync()
 	{
-		if (!_cache.TryGetValue("jwtKeys", out IEnumerable<SecurityKey>? jwtKeys))
+		if (!_cache.TryGetValue("jwtKeys", out List<SecurityKey>? jwtKeys))
 		{
 			var jwks = await FetchJwksAsync();
-			jwtKeys = jwks.Select(jwks => CreateKey(jwks.Kid, jwks.N, jwks.E));
-			_cache.Set("jwtKeys", jwtKeys, TimeSpan.FromMinutes(1));
+			jwtKeys = jwks.Select(jwks => CreateKey(jwks.Kid, jwks.N, jwks.E)).ToList();
+			_cache.Set("jwtKeys", jwtKeys, TimeSpan.FromMinutes(10));
 		}
 		return jwtKeys!;
 	}
 
-	private async Task<IEnumerable<JwksDto>> FetchJwksAsync()
+	private async Task<List<JwksDto>> FetchJwksAsync()
 	{
 		using var httpClient = new HttpClient();
 		var jwkResponse = await httpClient.GetStringAsync(_jwkUrl);
-		var jwksDocument = JsonDocument.Parse(jwkResponse);
-		return jwksDocument.RootElement.GetProperty("keys").EnumerateArray()
-			.Select(jwksJson => JwksDto.FromJson(jwksJson));
+		return JsonSerializer.Deserialize<JwksEndpointPayloadDto>(jwkResponse)!.Keys;
 	}
 
-	private RsaSecurityKey CreateKey(string kid, string n, string e)
+	private static SecurityKey CreateKey(string kid, string n, string e)
 	{
 		var rsa = RSA.Create();
 		rsa.ImportParameters(new RSAParameters
