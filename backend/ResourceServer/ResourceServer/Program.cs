@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using ResourceServer.Data;
 using ResourceServer.Data.Repositories;
+using ResourceServer.Service;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -13,14 +16,27 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	options.UseNpgsql(builder.Configuration.GetConnectionString("ResourceDb"));
+	options.UseNpgsql(config.GetConnectionString("ResourceDb")!);
 });
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<ProductCategoryRepository>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<OrderItemRepository>();
 builder.Services.AddScoped<OrderStatusRepository>();
+
+builder.Services.AddSingleton<JwtKeysService>();
+
+// Custom authentiation service because I cannot find a way to make
+// the jwks endpoint work only with the provided JwtBearer configuration
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = "Jwt";
+	options.DefaultChallengeScheme = "Jwt";
+})
+.AddScheme<AuthenticationSchemeOptions, JwtAuthenticationService>("Jwt", options => { });
 
 var app = builder.Build();
 
