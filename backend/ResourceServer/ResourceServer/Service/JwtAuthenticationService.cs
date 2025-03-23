@@ -36,6 +36,10 @@ public class JwtAuthenticationService(
 		var authorizationHeader = Request.Headers.Authorization.FirstOrDefault();
 		if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
 		{
+			await Context.Response.WriteAsync(JsonSerializer.Serialize(new
+			{
+				message = "Invalid token or missing token"
+			}));
 			return AuthenticateResult.Fail("Missing or invalid authorization header");
 		}
 
@@ -53,6 +57,10 @@ public class JwtAuthenticationService(
 		}
 		catch (Exception ex)
 		{
+			await Context.Response.WriteAsync(JsonSerializer.Serialize(new
+			{
+				message = ex.Message
+			}));
 			return AuthenticateResult.Fail(ex.Message);
 		}
 	}
