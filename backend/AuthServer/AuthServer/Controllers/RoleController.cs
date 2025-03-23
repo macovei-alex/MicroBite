@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AuthServer.Data.Models;
 using AuthServer.Data.Repositories;
+using AuthServer.Data.Dto;
 
 namespace AuthServer.Controllers;
 
@@ -8,38 +9,38 @@ namespace AuthServer.Controllers;
 [ApiController]
 public class RoleController(RoleRepository repository) : ControllerBase
 {
-    private readonly RoleRepository _repository = repository;
+	private readonly RoleRepository _repository = repository;
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Role>> GetById(int id)
-    {
-        var role = await _repository.GetByIdAsync(id);
-        return role != null ? Ok(role) : NotFound();
-    }
+	[HttpGet("{id}")]
+	public async Task<ActionResult<Role>> GetById(int id)
+	{
+		var role = await _repository.GetByIdAsync(id);
+		return role != null ? Ok(role) : NotFound();
+	}
 
-    [HttpGet]
-    public async Task<ActionResult<List<Role>>> GetAll()
-    {
-        return Ok(await _repository.GetAllAsync());
-    }
+	[HttpGet]
+	public async Task<ActionResult<List<Role>>> GetAll()
+	{
+		return Ok(await _repository.GetAllAsync());
+	}
 
-    [HttpPost]
-    public async Task<ActionResult<Role>> Create([FromBody] Role role)
-    {
-        var createdRole = await _repository.AddAsync(role);
-        return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
-    }
+	[HttpPost]
+	public async Task<ActionResult<Role>> Create([FromBody] CreateRoleDto roleDto)
+	{
+		var createdRole = await _repository.AddAsync(new Role { Name = roleDto.Name });
+		return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
+	}
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] Role role)
-    {
-        if (id != role.Id) return BadRequest();
-        return await _repository.UpdateAsync(role) ? NoContent() : NotFound();
-    }
+	[HttpPut("{id}")]
+	public async Task<IActionResult> Update(int id, [FromBody] Role role)
+	{
+		if (id != role.Id) return BadRequest();
+		return await _repository.UpdateAsync(role) ? NoContent() : NotFound();
+	}
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        return await _repository.DeleteAsync(id) ? NoContent() : NotFound();
-    }
+	[HttpDelete("{id}")]
+	public async Task<IActionResult> Delete(int id)
+	{
+		return await _repository.DeleteAsync(id) ? NoContent() : NotFound();
+	}
 }
