@@ -25,12 +25,12 @@ public class JwtService
 		Debug.Assert(File.Exists(config["JwtSettings:PrivateKeyPath"]));
 
 		var rsa = RSA.Create();
-		rsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]));
+		rsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]!));
 		_signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
 		_jwtHandler = new JwtSecurityTokenHandler();
 
-		_issuer = config["JwtSettings:Issuer"];
-		_audience = config["JwtSettings:Audience"];
+		_issuer = config["JwtSettings:Issuer"]!;
+		_audience = config["JwtSettings:Audience"]!;
 	}
 
 	public string CreateToken(Guid userId, string role, TimeSpan expirationDelay)

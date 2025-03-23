@@ -56,7 +56,6 @@ public class AuthController
 		await _requestLogger.PrintRequest(nameof(Refresh), Request);
 
 		var refreshToken = Request.Cookies["refreshToken"];
-		Console.WriteLine($"Refresh token: ( {refreshToken} )");
 
 		if (string.IsNullOrEmpty(refreshToken))
 		{
@@ -81,33 +80,25 @@ public class AuthController
 
 		var refreshToken = Request.Cookies["refreshToken"];
 		var accessToken = Request.Headers.Authorization
-			.FirstOrDefault(auth => auth?.StartsWith("Bearer") ?? false);
+			.Where(auth => auth != null && auth.StartsWith("Bearer "))
+			.Select(auth => auth!["Bearer ".Length..])
+			.FirstOrDefault();
 
-		string message = string.Empty;
-
-		if (string.IsNullOrEmpty(refreshToken))
-		{
-			message += "Refresh token not found; ";
-		}
-
-		if (string.IsNullOrEmpty(accessToken))
-		{
-			message += "Access token not found; ";
-		}
+		string message =
+		(
+			(string.IsNullOrEmpty(accessToken) ? "Access token not found; " : string.Empty) +
+			(string.IsNullOrEmpty(refreshToken) ? "Refresh token not found; " : string.Empty)
+		);
 
 		if (message != string.Empty)
 		{
-			message = message.Substring(0, message.Length - 2);
-			return BadRequest(message);
+			return BadRequest(message[..^2]);
 		}
-
-		Debug.Assert(accessToken != null);
-		Debug.Assert(refreshToken != null);
 
 		return Ok(new TokenPairDto
 		{
-			AccessToken = accessToken,
-			RefreshToken = refreshToken
+			AccessToken = accessToken!,
+			RefreshToken = refreshToken!
 		});
 	}
 }

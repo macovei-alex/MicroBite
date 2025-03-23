@@ -50,7 +50,7 @@ builder.Services.AddCors(options =>
 });
 
 var decondingRsa = RSA.Create();
-decondingRsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PublicKeyPath"]));
+decondingRsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PublicKeyPath"]!));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(x =>
