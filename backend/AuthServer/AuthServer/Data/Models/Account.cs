@@ -6,7 +6,7 @@ public class Account
 {
 	[Key]
 	[Required]
-	public required Guid Id { get; set; }
+	public Guid Id { get; set; }
 
 	public AuthenticationRecovery? AuthenticationRecovery { get; set; }
 
@@ -25,6 +25,6 @@ public class Account
 	[Required]
 	public required string PhoneNumber { get; set; }
 
-    [Required]
-    public required string PasswordHash { get; set; }
+	[Required]
+	public required string PasswordHash { get; set; }
 }
