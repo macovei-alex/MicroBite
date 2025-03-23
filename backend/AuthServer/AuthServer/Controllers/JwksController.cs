@@ -14,12 +14,10 @@ public class JwksController(JwtService jwtService) : ControllerBase
 	[HttpGet]
 	public ActionResult<JwksDto[]> GetJwks()
 	{
-		var rsaKey = (_jwtService.SecurityKey as RsaSecurityKey)
-			?? throw new NotImplementedException("Jwks for something other than RSA keys was not implemented");
 		try
 		{
-			var jwks = JwksDto.FromRsaSecurityKey(rsaKey);
-			return Ok(new[] { jwks });
+			var jwks = JwksDto.FromSecurityKey(_jwtService.SecurityKey, _jwtService.SigningCredentials.Algorithm);
+			return Ok(new { keys = new[] { jwks } });
 		}
 		catch (ArgumentException ex)
 		{
