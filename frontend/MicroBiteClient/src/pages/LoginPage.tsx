@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { api } from "../api";
 import { useNavigate } from "react-router";
+import { useAuthContext } from "../auth/context/useAuthContext";
 
 export default function LoginPage() {
+  const authContext = useAuthContext();
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
-  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -22,8 +23,7 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const data = await api.login(email, password);
-      console.log(data);
+      await authContext.login(email, password);
       navigate("/menu");
     } catch (error) {
       console.error(error);
@@ -31,7 +31,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-96 pb-12">
         <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
         <form onSubmit={handleSubmit}>
