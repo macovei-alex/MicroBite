@@ -11,14 +11,13 @@ using System.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-Console.WriteLine(Directory.GetCurrentDirectory());
-
 Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Issuer"]));
 Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Audience"]));
 Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:PrivateKeyPath"]));
 Debug.Assert(File.Exists(config["JwtSettings:PrivateKeyPath"]));
 Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:PublicKeyPath"]));
 Debug.Assert(File.Exists(config["JwtSettings:PublicKeyPath"]));
+Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:KeyId"]));
 
 builder.Services.AddControllers();
 

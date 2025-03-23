@@ -9,7 +9,7 @@ namespace AuthServer.Service;
 public class JwtService
 {
 	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(1);
-	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(5);
+	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(15);
 
 	private readonly SigningCredentials _signingCredentials;
 	private readonly JwtSecurityTokenHandler _jwtHandler;
@@ -17,16 +17,18 @@ public class JwtService
 	private readonly string _issuer;
 	private readonly string _audience;
 
+	public SecurityKey SecurityKey { get; init; }
+
 	public JwtService(IConfiguration config)
 	{
-		Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Issuer"]));
-		Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Audience"]));
-		Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:PrivateKeyPath"]));
-		Debug.Assert(File.Exists(config["JwtSettings:PrivateKeyPath"]));
-
 		var rsa = RSA.Create();
 		rsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]!));
-		_signingCredentials = new SigningCredentials(new RsaSecurityKey(rsa), SecurityAlgorithms.RsaSha256);
+
+		SecurityKey = new RsaSecurityKey(rsa)
+		{
+			KeyId = config["JwtSettings:KeyId"]!
+		};
+		_signingCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.RsaSha256);
 		_jwtHandler = new JwtSecurityTokenHandler();
 
 		_issuer = config["JwtSettings:Issuer"]!;
