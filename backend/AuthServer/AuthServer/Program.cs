@@ -11,13 +11,8 @@ using System.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
-Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Issuer"]));
-Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:Audience"]));
-Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:PrivateKeyPath"]));
-Debug.Assert(File.Exists(config["JwtSettings:PrivateKeyPath"]));
-Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:PublicKeyPath"]));
-Debug.Assert(File.Exists(config["JwtSettings:PublicKeyPath"]));
-Debug.Assert(!string.IsNullOrEmpty(config["JwtSettings:KeyId"]));
+Debug.Assert(File.Exists(config["JwtSettings:PrivateKeyPath"]!));
+Debug.Assert(File.Exists(config["JwtSettings:PublicKeyPath"]!));
 
 builder.Services.AddControllers();
 
@@ -57,9 +52,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 		x.TokenValidationParameters = new TokenValidationParameters
 		{
 			ValidateIssuer = true,
-			ValidIssuer = config["JwtSettings:Issuer"],
+			ValidIssuer = config["JwtSettings:Issuer"]!,
 			ValidateAudience = true,
-			ValidAudience = config["JwtSettings:Audience"],
+			ValidAudiences = config.GetSection("JwtSettings:Audiences").Get<string[]>()!,
 			ValidateIssuerSigningKey = true,
 			IssuerSigningKey = new RsaSecurityKey(decondingRsa),
 			ValidateLifetime = true,

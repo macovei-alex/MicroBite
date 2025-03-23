@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ResourceServer.Data;
 using ResourceServer.Data.Repositories;
+using ResourceServer.Service;
 using Scalar.AspNetCore;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -13,14 +18,39 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	options.UseNpgsql(builder.Configuration.GetConnectionString("ResourceDb"));
+	options.UseNpgsql(config.GetConnectionString("ResourceDb")!);
 });
+
+builder.Services.AddMemoryCache();
 
 builder.Services.AddScoped<ProductRepository>();
 builder.Services.AddScoped<ProductCategoryRepository>();
 builder.Services.AddScoped<OrderRepository>();
 builder.Services.AddScoped<OrderItemRepository>();
 builder.Services.AddScoped<OrderStatusRepository>();
+
+builder.Services.AddSingleton<JwtKeysService>();
+builder.Services.AddSingleton<JwtValidatorService>();
+
+// temporary
+var rsa = RSA.Create();
+rsa.ImportFromPem(File.ReadAllText("../../AuthServer/AuthServer/dev/public-key.pem"));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(x =>
+	{
+		x.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidIssuer = config["JwtSettings:Issuer"]!,
+			ValidateAudience = true,
+			ValidAudience = config["JwtSettings:Audience"]!,
+			ValidateIssuerSigningKey = true,
+			// TODO: Figure out how to use JwtKeysService to set the correct key based on the kid
+			IssuerSigningKey = new RsaSecurityKey(rsa),
+			ValidateLifetime = true,
+		};
+	});
 
 var app = builder.Build();
 

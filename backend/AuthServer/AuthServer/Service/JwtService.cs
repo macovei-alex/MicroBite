@@ -1,5 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -8,8 +7,8 @@ namespace AuthServer.Service;
 
 public class JwtService
 {
-	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(1);
-	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(15);
+	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(10);
+	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(30);
 
 	private readonly JwtSecurityTokenHandler _jwtHandler;
 
@@ -32,22 +31,23 @@ public class JwtService
 		_jwtHandler = new JwtSecurityTokenHandler();
 
 		_issuer = config["JwtSettings:Issuer"]!;
-		_audience = config["JwtSettings:Audience"]!;
+		_audience = config.GetSection("JwtSettings:Audiences").Get<string[]>()![0];
 	}
 
-	public string CreateToken(Guid userId, string role, TimeSpan expirationDelay)
+	public string CreateToken(Guid accountId, string role, TimeSpan expirationDelay)
 	{
 		var tokenDescriptor = new SecurityTokenDescriptor
 		{
 			Subject = new ClaimsIdentity(
 			[
-				new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
+				new Claim(JwtRegisteredClaimNames.Sub, accountId.ToString()),
 				new Claim(ClaimTypes.Role, role),
 			]),
 			Expires = DateTime.UtcNow + expirationDelay,
 			Issuer = _issuer,
 			Audience = _audience,
-			SigningCredentials = SigningCredentials
+			SigningCredentials = SigningCredentials,
+			NotBefore = null
 		};
 
 		var token = _jwtHandler.CreateToken(tokenDescriptor);

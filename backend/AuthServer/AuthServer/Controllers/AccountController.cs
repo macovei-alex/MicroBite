@@ -16,7 +16,8 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	private readonly RoleRepository _roleRepository = roleRepository;
 
 	[HttpGet("{id}")]
-	public async Task<ActionResult<Account>> GetById(Guid id)
+	[Authorize]
+	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
