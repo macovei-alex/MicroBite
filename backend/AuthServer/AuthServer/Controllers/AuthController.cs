@@ -3,7 +3,6 @@ using AuthServer.Data.Repositories;
 using AuthServer.Service;
 using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace AuthServer.Controllers;
 

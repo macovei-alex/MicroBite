@@ -4,7 +4,7 @@ using AuthServer.Data.Repositories;
 using Isopoh.Cryptography.Argon2;
 using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ActionConstraints;
+using AuthServer.Data;
 
 namespace AuthServer.Controllers;
 
@@ -19,6 +19,16 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	[Authorize]
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
+		// example for accessing and using decoded jwt claims of a request access token
+
+		Console.WriteLine(HttpContext.User.Claims.Count());
+		foreach (var claim in HttpContext.User.Claims)
+		{
+			Console.WriteLine($"{claim.Type} {claim.Value}");
+		}
+		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
+
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
 	}

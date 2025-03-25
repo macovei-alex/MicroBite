@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using AuthServer.Data;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -40,14 +41,15 @@ public class JwtService
 		{
 			Subject = new ClaimsIdentity(
 			[
-				new Claim(JwtRegisteredClaimNames.Sub, accountId.ToString()),
-				new Claim(ClaimTypes.Role, role),
+				new Claim(JwtAppValidClaims.Subject, accountId.ToString()),
+				new Claim(JwtAppValidClaims.Role, role),
 			]),
 			Expires = DateTime.UtcNow + expirationDelay,
 			Issuer = _issuer,
 			Audience = _audience,
 			SigningCredentials = SigningCredentials,
-			NotBefore = null
+			IssuedAt = DateTime.UtcNow,
+			NotBefore = DateTime.UtcNow,
 		};
 
 		var token = _jwtHandler.CreateToken(tokenDescriptor);

@@ -1,7 +1,6 @@
 ﻿using AuthServer.Data.Dto;
 using AuthServer.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AuthServer.Controllers;
 
