@@ -29,6 +29,8 @@ public class AccountController(AccountRepository repository, RoleRepository role
 		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
 		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
 
+		//
+
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
 	}
@@ -83,7 +85,6 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	}
 
 	[HttpPut("{id}")]
-	[Authorize]
 	public async Task<IActionResult> Update(Guid id, [FromBody] Account account)
 	{
 		if (id != account.Id) return BadRequest();
@@ -91,7 +92,6 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	}
 
 	[HttpDelete("{id}")]
-	[Authorize]
 	public async Task<IActionResult> Delete(Guid id)
 	{
 		return await _repository.DeleteAsync(id) ? NoContent() : NotFound();

@@ -14,28 +14,39 @@ public class JwtService
 	private readonly JwtSecurityTokenHandler _jwtHandler;
 
 	private readonly string _issuer;
-	private readonly string _audience;
+	public string[] Audiences { get; init; }
 
 	public SigningCredentials SigningCredentials { get; init; }
-	public SecurityKey SecurityKey { get; init; }
+	public SecurityKey EncryptKey { get; init; }
+	public SecurityKey DecryptKey { get; init; }
 
 	public JwtService(IConfiguration config)
 	{
-		var rsa = RSA.Create();
-		rsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]!));
-
-		SecurityKey = new RsaSecurityKey(rsa)
+		var encryptRsa = RSA.Create();
+		encryptRsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]!));
+		EncryptKey = new RsaSecurityKey(encryptRsa)
 		{
 			KeyId = config["JwtSettings:KeyId"]!
 		};
-		SigningCredentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.RsaSha256);
-		_jwtHandler = new JwtSecurityTokenHandler();
+
+		var decryptRsa = RSA.Create();
+		decryptRsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PublicKeyPath"]!));
+		DecryptKey = new RsaSecurityKey(decryptRsa)
+		{
+			KeyId = config["JwtSettings:KeyId"]!
+		};
+
+		SigningCredentials = new SigningCredentials(EncryptKey, SecurityAlgorithms.RsaSha256);
+		_jwtHandler = new()
+		{
+			MapInboundClaims = false,
+		};
 
 		_issuer = config["JwtSettings:Issuer"]!;
-		_audience = config.GetSection("JwtSettings:Audiences").Get<string[]>()![0];
+		Audiences = config.GetSection("JwtSettings:Audiences").Get<string[]>()!;
 	}
 
-	public string CreateToken(Guid accountId, string role, TimeSpan expirationDelay)
+	public string CreateToken(Guid accountId, string role, string audience, TimeSpan expirationDelay)
 	{
 		var tokenDescriptor = new SecurityTokenDescriptor
 		{
@@ -46,7 +57,7 @@ public class JwtService
 			]),
 			Expires = DateTime.UtcNow + expirationDelay,
 			Issuer = _issuer,
-			Audience = _audience,
+			Audience = audience,
 			SigningCredentials = SigningCredentials,
 			IssuedAt = DateTime.UtcNow,
 			NotBefore = DateTime.UtcNow,
@@ -54,5 +65,20 @@ public class JwtService
 
 		var token = _jwtHandler.CreateToken(tokenDescriptor);
 		return _jwtHandler.WriteToken(token);
+	}
+
+	public ClaimsPrincipal ExtractClaims(string token)
+	{
+		var principal = _jwtHandler.ValidateToken(token, new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidIssuer = _issuer,
+			ValidateAudience = true,
+			ValidAudiences = Audiences,
+			ValidateIssuerSigningKey = true,
+			IssuerSigningKey = DecryptKey,
+			ValidateLifetime = true
+		}, out _);
+		return principal!;
 	}
 }

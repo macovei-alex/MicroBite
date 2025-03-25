@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { api, config } from "../../api";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { AuthContext } from "./AuthContext";
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
@@ -76,12 +76,15 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       try {
         const response = await axios.post(
           `${config.AUTH_BASE_URL}/login`,
-          { email, password },
+          { email, password, clientId: config.CLIENT_ID },
           { withCredentials: true }
         );
         setAccessToken(() => response.data.accessToken);
+        return null;
       } catch (error) {
         console.error(error);
+        const message = (error as AxiosError).response?.data;
+        return typeof message === "string" ? message : "An unknown error occurred";
       } finally {
         setIsAuthenticating(() => false);
       }

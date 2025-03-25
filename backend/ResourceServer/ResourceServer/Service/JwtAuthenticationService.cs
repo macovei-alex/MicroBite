@@ -21,7 +21,11 @@ public class JwtAuthenticationService(
 {
 	private readonly JwtKeysService _jwtKeysService = jwtKeysService;
 	private readonly string _issuer = config["JwtSettings:Issuer"]!;
-	private readonly string _audience = config["JwtSettings:Audience"]!;
+	private readonly string[] _audiences = config.GetSection("JwtSettings:Audiences").Get<string[]>()!;
+	private readonly JwtSecurityTokenHandler _jwtHandler = new()
+	{
+		MapInboundClaims = false,
+	};
 
 
 	private class JwtDecodedMinimalData
@@ -44,9 +48,8 @@ public class JwtAuthenticationService(
 		{
 			var decodedData = DecodeMinimalData(token);
 			var securityKey = await _jwtKeysService.GetSecurityKeyAsync(decodedData.KeyId, decodedData.Algorithm);
-			var (securityToken, principal) = ValidateToken(token, securityKey);
+			var principal = ExtractClaims(token, securityKey);
 
-			Context.Items["SecurityToken"] = securityToken;
 			Context.User = principal;
 
 			return AuthenticateResult.Success(new AuthenticationTicket(principal, "Jwt"));
@@ -57,20 +60,19 @@ public class JwtAuthenticationService(
 		}
 	}
 
-	private (SecurityToken, ClaimsPrincipal) ValidateToken(string token, SecurityKey key)
+	private ClaimsPrincipal ExtractClaims(string token, SecurityKey key)
 	{
-		var tokenHandler = new JwtSecurityTokenHandler();
-		var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+		var principal = _jwtHandler.ValidateToken(token, new TokenValidationParameters
 		{
 			ValidateIssuer = true,
 			ValidIssuer = _issuer,
 			ValidateAudience = true,
-			ValidAudience = _audience,
+			ValidAudiences = _audiences,
 			ValidateIssuerSigningKey = true,
 			IssuerSigningKey = key,
 			ValidateLifetime = true
-		}, out SecurityToken securityToken);
-		return (securityToken, principal!);
+		}, out _);
+		return principal!;
 	}
 
 	private static JwtDecodedMinimalData DecodeMinimalData(string jwt)

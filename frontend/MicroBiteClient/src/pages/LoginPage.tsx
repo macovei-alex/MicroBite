@@ -23,7 +23,11 @@ export default function LoginPage() {
     setError("");
 
     try {
-      await authContext.login(email, password);
+      const message = await authContext.login(email, password);
+      if (message) {
+        setError(() => message);
+        return;
+      }
       navigate("/menu");
     } catch (error) {
       console.error(error);
