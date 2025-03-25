@@ -18,7 +18,7 @@ public class JwksController(JwtService jwtService, RequestLogger requestLogger) 
 
 		try
 		{
-			var jwks = JwksDto.FromSecurityKey(_jwtService.SecurityKey, _jwtService.SigningCredentials.Algorithm);
+			var jwks = JwksDto.FromSecurityKey(_jwtService.DecryptKey, _jwtService.SigningCredentials.Algorithm);
 			return Ok(new { keys = new[] { jwks } });
 		}
 		catch (ArgumentException ex)

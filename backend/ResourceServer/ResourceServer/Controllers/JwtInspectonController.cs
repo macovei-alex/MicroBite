@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ResourceServer.Controllers;
 
@@ -12,9 +11,14 @@ public class JwtInspectionController : ControllerBase
 	[Authorize]
 	public ActionResult<string> Get()
 	{
-		var securityToken = HttpContext.Items["SecurityToken"]! as SecurityToken;
-		var principal = HttpContext.User;
+		Console.WriteLine(HttpContext.User.Claims.Count());
+		foreach (var claim in HttpContext.User.Claims)
+		{
+			Console.WriteLine($"{claim.Type} {claim.Value}");
+		}
 
-		return securityToken!.ToString() + "\n" + principal.ToString();
+		return HttpContext.User.Claims
+			.Select((claim) => $"{claim.Type}: {claim.Value}")
+			.Aggregate((claim1, claim2) => $"{claim1}\n{claim2}");
 	}
 }
