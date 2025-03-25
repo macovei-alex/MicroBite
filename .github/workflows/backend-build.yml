@@ -1,0 +1,64 @@
+name: .NET Build Verification
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_auth_server:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '9.0'
+
+      - name: Restore dependencies for AuthServer
+        run: |
+          cd backend/AuthServer
+          dotnet restore
+
+      - name: Build the AuthServer project
+        run: |
+          cd backend/AuthServer
+          dotnet build --configuration Release
+
+      - name: Run tests for AuthServer (optional)
+        run: |
+          cd backend/AuthServer
+          dotnet test --configuration Release
+
+  build_resource_server:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '9.0'
+
+      - name: Restore dependencies for ResourceServer
+        run: |
+          cd backend/ResourceServer
+          dotnet restore
+
+      - name: Build the ResourceServer project
+        run: |
+          cd backend/ResourceServer
+          dotnet build --configuration Release
+
+      - name: Run tests for ResourceServer (optional)
+        run: |
+          cd backend/ResourceServer
+          dotnet test --configuration Release
