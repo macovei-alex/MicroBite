@@ -3,6 +3,7 @@ using AuthServer.Data.Dto;
 using AuthServer.Data.Repositories;
 using AuthServer.Service;
 using AuthServer.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.Controllers;
@@ -22,10 +23,8 @@ public class AuthController(
 	private readonly AuthService _authService = authService;
 
 	[HttpPost("login")]
-	public async Task<ActionResult<AccessTokenDto>> Login([FromBody] LoginPayloadDto loginPayload)
+	public ActionResult<AccessTokenDto> Login([FromBody] LoginPayloadDto loginPayload)
 	{
-		await _requestLogger.PrintRequest(nameof(Login), Request);
-
 		try
 		{
 			var tokenPair = _authService.Login(HttpContext.Response, loginPayload);
@@ -37,11 +36,31 @@ public class AuthController(
 		}
 	}
 
-	[HttpPost("refresh")]
-	public async Task<ActionResult<AccessTokenDto>> Refresh()
+	[HttpPost("logout")]
+	[Authorize]
+	public async Task<IActionResult> Logout()
 	{
-		await _requestLogger.PrintRequest(nameof(Refresh), Request);
+		if (!_jwtService.TryVerifyAppClaims(HttpContext.User, out string? failureMessage))
+		{
+			Console.WriteLine(failureMessage!);
+			return BadRequest(failureMessage!);
+		}
 
+		var account = await _accountRepository.GetByIdAsync(Guid.Parse(HttpContext.User.Subject()));
+		if (account == null)
+		{
+			return BadRequest("Account not found");
+		}
+
+		account.RefreshToken = null;
+		await _accountRepository.UpdateAsync(account);
+		HttpContext.Response.Cookies.Delete("refreshToken");
+		return Ok();
+	}
+
+	[HttpPost("refresh")]
+	public ActionResult<AccessTokenDto> Refresh()
+	{
 		var refreshToken = Request.Cookies["refreshToken"];
 		if (string.IsNullOrEmpty(refreshToken))
 		{
@@ -87,10 +106,8 @@ public class AuthController(
 	}
 
 	[HttpGet("jwt-inspect")]
-	public async Task<ActionResult<TokenPairDto>> InspectTokens()
+	public ActionResult<TokenPairDto> InspectTokens()
 	{
-		await _requestLogger.PrintRequest(nameof(InspectTokens), Request);
-
 		var refreshToken = Request.Cookies["refreshToken"];
 		var accessToken = Request.Headers.Authorization
 			.Where(auth => auth != null && auth.StartsWith("Bearer "))
