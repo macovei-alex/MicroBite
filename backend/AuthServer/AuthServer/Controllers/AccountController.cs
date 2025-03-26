@@ -27,27 +27,6 @@ public class AccountController(
 	[Authorize]
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
-		// example of access token usage
-		Console.WriteLine(HttpContext.User.Claims.Count());
-		foreach (var claim in HttpContext.User.Claims)
-		{
-			Console.WriteLine($"{claim.Type} {claim.Value}");
-		}
-
-		if (!_jwtService.TryVerifyAppClaims(HttpContext.User, out string? failureMessage))
-		{
-			Console.WriteLine(failureMessage!);
-			return BadRequest(failureMessage!);
-		}
-		else
-		{
-			// Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
-			Console.WriteLine(HttpContext.User.Subject());
-			// Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
-			Console.WriteLine(HttpContext.User.Role());
-		}
-		// \
-
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
 	}
@@ -58,7 +37,7 @@ public class AccountController(
 		return Ok(await _repository.GetAllAsync());
 	}
 
-	[HttpPut("change-password")]
+	[HttpPost("change-password")]
 	public async Task<ActionResult<AccessTokenDto>> ChangePassword([FromBody] PasswordChangePayloadDto passwordChangePayload)
 	{
 		var account = await _repository.GetByEmailAsync(passwordChangePayload.Email);
@@ -76,7 +55,7 @@ public class AccountController(
 
 		try
 		{
-			var tokenPair = _authService.Login(HttpContext.Response, new LoginPayloadDto
+			var tokenPair = _authService.Login(Response, new LoginPayloadDto
 			{
 				Email = passwordChangePayload.Email,
 				Password = passwordChangePayload.NewPassword,

@@ -7,6 +7,7 @@ using Scalar.AspNetCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<RoleRepository>();
 
 builder.Services.AddSingleton<RequestLogger>();
 builder.Services.AddSingleton<JwtService>();
+builder.Services.AddScoped<IClaimsTransformation, JwtClaimsTransformer>();
 builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddCors(options =>

@@ -1,6 +1,6 @@
-﻿using AuthServer.Data;
-using AuthServer.Data.Dto;
+﻿using AuthServer.Data.Dto;
 using AuthServer.Data.Repositories;
+using AuthServer.Data.Security;
 using AuthServer.Service;
 using AuthServer.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +27,7 @@ public class AuthController(
 	{
 		try
 		{
-			var tokenPair = _authService.Login(HttpContext.Response, loginPayload);
+			var tokenPair = _authService.Login(Response, loginPayload);
 			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
 		}
 		catch (ArgumentException ex)
@@ -40,13 +40,9 @@ public class AuthController(
 	[Authorize]
 	public async Task<IActionResult> Logout()
 	{
-		if (!_jwtService.TryVerifyAppClaims(HttpContext.User, out string? failureMessage))
-		{
-			Console.WriteLine(failureMessage!);
-			return BadRequest(failureMessage!);
-		}
+		var jwtUser = JwtUser.GetFromPrincipal(User);
 
-		var account = await _accountRepository.GetByIdAsync(Guid.Parse(HttpContext.User.Subject()));
+		var account = await _accountRepository.GetByIdAsync(jwtUser.Id);
 		if (account == null)
 		{
 			return BadRequest("Account not found");
@@ -54,7 +50,7 @@ public class AuthController(
 
 		account.RefreshToken = null;
 		await _accountRepository.UpdateAsync(account);
-		HttpContext.Response.Cookies.Delete("refreshToken");
+		Response.Cookies.Delete("refreshToken");
 		return Ok();
 	}
 
@@ -106,50 +102,39 @@ public class AuthController(
 	}
 
 	[HttpGet("jwt-inspect")]
-	public ActionResult<TokenPairDto> InspectTokens()
+	[Authorize]
+	public ActionResult<string> InspectTokens()
 	{
 		var refreshToken = Request.Cookies["refreshToken"];
-		var accessToken = Request.Headers.Authorization
-			.Where(auth => auth != null && auth.StartsWith("Bearer "))
-			.Select(auth => auth!["Bearer ".Length..])
-			.FirstOrDefault();
 
-		string message =
-		(
-			(string.IsNullOrEmpty(accessToken) ? "Access token not found; " : string.Empty) +
-			(string.IsNullOrEmpty(refreshToken) ? "Refresh token not found; " : string.Empty)
-		);
-
-		if (message != string.Empty)
+		if (string.IsNullOrEmpty(refreshToken))
 		{
-			return BadRequest(message[..^2]);
+			return BadRequest("Refresh token not found");
 		}
 
 		try
 		{
-			var accessClaims = _jwtService.ExtractClaims(accessToken!);
 			var refreshClaims = _jwtService.ExtractClaims(refreshToken!);
-
-			bool verifyAccessClaimsResult = _jwtService.TryVerifyAppClaims(accessClaims, out string? accessFailureMessage);
-			bool verifyRefresgClaimsResult = _jwtService.TryVerifyAppClaims(refreshClaims, out string? refreshFailureMessage);
-
-			if (!verifyAccessClaimsResult || !verifyRefresgClaimsResult)
+			if (!_jwtService.TryVerifyAppClaims(refreshClaims, out string? failureMessage))
 			{
-				return BadRequest(
-					"Access claims failure: " + (accessFailureMessage ?? string.Empty) + "; " +
-					"Refresh claims failure: " + (refreshFailureMessage ?? string.Empty) + ";"
-				);
+				return BadRequest($"Refresh claims failure ( {failureMessage} )");
 			}
+
+			string response = "Access token claims:\n" + User.Claims
+					.Select((claim) => $"{claim.Type}: {claim.Value}")
+					.Aggregate((claim1, claim2) => $"{claim1}\n{claim2}")
+				+ "\n\nRefresh token claims:\n" + refreshClaims.Claims
+					.Select((claim) => $"{claim.Type}: {claim.Value}")
+					.Aggregate((claim1, claim2) => $"{claim1}\n{claim2}");
+
+			Console.WriteLine(response);
+
+			return Ok(response);
+
 		}
 		catch (Exception ex)
 		{
 			return BadRequest(ex.Message);
 		}
-
-		return Ok(new TokenPairDto
-		{
-			AccessToken = accessToken!,
-			RefreshToken = refreshToken!
-		});
 	}
 }

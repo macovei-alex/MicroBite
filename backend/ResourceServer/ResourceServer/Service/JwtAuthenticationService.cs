@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ResourceServer.Data.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -48,6 +50,12 @@ public class JwtAuthenticationService(
 			var decodedData = DecodeMinimalData(token);
 			var securityKey = await _jwtKeysService.GetSecurityKeyAsync(decodedData.KeyId, decodedData.Algorithm);
 			var principal = ExtractClaims(token, securityKey);
+
+			var identity = (principal.Identity as ClaimsIdentity)!;
+			var jwtUser = JwtUser.CreateFromIdentity(identity);
+
+			identity.AddClaim(new Claim(nameof(JwtUser), JsonSerializer.Serialize(jwtUser)));
+			identity.AddClaim(new Claim(ClaimTypes.Role, jwtUser.Role));
 
 			Context.User = principal;
 
