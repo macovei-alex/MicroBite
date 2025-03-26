@@ -4,7 +4,6 @@ using AuthServer.Data.Repositories;
 using Isopoh.Cryptography.Argon2;
 using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
-using AuthServer.Data;
 using AuthServer.Service;
 using AuthServer.Utils;
 
@@ -29,14 +28,13 @@ public class AccountController(
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
 		// example of access token usage
-
 		Console.WriteLine(HttpContext.User.Claims.Count());
 		foreach (var claim in HttpContext.User.Claims)
 		{
 			Console.WriteLine($"{claim.Type} {claim.Value}");
 		}
 
-		if (!_jwtService.VerifyAppClaims(HttpContext.User, out string? failureMessage))
+		if (!_jwtService.TryVerifyAppClaims(HttpContext.User, out string? failureMessage))
 		{
 			Console.WriteLine(failureMessage!);
 			return BadRequest(failureMessage!);
@@ -48,8 +46,7 @@ public class AccountController(
 			// Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
 			Console.WriteLine(HttpContext.User.Role());
 		}
-
-		//
+		// \
 
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
@@ -69,20 +66,23 @@ public class AccountController(
 		{
 			return BadRequest("Incorrect email address");
 		}
+		if (!Argon2.Verify(account.AuthenticationRecovery!.SecurityAnswerHash, passwordChangePayload.SecurityAnswer))
+		{
+			return BadRequest("Incorrect security answer");
+		}
+
+		account.PasswordHash = Argon2.Hash(passwordChangePayload.NewPassword);
+		_repository.UpdateAsync(account).Wait();
 
 		try
 		{
-			var tokenPair = _authService.Login(new LoginPayloadDto
+			var tokenPair = _authService.Login(HttpContext.Response, new LoginPayloadDto
 			{
 				Email = passwordChangePayload.Email,
 				Password = passwordChangePayload.NewPassword,
 				ClientId = passwordChangePayload.ClientId
 			});
-			_authService.SetRefreshTokenCookie(Response, tokenPair.RefreshToken);
-			return Ok(new AccessTokenDto
-			{
-				AccessToken = tokenPair.AccessToken
-			});
+			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
 		}
 		catch (ArgumentException ex)
 		{

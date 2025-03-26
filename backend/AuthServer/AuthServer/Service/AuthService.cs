@@ -9,7 +9,7 @@ public class AuthService(AccountRepository accountRepository, JwtService jwtServ
 	private readonly AccountRepository _accountRepository = accountRepository;
 	private readonly JwtService _jwtService = jwtService;
 
-	public TokenPairDto Login(LoginPayloadDto loginPayload)
+	public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload)
 	{
 		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result;
 		if (account == null)
@@ -24,6 +24,11 @@ public class AuthService(AccountRepository accountRepository, JwtService jwtServ
 		var accessToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay);
 		var refreshToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay);
 
+		account.RefreshToken = refreshToken;
+		_accountRepository.UpdateAsync(account).Wait();
+
+		SetRefreshTokenCookie(response, refreshToken);
+
 		return new TokenPairDto
 		{
 			AccessToken = accessToken,
@@ -31,7 +36,7 @@ public class AuthService(AccountRepository accountRepository, JwtService jwtServ
 		};
 	}
 
-	public void SetRefreshTokenCookie(HttpResponse response, string token)
+	private static void SetRefreshTokenCookie(HttpResponse response, string token)
 	{
 		response.Cookies.Append("refreshToken", token, new CookieOptions
 		{

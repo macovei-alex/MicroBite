@@ -28,8 +28,7 @@ public class AuthController(
 
 		try
 		{
-			var tokenPair = _authService.Login(loginPayload);
-			_authService.SetRefreshTokenCookie(Response, tokenPair.RefreshToken);
+			var tokenPair = _authService.Login(HttpContext.Response, loginPayload);
 			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
 		}
 		catch (ArgumentException ex)
@@ -51,22 +50,31 @@ public class AuthController(
 
 		try
 		{
-			// find the account associated with the refresh token
-			// if no account is found, the token is invalid
+			var account = _accountRepository.GetByRefreshToken(refreshToken);
+			if (account == null)
+			{
+				return BadRequest("No account found for the provided refresh token");
+			}
 
 			var refreshClaims = _jwtService.ExtractClaims(refreshToken);
-			if (!_jwtService.VerifyAppClaims(refreshClaims, out string? failureMessage))
+			if (!_jwtService.TryVerifyAppClaims(refreshClaims, out string? failureMessage))
 			{
 				Console.WriteLine(failureMessage!);
 				return BadRequest(failureMessage!);
 			}
 
+			// may be unnecessary
+			if (account.Id != Guid.Parse(refreshClaims.Subject())
+				|| account.Role.Name != refreshClaims.Role())
+			{
+				return Unauthorized("Refresh token does not match account");
+			}
+			// \
+
 			return Ok(new AccessTokenDto
 			{
 				AccessToken = _jwtService.CreateToken(
-					Guid.Parse(refreshClaims.Subject()),
-					refreshClaims.Role(),
-					refreshClaims.Audience(),
+					account.Id, account.Role.Name, refreshClaims.Audience(),
 					JwtService.DefaultAccessTokenExpirationDelay
 				)
 			});
@@ -105,8 +113,8 @@ public class AuthController(
 			var accessClaims = _jwtService.ExtractClaims(accessToken!);
 			var refreshClaims = _jwtService.ExtractClaims(refreshToken!);
 
-			bool verifyAccessClaimsResult = _jwtService.VerifyAppClaims(accessClaims, out string? accessFailureMessage);
-			bool verifyRefresgClaimsResult = _jwtService.VerifyAppClaims(refreshClaims, out string? refreshFailureMessage);
+			bool verifyAccessClaimsResult = _jwtService.TryVerifyAppClaims(accessClaims, out string? accessFailureMessage);
+			bool verifyRefresgClaimsResult = _jwtService.TryVerifyAppClaims(refreshClaims, out string? refreshFailureMessage);
 
 			if (!verifyAccessClaimsResult || !verifyRefresgClaimsResult)
 			{

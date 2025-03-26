@@ -85,7 +85,7 @@ public class JwtService
 		return principal!;
 	}
 
-	public bool VerifyAppClaims(ClaimsPrincipal claimsPrincipal, out string? failureMessage)
+	public bool TryVerifyAppClaims(ClaimsPrincipal claimsPrincipal, out string? failureMessage)
 	{
 		using var scope = _serviceProvider.CreateScope();
 		var roleRepository = scope.ServiceProvider.GetRequiredService<RoleRepository>();

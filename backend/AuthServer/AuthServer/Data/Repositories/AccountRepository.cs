@@ -31,6 +31,14 @@ public class AccountRepository(AppDbContext context)
 			.FirstOrDefaultAsync(a => a.Email == email || a.PhoneNumber == phoneNumber);
 	}
 
+	public Account? GetByRefreshToken(string refreshToken)
+	{
+		return _context.Accounts
+			.Include(a => a.Role)
+			.Include(a => a.AuthenticationRecovery)
+			.FirstOrDefault(a => a.RefreshToken == refreshToken);
+	}
+
 	public async Task<List<Account>> GetAllAsync()
 	{
 		return await _context.Accounts
