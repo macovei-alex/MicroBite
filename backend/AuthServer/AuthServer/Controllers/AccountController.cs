@@ -5,22 +5,28 @@ using Isopoh.Cryptography.Argon2;
 using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
 using AuthServer.Data;
+using AuthServer.Service;
 
 namespace AuthServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(AccountRepository repository, RoleRepository roleRepository) : ControllerBase
+public class AccountController(
+	AccountRepository repository,
+	RoleRepository roleRepository,
+	AuthService authService,
+	JwtService jwtService
+) : ControllerBase
 {
 	private readonly AccountRepository _repository = repository;
 	private readonly RoleRepository _roleRepository = roleRepository;
+	private readonly AuthService _authService = authService;
+	private readonly JwtService _jwtService = jwtService;
 
 	[HttpGet("{id}")]
 	[Authorize]
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
-		// example for accessing and using decoded jwt claims of a request access token
-
 		Console.WriteLine(HttpContext.User.Claims.Count());
 		foreach (var claim in HttpContext.User.Claims)
 		{
@@ -39,6 +45,35 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	public async Task<ActionResult<List<Account>>> GetAll()
 	{
 		return Ok(await _repository.GetAllAsync());
+	}
+
+	[HttpPut("change-password")]
+	public async Task<ActionResult<AccessTokenDto>> ChangePassword([FromBody] PasswordChangePayloadDto passwordChangePayload)
+	{
+		var account = await _repository.GetByEmailAsync(passwordChangePayload.Email);
+		if (account == null)
+		{
+			return BadRequest("Incorrect email address");
+		}
+
+		try
+		{
+			var tokenPair = _authService.Login(new LoginPayloadDto
+			{
+				Email = passwordChangePayload.Email,
+				Password = passwordChangePayload.NewPassword,
+				ClientId = passwordChangePayload.ClientId
+			});
+			_authService.SetRefreshTokenCookie(Response, tokenPair.RefreshToken);
+			return Ok(new AccessTokenDto
+			{
+				AccessToken = tokenPair.AccessToken
+			});
+		}
+		catch (ArgumentException ex)
+		{
+			return BadRequest(ex.Message);
+		}
 	}
 
 	[HttpPost]

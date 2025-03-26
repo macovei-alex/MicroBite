@@ -2,52 +2,39 @@
 using AuthServer.Data.Dto;
 using AuthServer.Data.Repositories;
 using AuthServer.Service;
-using Isopoh.Cryptography.Argon2;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController
-(
+public class AuthController(
 	RequestLogger requestLogger,
 	JwtService jwtService,
-	AccountRepository accountRepository
+	AccountRepository accountRepository,
+	AuthService authService
 ) : ControllerBase
 {
 	private readonly RequestLogger _requestLogger = requestLogger;
 	private readonly JwtService _jwtService = jwtService;
 	private readonly AccountRepository _accountRepository = accountRepository;
+	private readonly AuthService _authService = authService;
 
 	[HttpPost("login")]
 	public async Task<ActionResult<AccessTokenDto>> Login([FromBody] LoginPayloadDto loginPayload)
 	{
 		await _requestLogger.PrintRequest(nameof(Login), Request);
 
-		var account = await _accountRepository.GetByEmailOrPhoneAsync(loginPayload.Email, string.Empty);
-		if (account == null || !Argon2.Verify(account.PasswordHash, loginPayload.Password))
+		try
 		{
-			return BadRequest("Incorrect username or password");
+			var tokenPair = _authService.Login(loginPayload);
+			_authService.SetRefreshTokenCookie(Response, tokenPair.RefreshToken);
+			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
 		}
-		if (!_jwtService.Audiences.Contains(loginPayload.ClientId))
+		catch (ArgumentException ex)
 		{
-			return BadRequest("Invalid clientId: no matching audience found");
+			return BadRequest(ex.Message);
 		}
-
-		var accessToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay);
-		var refreshToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay);
-
-		Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
-		{
-			HttpOnly = true,
-			Secure = false,
-			SameSite = SameSiteMode.Strict,
-			Expires = DateTime.UtcNow + JwtService.DefaultRefreshTokenExpirationDelay - TimeSpan.FromSeconds(30)
-		});
-
-		return Ok(new AccessTokenDto { AccessToken = accessToken });
 	}
 
 	[HttpPost("refresh")]

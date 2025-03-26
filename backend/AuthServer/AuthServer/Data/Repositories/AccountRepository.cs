@@ -15,10 +15,19 @@ public class AccountRepository(AppDbContext context)
 			.FirstOrDefaultAsync(a => a.Id == id);
 	}
 
+	public async Task<Account?> GetByEmailAsync(string email)
+	{
+		return await _context.Accounts
+			.Include(a => a.Role)
+			.Include(a => a.AuthenticationRecovery)
+			.FirstOrDefaultAsync(a => a.Email == email);
+	}
+
 	public async Task<Account?> GetByEmailOrPhoneAsync(string email, string phoneNumber)
 	{
 		return await _context.Accounts
 			.Include(a => a.Role)
+			.Include(a => a.AuthenticationRecovery)
 			.FirstOrDefaultAsync(a => a.Email == email || a.PhoneNumber == phoneNumber);
 	}
 

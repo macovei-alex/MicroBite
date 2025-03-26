@@ -34,7 +34,6 @@ public class JwtAuthenticationService(
 		public required string Algorithm { get; set; }
 	}
 
-
 	protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 	{
 		var authorizationHeader = Request.Headers.Authorization.FirstOrDefault();

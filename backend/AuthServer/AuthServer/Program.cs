@@ -30,6 +30,7 @@ builder.Services.AddScoped<RoleRepository>();
 
 builder.Services.AddSingleton<RequestLogger>();
 builder.Services.AddSingleton<JwtService>();
+builder.Services.AddScoped<AuthService>();
 
 builder.Services.AddCors(options =>
 {
