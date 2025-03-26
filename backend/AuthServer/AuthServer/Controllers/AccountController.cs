@@ -6,6 +6,7 @@ using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
 using AuthServer.Data;
 using AuthServer.Service;
+using AuthServer.Utils;
 
 namespace AuthServer.Controllers;
 
@@ -27,13 +28,26 @@ public class AccountController(
 	[Authorize]
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
+		// example of access token usage
+
 		Console.WriteLine(HttpContext.User.Claims.Count());
 		foreach (var claim in HttpContext.User.Claims)
 		{
 			Console.WriteLine($"{claim.Type} {claim.Value}");
 		}
-		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
-		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
+
+		if (!_jwtService.VerifyAppClaims(HttpContext.User, out string? failureMessage))
+		{
+			Console.WriteLine(failureMessage!);
+			return BadRequest(failureMessage!);
+		}
+		else
+		{
+			// Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+			Console.WriteLine(HttpContext.User.Subject());
+			// Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
+			Console.WriteLine(HttpContext.User.Role());
+		}
 
 		//
 

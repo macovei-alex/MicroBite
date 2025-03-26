@@ -2,6 +2,7 @@
 using AuthServer.Data.Dto;
 using AuthServer.Data.Repositories;
 using AuthServer.Service;
+using AuthServer.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.Controllers;
@@ -54,13 +55,18 @@ public class AuthController(
 			// if no account is found, the token is invalid
 
 			var refreshClaims = _jwtService.ExtractClaims(refreshToken);
+			if (!_jwtService.VerifyAppClaims(refreshClaims, out string? failureMessage))
+			{
+				Console.WriteLine(failureMessage!);
+				return BadRequest(failureMessage!);
+			}
 
 			return Ok(new AccessTokenDto
 			{
 				AccessToken = _jwtService.CreateToken(
-					Guid.Parse(refreshClaims.FindFirst(JwtAppValidClaims.Subject)!.Value),
-					refreshClaims.FindFirst(JwtAppValidClaims.Role)!.Value,
-					refreshClaims.FindFirst(JwtAppValidClaims.Audience)!.Value,
+					Guid.Parse(refreshClaims.Subject()),
+					refreshClaims.Role(),
+					refreshClaims.Audience(),
 					JwtService.DefaultAccessTokenExpirationDelay
 				)
 			});
@@ -72,10 +78,10 @@ public class AuthController(
 		}
 	}
 
-	[HttpGet("check-tokens")]
-	public async Task<ActionResult<TokenPairDto>> CheckCookies()
+	[HttpGet("jwt-inspect")]
+	public async Task<ActionResult<TokenPairDto>> InspectTokens()
 	{
-		await _requestLogger.PrintRequest(nameof(CheckCookies), Request);
+		await _requestLogger.PrintRequest(nameof(InspectTokens), Request);
 
 		var refreshToken = Request.Cookies["refreshToken"];
 		var accessToken = Request.Headers.Authorization
@@ -92,6 +98,27 @@ public class AuthController(
 		if (message != string.Empty)
 		{
 			return BadRequest(message[..^2]);
+		}
+
+		try
+		{
+			var accessClaims = _jwtService.ExtractClaims(accessToken!);
+			var refreshClaims = _jwtService.ExtractClaims(refreshToken!);
+
+			bool verifyAccessClaimsResult = _jwtService.VerifyAppClaims(accessClaims, out string? accessFailureMessage);
+			bool verifyRefresgClaimsResult = _jwtService.VerifyAppClaims(refreshClaims, out string? refreshFailureMessage);
+
+			if (!verifyAccessClaimsResult || !verifyRefresgClaimsResult)
+			{
+				return BadRequest(
+					"Access claims failure: " + (accessFailureMessage ?? string.Empty) + "; " +
+					"Refresh claims failure: " + (refreshFailureMessage ?? string.Empty) + ";"
+				);
+			}
+		}
+		catch (Exception ex)
+		{
+			return BadRequest(ex.Message);
 		}
 
 		return Ok(new TokenPairDto

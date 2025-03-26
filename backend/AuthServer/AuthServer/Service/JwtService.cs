@@ -1,4 +1,6 @@
 ﻿using AuthServer.Data;
+using AuthServer.Data.Repositories;
+using AuthServer.Utils;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,15 +14,15 @@ public class JwtService
 	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(30);
 
 	private readonly JwtSecurityTokenHandler _jwtHandler;
+	private readonly IServiceProvider _serviceProvider;
 
 	private readonly string _issuer;
 	public string[] Audiences { get; init; }
-
 	public SigningCredentials SigningCredentials { get; init; }
 	public SecurityKey EncryptKey { get; init; }
 	public SecurityKey DecryptKey { get; init; }
 
-	public JwtService(IConfiguration config)
+	public JwtService(IConfiguration config, IServiceProvider serviceProvider)
 	{
 		var encryptRsa = RSA.Create();
 		encryptRsa.ImportFromPem(File.ReadAllText(config["JwtSettings:PrivateKeyPath"]!));
@@ -44,6 +46,7 @@ public class JwtService
 
 		_issuer = config["JwtSettings:Issuer"]!;
 		Audiences = config.GetSection("JwtSettings:Audiences").Get<string[]>()!;
+		_serviceProvider = serviceProvider;
 	}
 
 	public string CreateToken(Guid accountId, string role, string audience, TimeSpan expirationDelay)
@@ -80,5 +83,31 @@ public class JwtService
 			ValidateLifetime = true
 		}, out _);
 		return principal!;
+	}
+
+	public bool VerifyAppClaims(ClaimsPrincipal claimsPrincipal, out string? failureMessage)
+	{
+		using var scope = _serviceProvider.CreateScope();
+		var roleRepository = scope.ServiceProvider.GetRequiredService<RoleRepository>();
+		failureMessage =
+		(
+			(string.IsNullOrEmpty(claimsPrincipal.Subject())
+				? "Subject claim missing; " : string.Empty) +
+			(claimsPrincipal.Subject() != null && !Guid.TryParse(claimsPrincipal.Subject(), out _)
+				? "Subject claim is not a valid GUID; " : string.Empty) +
+			(string.IsNullOrEmpty(claimsPrincipal.Role())
+				? "Role claim missing; " : string.Empty) +
+			(claimsPrincipal.Role() != null && !roleRepository.Exists(claimsPrincipal.Role())
+				? "Role claim is not role; " : string.Empty)
+		);
+
+		if (failureMessage != string.Empty)
+		{
+			failureMessage = failureMessage[..^2];
+			return false;
+		}
+
+		failureMessage = null;
+		return true;
 	}
 }
