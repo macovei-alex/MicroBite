@@ -18,19 +18,18 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         {},
         { withCredentials: true }
       );
-      console.log("Access token received: ", response.data.accessToken);
-      setAccessToken(() => response.data.accessToken);
+      setAccessToken(response.data.accessToken);
     } catch (error) {
       console.warn("Access token refresh failed: ", error);
-      setAccessToken(() => null);
+      setAccessToken(null);
     }
   }, [setAccessToken]);
 
   useEffect(() => {
     (async function () {
-      setIsAuthenticating(() => true);
+      setIsAuthenticating(true);
       await tryRefreshAccessToken();
-      setIsAuthenticating(() => false);
+      setIsAuthenticating(false);
     })();
   }, [setIsAuthenticating, tryRefreshAccessToken]);
 
@@ -39,7 +38,6 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       config.headers.Authorization = accessToken
         ? `Bearer ${accessToken}`
         : config.headers.Authorization;
-      console.log("Request headers: ", config.headers);
       return config;
     });
 
@@ -72,21 +70,21 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const login = useCallback(
     async (email: string, password: string) => {
-      setIsAuthenticating(() => true);
+      setIsAuthenticating(true);
       try {
         const response = await axios.post(
           `${config.AUTH_BASE_URL}/login`,
           { email, password, clientId: config.CLIENT_ID },
           { withCredentials: true }
         );
-        setAccessToken(() => response.data.accessToken);
+        setAccessToken(response.data.accessToken);
         return null;
       } catch (error) {
         console.error(error);
         const message = (error as AxiosError).response?.data;
         return typeof message === "string" ? message : "An unknown error occurred";
       } finally {
-        setIsAuthenticating(() => false);
+        setIsAuthenticating(false);
       }
     },
     [setAccessToken, setIsAuthenticating]

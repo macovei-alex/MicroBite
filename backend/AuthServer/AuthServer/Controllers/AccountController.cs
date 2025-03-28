@@ -96,4 +96,73 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	{
 		return await _repository.DeleteAsync(id) ? NoContent() : NotFound();
 	}
+
+	[HttpGet("profile")]
+	[Authorize]
+	public async Task<ActionResult<AccountDto>> GetProfile()
+	{
+		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+
+		var account = await _repository.GetByIdAsync(userId);
+		if (account == null)
+		{
+			return NotFound("User not found");
+		}
+
+		var accountDto = new AccountDto
+		{
+			FirstName = account.FirstName,
+			LastName = account.LastName,
+			Email = account.Email,
+			PhoneNumber = account.PhoneNumber,
+			SecurityQuestion = account.AuthenticationRecovery?.SecurityQuestion,
+		};
+
+		return Ok(accountDto);
+	}
+
+
+	[HttpPut("profile")]
+	[Authorize]
+	public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateDto model)
+	{
+		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+
+		var user = await _repository.GetByIdAsync(userId);
+		if (user == null) return NotFound("User not found");
+
+		user.Email = model.Email;
+		user.FirstName = model.FirstName;
+		user.LastName = model.LastName;
+		user.PhoneNumber = model.PhoneNumber;
+
+		if (!string.IsNullOrWhiteSpace(model.SecurityQuestion) && !string.IsNullOrWhiteSpace(model.SecurityAnswer))
+		{
+			if (user.AuthenticationRecovery == null)
+			{
+				user.AuthenticationRecovery = new AuthenticationRecovery
+				{
+					SecurityQuestion = model.SecurityQuestion,
+					SecurityAnswerHash = Argon2.Hash(model.SecurityAnswer)
+				};
+			}
+			else
+			{
+				user.AuthenticationRecovery.SecurityQuestion = model.SecurityQuestion;
+				user.AuthenticationRecovery.SecurityAnswerHash = Argon2.Hash(model.SecurityAnswer);
+			}
+		}
+		await _repository.UpdateAsync(user);
+
+		var updatedUserDto = new AccountDto
+		{
+			FirstName = user.FirstName,
+			LastName = user.LastName,
+			Email = user.Email,
+			PhoneNumber = user.PhoneNumber,
+			SecurityQuestion = user.AuthenticationRecovery?.SecurityQuestion
+		};
+
+		return Ok(updatedUserDto);
+	}
 }
