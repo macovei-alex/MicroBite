@@ -5,7 +5,7 @@ using Isopoh.Cryptography.Argon2;
 using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
 using AuthServer.Service;
-using AuthServer.Utils;
+using AuthServer.Data.Security;
 
 namespace AuthServer.Controllers;
 
@@ -35,38 +35,6 @@ public class AccountController(
 	public async Task<ActionResult<List<Account>>> GetAll()
 	{
 		return Ok(await _repository.GetAllAsync());
-	}
-
-	[HttpPost("change-password")]
-	public async Task<ActionResult<AccessTokenDto>> ChangePassword([FromBody] PasswordChangePayloadDto passwordChangePayload)
-	{
-		var account = await _repository.GetByEmailAsync(passwordChangePayload.Email);
-		if (account == null)
-		{
-			return BadRequest("Incorrect email address");
-		}
-		if (!Argon2.Verify(account.AuthenticationRecovery!.SecurityAnswerHash, passwordChangePayload.SecurityAnswer))
-		{
-			return BadRequest("Incorrect security answer");
-		}
-
-		account.PasswordHash = Argon2.Hash(passwordChangePayload.NewPassword);
-		_repository.UpdateAsync(account).Wait();
-
-		try
-		{
-			var tokenPair = _authService.Login(Response, new LoginPayloadDto
-			{
-				Email = passwordChangePayload.Email,
-				Password = passwordChangePayload.NewPassword,
-				ClientId = passwordChangePayload.ClientId
-			});
-			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
-		}
-		catch (ArgumentException ex)
-		{
-			return BadRequest(ex.Message);
-		}
 	}
 
 	[HttpPost]
@@ -100,6 +68,7 @@ public class AccountController(
 			PhoneNumber = accountDto.PhoneNumber,
 			Role = role,
 			PasswordHash = passwordHash,
+			RefreshToken = null,
 			AuthenticationRecovery = new AuthenticationRecovery
 			{
 				SecurityQuestion = accountDto.RecoveryQuestion,
@@ -129,9 +98,9 @@ public class AccountController(
 	[Authorize]
 	public async Task<ActionResult<AccountDto>> GetProfile()
 	{
-		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+		var jwtUser = JwtUser.GetFromPrincipal(User);
 
-		var account = await _repository.GetByIdAsync(userId);
+		var account = await _repository.GetByIdAsync(jwtUser.Id);
 		if (account == null)
 		{
 			return NotFound("User not found");
@@ -154,9 +123,9 @@ public class AccountController(
 	[Authorize]
 	public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateDto model)
 	{
-		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+		var jwtUser = JwtUser.GetFromPrincipal(User);
 
-		var user = await _repository.GetByIdAsync(userId);
+		var user = await _repository.GetByIdAsync(jwtUser.Id);
 		if (user == null) return NotFound("User not found");
 
 		user.Email = model.Email;
@@ -192,5 +161,54 @@ public class AccountController(
 		};
 
 		return Ok(updatedUserDto);
+	}
+
+	[HttpPost("password-reset")]
+	public async Task<ActionResult<AccessTokenDto>> PasswordReset([FromBody] PasswordChangePayloadDto passwordChangePayload)
+	{
+		var account = await _repository.GetByEmailAsync(passwordChangePayload.Email);
+		if (account == null)
+		{
+			return BadRequest("Incorrect email address");
+		}
+		if (!Argon2.Verify(account.AuthenticationRecovery!.SecurityAnswerHash, passwordChangePayload.SecurityAnswer))
+		{
+			return BadRequest("Incorrect security answer");
+		}
+
+		account.PasswordHash = Argon2.Hash(passwordChangePayload.NewPassword);
+		_repository.UpdateAsync(account).Wait();
+
+		try
+		{
+			var tokenPair = _authService.Login(Response, new LoginPayloadDto
+			{
+				Email = passwordChangePayload.Email,
+				Password = passwordChangePayload.NewPassword,
+				ClientId = passwordChangePayload.ClientId
+			});
+			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
+		}
+		catch (ArgumentException ex)
+		{
+			return BadRequest(ex.Message);
+		}
+	}
+
+	[HttpGet("security-question")]
+	public async Task<IActionResult> GetSecurityQuestion([FromQuery] string email)
+	{
+		var user = await _repository.GetByEmailAsync(email);
+		if (user == null)
+		{
+			return NotFound("User not found");
+		}
+
+		if (user.AuthenticationRecovery?.SecurityQuestion == null)
+		{
+			return NoContent();
+		}
+
+		return Ok(new { user.AuthenticationRecovery!.SecurityQuestion });
 	}
 }

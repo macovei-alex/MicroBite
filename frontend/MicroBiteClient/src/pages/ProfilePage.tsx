@@ -6,9 +6,11 @@ import ProfileEdit from "../profile/components/ProfileEdit";
 import { AccountInformation } from "../profile/types/AccountInformation";
 import ProfileIcon from "../profile/components/ProfileIcon";
 import ProfileField from "../profile/components/ProfileField";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfilePage() {
   const { accessToken } = useAuthContext();
+  const navigate = useNavigate();
   const [user, setUser] = useState<AccountInformation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState<{
@@ -24,10 +26,9 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      setIsLoading(true);
+      clearMessage();
       try {
-        setIsLoading(true);
-        clearMessage();
-
         const response = await api.get<AccountInformation>("/account/profile");
         setUser({ ...response.data, securityAnswer: "" });
       } catch (err) {
@@ -46,6 +47,10 @@ export default function ProfilePage() {
     clearMessage();
   }, []);
 
+  const handleChangePasswordClick = useCallback(() => {
+    navigate("/password-reset");
+  }, [navigate]);
+
   const handleCancel = useCallback(() => {
     setIsEditing(false);
     clearMessage();
@@ -56,8 +61,7 @@ export default function ProfilePage() {
 
     try {
       setIsSaving(true);
-      const response = await api.put("/account/profile", user);
-      console.log(response.status, response);
+      await api.put("/account/profile", user);
       setUser(user);
       setMessage({ type: "success", text: "Profile updated successfully!" });
       setIsEditing(false);
@@ -106,12 +110,20 @@ export default function ProfilePage() {
                   <ProfileField label="Phone" value={user.phoneNumber} />
                   <ProfileField label="Security Question" value={user.securityQuestion || ""} />
                 </div>
-                <button
-                  onClick={handleEditClick}
-                  className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 transition duration-300 font-medium"
-                >
-                  Edit Profile
-                </button>
+                <div className="flex flex-row gap-4 pt-4">
+                  <button
+                    onClick={handleEditClick}
+                    className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300 font-medium enabled:cursor-pointer"
+                  >
+                    Edit Profile
+                  </button>
+                  <button
+                    onClick={handleChangePasswordClick}
+                    className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300 font-medium enabled:cursor-pointer"
+                  >
+                    Change Password
+                  </button>
+                </div>
               </>
             ) : (
               <ProfileEdit

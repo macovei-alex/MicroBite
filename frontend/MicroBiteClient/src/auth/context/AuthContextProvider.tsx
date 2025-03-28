@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { api, config } from "../../api";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { AuthContext } from "./AuthContext";
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
@@ -18,6 +18,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         {},
         { withCredentials: true }
       );
+      console.log("Access token refresh successfully");
       setAccessToken(response.data.accessToken);
     } catch (error) {
       console.warn("Access token refresh failed: ", error);
@@ -51,7 +52,10 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (
+          error.response?.status === axios.HttpStatusCode.Unauthorized &&
+          !originalRequest._retry
+        ) {
           originalRequest._retry = true;
           await tryRefreshAccessToken();
           if (isAuthenticated()) {
@@ -59,7 +63,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
             return api(originalRequest);
           }
         }
-        return error;
+        return Promise.reject(error);
       }
     );
 
@@ -81,8 +85,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         return null;
       } catch (error) {
         console.error(error);
-        const message = (error as AxiosError).response?.data;
-        return typeof message === "string" ? message : "An unknown error occurred";
+        if (axios.isAxiosError(error)) {
+          const message = error.response?.data;
+          return typeof message === "string" ? message : "An unknown error occurred";
+        }
+        return "An unknown error occurred";
       } finally {
         setIsAuthenticating(false);
       }

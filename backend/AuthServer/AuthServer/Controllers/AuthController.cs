@@ -5,6 +5,7 @@ using AuthServer.Service;
 using AuthServer.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace AuthServer.Controllers;
 
@@ -120,16 +121,25 @@ public class AuthController(
 				return BadRequest($"Refresh claims failure ( {failureMessage} )");
 			}
 
-			string response = "Access token claims:\n" + User.Claims
+			string accessTokenClaims = "Access token claims:\n" + User.Claims
 					.Select((claim) => $"{claim.Type}: {claim.Value}")
-					.Aggregate((claim1, claim2) => $"{claim1}\n{claim2}")
-				+ "\n\nRefresh token claims:\n" + refreshClaims.Claims
+					.Aggregate((claim1, claim2) => $"{claim1}; {claim2}");
+
+			string refreshTokenClaims = "Refresh token claims:\n" + refreshClaims.Claims
 					.Select((claim) => $"{claim.Type}: {claim.Value}")
-					.Aggregate((claim1, claim2) => $"{claim1}\n{claim2}");
+					.Aggregate((claim1, claim2) => $"{claim1}; {claim2}");
 
-			Console.WriteLine(response);
+			Console.WriteLine("Access token claims:");
+			Console.WriteLine(accessTokenClaims);
+			Console.WriteLine("Refresh token claims:");
+			Console.WriteLine(refreshTokenClaims);
 
-			return Ok(response);
+			return Ok(new
+			{
+				RefreshToken = refreshToken,
+				AccessTokenClaims = accessTokenClaims,
+				RefreshTokenClaims = refreshTokenClaims
+			});
 
 		}
 		catch (Exception ex)

@@ -14,6 +14,9 @@ export default function HomePage() {
         <Link to="/profile" className="text-blue-500 text-3xl">
           /profile
         </Link>
+        <Link to="/password-reset" className="text-blue-500 text-3xl">
+          /password-reset
+        </Link>
       </nav>
     </>
   );
