@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
-import { api, config } from "../../api";
-import axios from "axios";
+import { authApi, resApi, config } from "../../api";
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { AuthContext } from "./AuthContext";
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
@@ -13,11 +13,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const tryRefreshAccessToken = useCallback(async () => {
     try {
-      const response = await axios.post(
-        `${config.AUTH_BASE_URL}/refresh`,
-        {},
-        { withCredentials: true }
-      );
+      const response = await authApi.post("/refresh", {}, { withCredentials: true });
       console.log("Access token refresh successfully");
       setAccessToken(response.data.accessToken);
     } catch (error) {
@@ -35,28 +31,35 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }, [setIsAuthenticating, tryRefreshAccessToken]);
 
   useLayoutEffect(() => {
-    const authInterceptor = api.interceptors.request.use((config) => {
+    function accessTokenInterceptor(config: InternalAxiosRequestConfig) {
       config.headers.Authorization = accessToken
         ? `Bearer ${accessToken}`
         : config.headers.Authorization;
       return config;
-    });
+    }
+
+    const authInterceptorId = authApi.interceptors.request.use(accessTokenInterceptor);
+    const resInterceptorId = resApi.interceptors.request.use(accessTokenInterceptor);
 
     return () => {
-      api.interceptors.request.eject(authInterceptor);
+      authApi.interceptors.request.eject(authInterceptorId);
+      resApi.interceptors.request.eject(resInterceptorId);
     };
   }, [accessToken]);
 
   useLayoutEffect(() => {
-    const authResponseInterceptor = api.interceptors.response.use(
-      (response) => response,
-      async (error) => {
+    function responseInterceptorFactory(api: AxiosInstance) {
+      return async (error: AxiosError) => {
+        const fullUrl = (error.config?.baseURL ?? "") + (error.config?.url ?? "");
+        if (!error.config || fullUrl.includes(config.NON_REFRESHING_ROUTES[0])) {
+          return Promise.reject(error);
+        }
         const originalRequest = error.config;
         if (
           error.response?.status === axios.HttpStatusCode.Unauthorized &&
-          !originalRequest._retry
+          !(originalRequest as any)._retry
         ) {
-          originalRequest._retry = true;
+          (originalRequest as any)._retry = true;
           await tryRefreshAccessToken();
           if (isAuthenticated()) {
             originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -64,11 +67,21 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
           }
         }
         return Promise.reject(error);
-      }
+      };
+    }
+
+    const authResponseInterceptorId = authApi.interceptors.response.use(
+      (response) => response,
+      responseInterceptorFactory(authApi)
+    );
+    const resResponseInterceptorId = resApi.interceptors.response.use(
+      (response) => response,
+      responseInterceptorFactory(resApi)
     );
 
     return () => {
-      api.interceptors.response.eject(authResponseInterceptor);
+      authApi.interceptors.response.eject(authResponseInterceptorId);
+      resApi.interceptors.response.eject(resResponseInterceptorId);
     };
   }, [accessToken, setAccessToken, isAuthenticated, tryRefreshAccessToken]);
 
@@ -76,8 +89,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string) => {
       setIsAuthenticating(true);
       try {
-        const response = await axios.post(
-          `${config.AUTH_BASE_URL}/login`,
+        const response = await authApi.post(
+          "/login",
           { email, password, clientId: config.CLIENT_ID },
           { withCredentials: true }
         );

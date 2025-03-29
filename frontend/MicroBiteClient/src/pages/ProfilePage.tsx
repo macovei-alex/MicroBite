@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuthContext } from "../auth/context/useAuthContext";
-import { api } from "../api";
+import { authApi } from "../api";
 import ProfileSkeletonLoader from "../profile/components/ProfileSkeletonLoader";
 import ProfileEdit from "../profile/components/ProfileEdit";
 import { AccountInformation } from "../profile/types/AccountInformation";
@@ -29,7 +29,7 @@ export default function ProfilePage() {
       setIsLoading(true);
       clearMessage();
       try {
-        const response = await api.get<AccountInformation>("/account/profile");
+        const response = await authApi.get<AccountInformation>("/Account/profile");
         setUser({ ...response.data, securityAnswer: "" });
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -61,7 +61,7 @@ export default function ProfilePage() {
 
     try {
       setIsSaving(true);
-      await api.put("/account/profile", user);
+      await authApi.put("/Account/profile", user);
       setUser(user);
       setMessage({ type: "success", text: "Profile updated successfully!" });
       setIsEditing(false);

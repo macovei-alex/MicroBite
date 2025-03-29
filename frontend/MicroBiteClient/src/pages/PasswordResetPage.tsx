@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { PasswordResetData } from "../password-reset/types/PasswordResetData";
-import { api, config } from "../api";
+import { authApi, config } from "../api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -35,7 +35,7 @@ export default function PasswordResetPage() {
 
       setIsLoading(true);
       try {
-        const response = await api.post(
+        const response = await authApi.post(
           "/Account/password-reset",
           {
             ...userData,
@@ -76,7 +76,7 @@ export default function PasswordResetPage() {
 
     try {
       setIsLoading(true);
-      const response = await api.get("/Account/security-question", {
+      const response = await axios.get(`${config.AUTH_BASE_URL}/Account/security-question`, {
         params: { email: userData.email },
       });
       setSecurityQuestion(
