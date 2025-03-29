@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ResourceServer.Data.Models;
+﻿using ResourceServer.Data.Models;
 
 namespace ResourceServer.Data.Repositories;
 
@@ -9,7 +8,7 @@ public class OrderStatusRepository(AppDbContext context)
 
     public IEnumerable<OrderStatus> GetAll()
     {
-        return _context.OrderStatuses.ToList();
+        return [.. _context.OrderStatuses];
     }
 
     public OrderStatus? GetById(int id)

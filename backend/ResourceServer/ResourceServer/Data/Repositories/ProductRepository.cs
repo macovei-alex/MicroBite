@@ -9,9 +9,7 @@ public class ProductRepository(AppDbContext context)
 
     public List<Product> GetAll()
     {
-        return _context.Products
-            .Include(p => p.Category)
-            .ToList();
+        return [.. _context.Products.Include(p => p.Category)];
     }
 
     public Product? GetById(int id)
@@ -23,9 +21,7 @@ public class ProductRepository(AppDbContext context)
 
     public Product Create(Product product)
     {
-        var category = _context.ProductCategories.Find(product.Category.Id);
-        if (category == null) throw new ArgumentException("Categoria nu există");
-
+        var category = _context.ProductCategories.Find(product.Category.Id) ?? throw new ArgumentException("Categoria nu există");
         product.Category = category;
         _context.Products.Add(product);
         _context.SaveChanges();

@@ -10,11 +10,10 @@ public class OrderItemRepository(AppDbContext context)
 
     public IEnumerable<OrderItem> GetAll()
     {
-        return _context.OrderItems
+        return [.. _context.OrderItems
             .Include(oi => oi.Product)
             .ThenInclude(oi=> oi.Category)
-            .Include(oi => oi.Order)
-            .ToList();
+            .Include(oi => oi.Order)];
     }
 
     public OrderItem? GetById(int id)

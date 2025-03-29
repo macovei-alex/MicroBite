@@ -9,12 +9,11 @@ public class OrderRepository(AppDbContext context)
 
     public IEnumerable<Order> GetAll()
     {
-        return _context.Orders
+        return [.. _context.Orders
             .Include(o => o.Status)
             .Include(o => o.OrderItems)
             .ThenInclude(oi => oi.Product)
-            .ThenInclude(oi => oi.Category)
-            .ToList();
+            .ThenInclude(oi => oi.Category)];
     }
 
     public Order? GetById(int id)
@@ -29,10 +28,7 @@ public class OrderRepository(AppDbContext context)
 
     public Order Add(Order order)
     {
-        var status = _context.OrderStatuses.Find(order.Status.Id);
-        if (status == null)
-            throw new ArgumentException("Statusul comenzii nu există");
-
+        var status = _context.OrderStatuses.Find(order.Status.Id) ?? throw new ArgumentException("Statusul comenzii nu există");
         order.Status = status;
 
         foreach (var item in order.OrderItems)
@@ -49,9 +45,7 @@ public class OrderRepository(AppDbContext context)
             {
                 var existingCategory = _context.ProductCategories.Find(item.Product.Category.Id);
                 if (existingCategory != null)
-                {
                     item.Product.Category = existingCategory;
-                }
             }
         }
 
@@ -71,10 +65,7 @@ public class OrderRepository(AppDbContext context)
 
         if (existingOrder == null) return false;
 
-        var status = _context.OrderStatuses.Find(updatedOrder.Status.Id);
-        if (status == null)
-            throw new ArgumentException("Statusul comenzii nu există");
-
+        var status = _context.OrderStatuses.Find(updatedOrder.Status.Id) ?? throw new ArgumentException("Statusul comenzii nu există");
         existingOrder.Status = status;
         existingOrder.AccountId = updatedOrder.AccountId;
         existingOrder.Address = updatedOrder.Address;
@@ -96,16 +87,11 @@ public class OrderRepository(AppDbContext context)
 
                 var existingProduct = _context.Products.Find(updatedItem.Product.Id);
                 if (existingProduct != null)
-                {
                     existingItem.Product.Price = updatedItem.Product.Price;
-                }
             }
             else
             {
-                var newProduct = _context.Products.Find(updatedItem.Product.Id);
-                if (newProduct == null)
-                    throw new ArgumentException($"Produsul cu ID {updatedItem.Product.Id} nu există");
-
+                var newProduct = _context.Products.Find(updatedItem.Product.Id) ?? throw new ArgumentException($"Produsul cu ID {updatedItem.Product.Id} nu există");
                 updatedItem.Product = newProduct;
                 existingOrder.OrderItems.Add(updatedItem);
             }
