@@ -38,6 +38,18 @@ builder.Services.AddAuthentication(options =>
 })
 .AddScheme<AuthenticationSchemeOptions, JwtAuthenticationService>("Jwt", options => { });
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAnyOrigin",
+		builder =>
+		{
+			builder.SetIsOriginAllowed(_ => true)
+				   .AllowAnyMethod()
+				   .AllowAnyHeader()
+				   .AllowCredentials();
+		});
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -55,6 +67,8 @@ if (app.Environment.IsDevelopment())
 
 	// toggle between launchUrl in launchSettings.json to change the default documentation UI
 }
+
+app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();
 
