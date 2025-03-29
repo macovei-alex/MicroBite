@@ -6,9 +6,9 @@ namespace ResourceServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(ProductRepository productRepository) : ControllerBase
+public class ProductController(IProductRepository productRepository) : ControllerBase
 {
-	private readonly ProductRepository _productRepository = productRepository;
+	private readonly IProductRepository _productRepository = productRepository;
 
 	[HttpGet]
 	public ActionResult<List<Product>> GetAll()

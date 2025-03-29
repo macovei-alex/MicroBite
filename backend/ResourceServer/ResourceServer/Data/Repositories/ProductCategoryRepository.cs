@@ -2,7 +2,7 @@
 
 namespace ResourceServer.Data.Repositories;
 
-public class ProductCategoryRepository(AppDbContext context)
+public class ProductCategoryRepository(AppDbContext context) : IProductCategoryRepository
 {
     private readonly AppDbContext _context = context;
 

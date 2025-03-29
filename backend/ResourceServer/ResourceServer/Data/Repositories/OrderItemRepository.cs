@@ -4,7 +4,7 @@ using ResourceServer.Data.Models;
 
 namespace ResourceServer.Data.Repositories;
 
-public class OrderItemRepository(AppDbContext context)
+public class OrderItemRepository(AppDbContext context) : IOrderItemRepository
 {
     private readonly AppDbContext _context = context;
 

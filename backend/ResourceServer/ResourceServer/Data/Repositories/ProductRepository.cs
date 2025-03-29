@@ -3,7 +3,7 @@ using ResourceServer.Data.Models;
 
 namespace ResourceServer.Data.Repositories;
 
-public class ProductRepository(AppDbContext context)
+public class ProductRepository(AppDbContext context) : IProductRepository
 {
     private readonly AppDbContext _context = context;
 

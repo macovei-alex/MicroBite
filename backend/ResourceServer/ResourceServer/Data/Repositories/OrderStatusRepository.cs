@@ -2,7 +2,7 @@
 
 namespace ResourceServer.Data.Repositories;
 
-public class OrderStatusRepository(AppDbContext context)
+public class OrderStatusRepository(AppDbContext context) : IOrderStatusRepository
 {
     private readonly AppDbContext _context = context;
 

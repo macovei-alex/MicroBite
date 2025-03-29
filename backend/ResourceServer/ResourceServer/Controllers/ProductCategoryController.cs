@@ -6,9 +6,9 @@ namespace ResourceServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductCategoryController(ProductCategoryRepository repository) : ControllerBase
+public class ProductCategoryController(IProductCategoryRepository repository) : ControllerBase
 {
-    private readonly ProductCategoryRepository _repository = repository;
+    private readonly IProductCategoryRepository _repository = repository;
 
     [HttpGet]
     public ActionResult<IEnumerable<ProductCategory>> GetAll()

@@ -3,7 +3,7 @@ using ResourceServer.Data.Models;
 
 namespace ResourceServer.Data.Repositories;
 
-public class OrderRepository(AppDbContext context)
+public class OrderRepository(AppDbContext context) : IOrderRepository
 {
     private readonly AppDbContext _context = context;
 
@@ -116,5 +116,4 @@ public class OrderRepository(AppDbContext context)
         _context.SaveChanges();
         return true;
     }
-
 }

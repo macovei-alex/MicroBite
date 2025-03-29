@@ -16,16 +16,16 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-	options.UseNpgsql(config.GetConnectionString("ResourceDb")!);
+    options.UseNpgsql(config.GetConnectionString("ResourceDb")!);
 });
 
 builder.Services.AddMemoryCache();
 
-builder.Services.AddScoped<ProductRepository>();
-builder.Services.AddScoped<ProductCategoryRepository>();
-builder.Services.AddScoped<OrderRepository>();
-builder.Services.AddScoped<OrderItemRepository>();
-builder.Services.AddScoped<OrderStatusRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderItemRepository,OrderItemRepository>();
+builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 
 builder.Services.AddSingleton<JwtKeysService>();
 
@@ -33,39 +33,39 @@ builder.Services.AddSingleton<JwtKeysService>();
 // the jwks endpoint work only with the provided JwtBearer configuration
 builder.Services.AddAuthentication(options =>
 {
-	options.DefaultAuthenticateScheme = "Jwt";
-	options.DefaultChallengeScheme = "Jwt";
+    options.DefaultAuthenticateScheme = "Jwt";
+    options.DefaultChallengeScheme = "Jwt";
 })
 .AddScheme<AuthenticationSchemeOptions, JwtAuthenticationService>("Jwt", options => { });
 
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowAnyOrigin",
-		builder =>
-		{
-			builder.SetIsOriginAllowed(_ => true)
-				   .AllowAnyMethod()
-				   .AllowAnyHeader()
-				   .AllowCredentials();
-		});
+    options.AddPolicy("AllowAnyOrigin",
+        builder =>
+        {
+            builder.SetIsOriginAllowed(_ => true)
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .AllowCredentials();
+        });
 });
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-	app.MapOpenApi();
+    app.MapOpenApi();
 
-	// scalar UI
-	app.MapScalarApiReference();
+    // scalar UI
+    app.MapScalarApiReference();
 
-	// swagger UI
-	app.UseSwaggerUI(options =>
-	{
-		options.SwaggerEndpoint("/openapi/v1.json", "ResourceServer v1");
-	});
+    // swagger UI
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "ResourceServer v1");
+    });
 
-	// toggle between launchUrl in launchSettings.json to change the default documentation UI
+    // toggle between launchUrl in launchSettings.json to change the default documentation UI
 }
 
 app.UseCors("AllowAnyOrigin");
