@@ -27,4 +27,6 @@ public class Account
 
 	[Required]
 	public required string PasswordHash { get; set; }
+
+	public string? RefreshToken { get; set; }
 }

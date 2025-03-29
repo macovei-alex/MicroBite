@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { api, config } from "../api";
+import { api } from "../api";
 import { useAuthContext } from "../auth/context/useAuthContext";
 import { useNavigate } from "react-router";
 
@@ -10,7 +10,7 @@ export default function MenuPage() {
 
   function checkCookies() {
     api
-      .get(`${config.AUTH_BASE_URL}/check-tokens`, { withCredentials: true })
+      .get("/auth/jwt-inspect", { withCredentials: true })
       .then((res) => setResponse(() => JSON.stringify(res.data)))
       .catch((error) => setResponse(() => JSON.stringify(error)));
   }

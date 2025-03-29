@@ -43,5 +43,10 @@ namespace AuthServer.Data.Repositories
 			_context.Roles.Remove(role);
 			return await _context.SaveChangesAsync() > 0;
 		}
+
+		public bool Exists(string role)
+		{
+			return _context.Roles.FirstOrDefault((r) => r.Name == role) != null;
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using AuthServer.Data;
+﻿using AuthServer.Data.Security;
+using AuthServer.Utils;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,14 +9,13 @@ namespace AuthServer.Service;
 
 public class JwtService
 {
-	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(10);
-	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(30);
+	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(2);
+	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(10);
 
 	private readonly JwtSecurityTokenHandler _jwtHandler;
 
 	private readonly string _issuer;
 	public string[] Audiences { get; init; }
-
 	public SigningCredentials SigningCredentials { get; init; }
 	public SecurityKey EncryptKey { get; init; }
 	public SecurityKey DecryptKey { get; init; }
@@ -52,8 +52,8 @@ public class JwtService
 		{
 			Subject = new ClaimsIdentity(
 			[
-				new Claim(JwtAppValidClaims.Subject, accountId.ToString()),
-				new Claim(JwtAppValidClaims.Role, role),
+				new Claim(JwtUser.ClaimNames.Subject, accountId.ToString()),
+				new Claim(JwtUser.ClaimNames.Role, role),
 			]),
 			Expires = DateTime.UtcNow + expirationDelay,
 			Issuer = _issuer,
@@ -79,6 +79,28 @@ public class JwtService
 			IssuerSigningKey = DecryptKey,
 			ValidateLifetime = true
 		}, out _);
-		return principal!;
+		return principal;
+	}
+
+	public bool TryVerifyAppClaims(ClaimsPrincipal claimsPrincipal, out string? failureMessage)
+	{
+		failureMessage =
+		(
+			(string.IsNullOrEmpty(claimsPrincipal.Subject())
+				? "Subject claim missing; " : string.Empty) +
+			(claimsPrincipal.Subject() != null && !Guid.TryParse(claimsPrincipal.Subject(), out _)
+				? "Subject claim is not a valid GUID; " : string.Empty) +
+			(string.IsNullOrEmpty(claimsPrincipal.Role())
+				? "Role claim missing; " : string.Empty)
+		);
+
+		if (failureMessage != string.Empty)
+		{
+			failureMessage = failureMessage[..^2];
+			return false;
+		}
+
+		failureMessage = null;
+		return true;
 	}
 }

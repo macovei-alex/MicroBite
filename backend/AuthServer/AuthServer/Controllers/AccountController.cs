@@ -4,33 +4,29 @@ using AuthServer.Data.Repositories;
 using Isopoh.Cryptography.Argon2;
 using AuthServer.Data.Dto;
 using Microsoft.AspNetCore.Authorization;
-using AuthServer.Data;
+using AuthServer.Service;
+using AuthServer.Data.Security;
 
 namespace AuthServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(AccountRepository repository, RoleRepository roleRepository) : ControllerBase
+public class AccountController(
+	AccountRepository repository,
+	RoleRepository roleRepository,
+	AuthService authService,
+	JwtService jwtService
+) : ControllerBase
 {
 	private readonly AccountRepository _repository = repository;
 	private readonly RoleRepository _roleRepository = roleRepository;
+	private readonly AuthService _authService = authService;
+	private readonly JwtService _jwtService = jwtService;
 
 	[HttpGet("{id}")]
 	[Authorize]
 	public async Task<ActionResult<Account>> GetById([FromRoute] Guid id)
 	{
-		// example for accessing and using decoded jwt claims of a request access token
-
-		Console.WriteLine(HttpContext.User.Claims.Count());
-		foreach (var claim in HttpContext.User.Claims)
-		{
-			Console.WriteLine($"{claim.Type} {claim.Value}");
-		}
-		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
-		Console.WriteLine(HttpContext.User.FindFirst(JwtAppValidClaims.Role)!.Value);
-
-		//
-
 		var account = await _repository.GetByIdAsync(id);
 		return account != null ? Ok(account) : NotFound();
 	}
@@ -72,6 +68,7 @@ public class AccountController(AccountRepository repository, RoleRepository role
 			PhoneNumber = accountDto.PhoneNumber,
 			Role = role,
 			PasswordHash = passwordHash,
+			RefreshToken = null,
 			AuthenticationRecovery = new AuthenticationRecovery
 			{
 				SecurityQuestion = accountDto.RecoveryQuestion,
@@ -101,9 +98,9 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	[Authorize]
 	public async Task<ActionResult<AccountDto>> GetProfile()
 	{
-		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+		var jwtUser = JwtUser.GetFromPrincipal(User);
 
-		var account = await _repository.GetByIdAsync(userId);
+		var account = await _repository.GetByIdAsync(jwtUser.Id);
 		if (account == null)
 		{
 			return NotFound("User not found");
@@ -126,9 +123,9 @@ public class AccountController(AccountRepository repository, RoleRepository role
 	[Authorize]
 	public async Task<IActionResult> UpdateProfile([FromBody] UserProfileUpdateDto model)
 	{
-		var userId = Guid.Parse(HttpContext.User.FindFirst(JwtAppValidClaims.Subject)!.Value);
+		var jwtUser = JwtUser.GetFromPrincipal(User);
 
-		var user = await _repository.GetByIdAsync(userId);
+		var user = await _repository.GetByIdAsync(jwtUser.Id);
 		if (user == null) return NotFound("User not found");
 
 		user.Email = model.Email;
@@ -164,5 +161,54 @@ public class AccountController(AccountRepository repository, RoleRepository role
 		};
 
 		return Ok(updatedUserDto);
+	}
+
+	[HttpPost("password-reset")]
+	public async Task<ActionResult<AccessTokenDto>> PasswordReset([FromBody] PasswordChangePayloadDto passwordChangePayload)
+	{
+		var account = await _repository.GetByEmailAsync(passwordChangePayload.Email);
+		if (account == null)
+		{
+			return BadRequest("Incorrect email address");
+		}
+		if (!Argon2.Verify(account.AuthenticationRecovery!.SecurityAnswerHash, passwordChangePayload.SecurityAnswer))
+		{
+			return BadRequest("Incorrect security answer");
+		}
+
+		account.PasswordHash = Argon2.Hash(passwordChangePayload.NewPassword);
+		_repository.UpdateAsync(account).Wait();
+
+		try
+		{
+			var tokenPair = _authService.Login(Response, new LoginPayloadDto
+			{
+				Email = passwordChangePayload.Email,
+				Password = passwordChangePayload.NewPassword,
+				ClientId = passwordChangePayload.ClientId
+			});
+			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
+		}
+		catch (ArgumentException ex)
+		{
+			return BadRequest(ex.Message);
+		}
+	}
+
+	[HttpGet("security-question")]
+	public async Task<IActionResult> GetSecurityQuestion([FromQuery] string email)
+	{
+		var user = await _repository.GetByEmailAsync(email);
+		if (user == null)
+		{
+			return NotFound("User not found");
+		}
+
+		if (user.AuthenticationRecovery?.SecurityQuestion == null)
+		{
+			return NoContent();
+		}
+
+		return Ok(new { user.AuthenticationRecovery!.SecurityQuestion });
 	}
 }

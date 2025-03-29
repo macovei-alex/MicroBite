@@ -1,60 +1,63 @@
-﻿using AuthServer.Data;
-using AuthServer.Data.Dto;
+﻿using AuthServer.Data.Dto;
 using AuthServer.Data.Repositories;
+using AuthServer.Data.Security;
 using AuthServer.Service;
-using Isopoh.Cryptography.Argon2;
-using Microsoft.AspNetCore.Http.HttpResults;
+using AuthServer.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 
 namespace AuthServer.Controllers;
 
 [Route("api/auth")]
 [ApiController]
-public class AuthController
-(
+public class AuthController(
 	RequestLogger requestLogger,
 	JwtService jwtService,
-	AccountRepository accountRepository
+	AccountRepository accountRepository,
+	AuthService authService
 ) : ControllerBase
 {
 	private readonly RequestLogger _requestLogger = requestLogger;
 	private readonly JwtService _jwtService = jwtService;
 	private readonly AccountRepository _accountRepository = accountRepository;
+	private readonly AuthService _authService = authService;
 
 	[HttpPost("login")]
-	public async Task<ActionResult<AccessTokenDto>> Login([FromBody] LoginPayloadDto loginPayload)
+	public ActionResult<AccessTokenDto> Login([FromBody] LoginPayloadDto loginPayload)
 	{
-		await _requestLogger.PrintRequest(nameof(Login), Request);
-
-		var account = await _accountRepository.GetByEmailOrPhoneAsync(loginPayload.Email, string.Empty);
-		if (account == null || !Argon2.Verify(account.PasswordHash, loginPayload.Password))
+		try
 		{
-			return BadRequest("Incorrect username or password");
+			var tokenPair = _authService.Login(Response, loginPayload);
+			return Ok(new AccessTokenDto { AccessToken = tokenPair.AccessToken });
 		}
-		if (!_jwtService.Audiences.Contains(loginPayload.ClientId))
+		catch (ArgumentException ex)
 		{
-			return BadRequest("Invalid clientId: no matching audience found");
+			return BadRequest(ex.Message);
+		}
+	}
+
+	[HttpPost("logout")]
+	[Authorize]
+	public async Task<IActionResult> Logout()
+	{
+		var jwtUser = JwtUser.GetFromPrincipal(User);
+
+		var account = await _accountRepository.GetByIdAsync(jwtUser.Id);
+		if (account == null)
+		{
+			return BadRequest("Account not found");
 		}
 
-		var accessToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay);
-		var refreshToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay);
-
-		Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
-		{
-			HttpOnly = true,
-			Secure = false,
-			SameSite = SameSiteMode.Strict,
-			Expires = DateTime.UtcNow + JwtService.DefaultRefreshTokenExpirationDelay - TimeSpan.FromSeconds(30)
-		});
-
-		return Ok(new AccessTokenDto { AccessToken = accessToken });
+		account.RefreshToken = null;
+		await _accountRepository.UpdateAsync(account);
+		Response.Cookies.Delete("refreshToken");
+		return Ok();
 	}
 
 	[HttpPost("refresh")]
-	public async Task<ActionResult<AccessTokenDto>> Refresh()
+	public ActionResult<AccessTokenDto> Refresh()
 	{
-		await _requestLogger.PrintRequest(nameof(Refresh), Request);
-
 		var refreshToken = Request.Cookies["refreshToken"];
 		if (string.IsNullOrEmpty(refreshToken))
 		{
@@ -63,17 +66,31 @@ public class AuthController
 
 		try
 		{
-			// find the account associated with the refresh token
-			// if no account is found, the token is invalid
+			var account = _accountRepository.GetByRefreshToken(refreshToken);
+			if (account == null)
+			{
+				return BadRequest("No account found for the provided refresh token");
+			}
 
 			var refreshClaims = _jwtService.ExtractClaims(refreshToken);
+			if (!_jwtService.TryVerifyAppClaims(refreshClaims, out string? failureMessage))
+			{
+				Console.WriteLine(failureMessage!);
+				return BadRequest(failureMessage!);
+			}
+
+			// may be unnecessary
+			if (account.Id != Guid.Parse(refreshClaims.Subject())
+				|| account.Role.Name != refreshClaims.Role())
+			{
+				return Unauthorized("Refresh token does not match account");
+			}
+			// \
 
 			return Ok(new AccessTokenDto
 			{
 				AccessToken = _jwtService.CreateToken(
-					Guid.Parse(refreshClaims.FindFirst(JwtAppValidClaims.Subject)!.Value),
-					refreshClaims.FindFirst(JwtAppValidClaims.Role)!.Value,
-					refreshClaims.FindFirst(JwtAppValidClaims.Audience)!.Value,
+					account.Id, account.Role.Name, refreshClaims.Audience(),
 					JwtService.DefaultAccessTokenExpirationDelay
 				)
 			});
@@ -85,32 +102,49 @@ public class AuthController
 		}
 	}
 
-	[HttpGet("check-tokens")]
-	public async Task<ActionResult<TokenPairDto>> CheckCookies()
+	[HttpGet("jwt-inspect")]
+	[Authorize]
+	public ActionResult<string> InspectTokens()
 	{
-		await _requestLogger.PrintRequest(nameof(CheckCookies), Request);
-
 		var refreshToken = Request.Cookies["refreshToken"];
-		var accessToken = Request.Headers.Authorization
-			.Where(auth => auth != null && auth.StartsWith("Bearer "))
-			.Select(auth => auth!["Bearer ".Length..])
-			.FirstOrDefault();
 
-		string message =
-		(
-			(string.IsNullOrEmpty(accessToken) ? "Access token not found; " : string.Empty) +
-			(string.IsNullOrEmpty(refreshToken) ? "Refresh token not found; " : string.Empty)
-		);
-
-		if (message != string.Empty)
+		if (string.IsNullOrEmpty(refreshToken))
 		{
-			return BadRequest(message[..^2]);
+			return BadRequest("Refresh token not found");
 		}
 
-		return Ok(new TokenPairDto
+		try
 		{
-			AccessToken = accessToken!,
-			RefreshToken = refreshToken!
-		});
+			var refreshClaims = _jwtService.ExtractClaims(refreshToken!);
+			if (!_jwtService.TryVerifyAppClaims(refreshClaims, out string? failureMessage))
+			{
+				return BadRequest($"Refresh claims failure ( {failureMessage} )");
+			}
+
+			string accessTokenClaims = "Access token claims:\n" + User.Claims
+					.Select((claim) => $"{claim.Type}: {claim.Value}")
+					.Aggregate((claim1, claim2) => $"{claim1}; {claim2}");
+
+			string refreshTokenClaims = "Refresh token claims:\n" + refreshClaims.Claims
+					.Select((claim) => $"{claim.Type}: {claim.Value}")
+					.Aggregate((claim1, claim2) => $"{claim1}; {claim2}");
+
+			Console.WriteLine("Access token claims:");
+			Console.WriteLine(accessTokenClaims);
+			Console.WriteLine("Refresh token claims:");
+			Console.WriteLine(refreshTokenClaims);
+
+			return Ok(new
+			{
+				RefreshToken = refreshToken,
+				AccessTokenClaims = accessTokenClaims,
+				RefreshTokenClaims = refreshTokenClaims
+			});
+
+		}
+		catch (Exception ex)
+		{
+			return BadRequest(ex.Message);
+		}
 	}
 }

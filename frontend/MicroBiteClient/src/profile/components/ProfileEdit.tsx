@@ -37,7 +37,7 @@ export default function ProfileEdit({
             name="email"
             value={user.email}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
           />
         </div>
         <div>
@@ -47,7 +47,7 @@ export default function ProfileEdit({
             name="phoneNumber"
             value={user.phoneNumber}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500  outline-none transition duration-500"
           />
         </div>
         <div>
@@ -57,7 +57,7 @@ export default function ProfileEdit({
             name="firstName"
             value={user.firstName}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
           />
         </div>
         <div>
@@ -67,7 +67,7 @@ export default function ProfileEdit({
             name="lastName"
             value={user.lastName}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
           />
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function ProfileEdit({
           name="securityQuestion"
           value={user?.securityQuestion || ""}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
         />
       </div>
       <div>
@@ -88,22 +88,22 @@ export default function ProfileEdit({
           name="securityAnswer"
           value={user?.securityAnswer || ""}
           onChange={handleChange}
-          className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+          className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
         />
       </div>
       <div className="flex gap-4 pt-2">
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600 transition duration-300 font-medium disabled:opacity-70 disabled:cursor-not-allowed"
           disabled={isSaving}
+          className="w-full bg-blue-500 text-white py-3 rounded-md enabled:hover:bg-blue-700 transition duration-500 font-medium disabled:opacity-60 enabled:cursor-pointer"
         >
           {isSaving ? "Saving..." : "Save Changes"}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="w-full bg-gray-300 text-gray-800 py-3 rounded-md hover:bg-gray-400 transition duration-300 font-medium disabled:opacity-70 disabled:cursor-not-allowed"
           disabled={isSaving}
+          className="w-full bg-gray-300 text-gray-800 py-3 rounded-md enabled:hover:bg-gray-400 transition duration-500 font-medium disabled:opacity-60 enabled:cursor-pointer"
         >
           Cancel
         </button>

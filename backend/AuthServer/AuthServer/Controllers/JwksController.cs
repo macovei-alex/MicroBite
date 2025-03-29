@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthServer.Controllers;
 
 [ApiController]
-[Route(".well-known/jwks.json")]
+[Route("api/.well-known/jwks.json")]
 public class JwksController(JwtService jwtService, RequestLogger requestLogger) : ControllerBase
 {
 	private readonly JwtService _jwtService = jwtService;
