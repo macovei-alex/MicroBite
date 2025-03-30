@@ -11,6 +11,7 @@ import { AuthContextProvider } from "./auth/context/AuthContextProvider.tsx";
 import PasswordResetPage from "./pages/PasswordResetPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Header from "./header/Header.tsx";
+import AdminPage from "./pages/AdminPage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,9 @@ createRoot(document.getElementById("root")!).render(
             <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
               <Route path="/menu" element={<MenuPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+            </Route>
+            <Route element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}>
+              <Route path="/admin" element={<AdminPage />} />
             </Route>
             <Route path="*" element={<div>404 Not Found</div>} />
           </Routes>

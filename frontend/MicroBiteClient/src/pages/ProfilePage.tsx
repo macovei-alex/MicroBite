@@ -5,8 +5,9 @@ import ProfileSkeletonLoader from "../profile/components/ProfileSkeletonLoader";
 import ProfileEdit from "../profile/components/ProfileEdit";
 import { AccountInformation } from "../profile/types/AccountInformation";
 import ProfileIcon from "../profile/components/ProfileIcon";
-import ProfileField from "../profile/components/ProfileField";
 import { useNavigate } from "react-router-dom";
+import NamedField from "../components/NamedField";
+import Button from "../components/Button";
 
 export default function ProfilePage() {
   const { accessToken } = useAuthContext();
@@ -58,7 +59,6 @@ export default function ProfilePage() {
 
   const handleSubmit = useCallback(async (user: AccountInformation) => {
     clearMessage();
-
     try {
       setIsSaving(true);
       await authApi.put("/Account/profile", user);
@@ -105,24 +105,14 @@ export default function ProfilePage() {
             {!isEditing ? (
               <>
                 <div className="space-y-4 divide-y divide-gray-100">
-                  <ProfileField label="Email" value={user.email} />
-                  <ProfileField label="Full Name" value={`${user.firstName} ${user.lastName}`} />
-                  <ProfileField label="Phone" value={user.phoneNumber} />
-                  <ProfileField label="Security Question" value={user.securityQuestion || ""} />
+                  <NamedField label="Email" value={user.email} />
+                  <NamedField label="Full Name" value={`${user.firstName} ${user.lastName}`} />
+                  <NamedField label="Phone" value={user.phoneNumber} />
+                  <NamedField label="Security Question" value={user.securityQuestion || ""} />
                 </div>
                 <div className="flex flex-row gap-4 pt-4">
-                  <button
-                    onClick={handleEditClick}
-                    className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300 font-medium enabled:cursor-pointer"
-                  >
-                    Edit Profile
-                  </button>
-                  <button
-                    onClick={handleChangePasswordClick}
-                    className="w-full bg-blue-500 text-white py-3 rounded-md hover:bg-blue-700 transition duration-300 font-medium enabled:cursor-pointer"
-                  >
-                    Change Password
-                  </button>
+                  <Button text="Edit Profile" onClick={handleEditClick} />
+                  <Button text="Change Password" onClick={handleChangePasswordClick} />
                 </div>
               </>
             ) : (

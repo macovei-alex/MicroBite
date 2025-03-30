@@ -51,8 +51,10 @@ export default function MenuPage() {
       <h1 className="text-3xl font-bold mb-4 text-center">Menu</h1>
       <div className="flex gap-4 mb-6 justify-center">
         <button
-          className={`px-4 py-2 rounded-md font-medium border ${
-            selectedCategory === null ? "bg-blue-500 text-white" : "border-blue-500 text-blue-500"
+          className={`px-4 py-2 rounded-md font-medium border transition duration-500 cursor-pointer ${
+            selectedCategory === null
+              ? "bg-blue-500 text-white"
+              : "border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-600"
           }`}
           onClick={() => setSelectedCategory(null)}
         >
@@ -61,10 +63,10 @@ export default function MenuPage() {
         {categories.map((category) => (
           <button
             key={category.id}
-            className={`px-4 py-2 rounded-md font-medium border ${
+            className={`px-4 py-2 rounded-md font-medium border transition duration-500 cursor-pointer ${
               selectedCategory === category.id
                 ? "bg-blue-500 text-white"
-                : "border-blue-500 text-blue-500"
+                : "border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-600"
             }`}
             onClick={() => setSelectedCategory(category.id)}
           >

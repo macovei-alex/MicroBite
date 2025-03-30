@@ -1,3 +1,4 @@
+import Button from "../../components/Button";
 import { Product } from "../types/Product";
 
 type ProductCardProps = {
@@ -23,12 +24,9 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         <p className="text-sm text-gray-600 flex-1 line-clamp-3 mb-4">{product.description}</p>
         <div className="flex flex-row justify-between items-center mt-auto">
           <p className="text-lg font-bold text-blue-500">${product.price.toFixed(2)}</p>
-          <button
-            className="bg-blue-500 text-gray-100 px-6 py-3 text-sm rounded-md hover:bg-blue-700 transition duration-500 cursor-pointer"
-            onClick={() => onAddToCart(product)}
-          >
-            Add to Cart
-          </button>
+          <div>
+            <Button text="Add to Cart" onClick={() => onAddToCart(product)} />
+          </div>
         </div>
       </div>
     </div>

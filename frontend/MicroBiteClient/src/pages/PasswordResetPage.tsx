@@ -3,6 +3,8 @@ import { PasswordResetData } from "../password-reset/types/PasswordResetData";
 import { authApi, config } from "../api";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NamedInput from "../components/NamedInput";
+import Button from "../components/Button";
 
 export default function PasswordResetPage() {
   const navigate = useNavigate();
@@ -16,47 +18,43 @@ export default function PasswordResetPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(userData.email)) {
-        setError("Invalid email format");
-        return;
-      }
-      if (userData.newPassword.length < 10) {
-        setError("Password must be at least 10 characters long");
-        return;
-      }
-      if (userData.newPassword !== passwordConfirmationRef.current?.value) {
-        setError("Passwords do not match");
-        return;
-      }
+  const handleSubmit = useCallback(async () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(userData.email)) {
+      setError("Invalid email format");
+      return;
+    }
+    if (userData.newPassword.length < 10) {
+      setError("Password must be at least 10 characters long");
+      return;
+    }
+    if (userData.newPassword !== passwordConfirmationRef.current?.value) {
+      setError("Passwords do not match");
+      return;
+    }
 
+    try {
       setIsLoading(true);
-      try {
-        const response = await authApi.post(
-          "/Account/password-reset",
-          {
-            ...userData,
-            clientId: config.CLIENT_ID,
-          },
-          { withCredentials: true }
-        );
-        console.log(response);
-        navigate("/home");
-      } catch (error) {
-        if (axios.isAxiosError(error) && typeof error.response?.data === "string") {
-          setError(error.response.data);
-        } else {
-          setError("Failed to reset password. Please try again.");
-        }
-      } finally {
-        setIsLoading(false);
+      const response = await authApi.post(
+        "/Account/password-reset",
+        {
+          ...userData,
+          clientId: config.CLIENT_ID,
+        },
+        { withCredentials: true }
+      );
+      console.log(response);
+      navigate("/home");
+    } catch (error) {
+      if (axios.isAxiosError(error) && typeof error.response?.data === "string") {
+        setError(error.response.data);
+      } else {
+        setError("Failed to reset password. Please try again.");
       }
-    },
-    [navigate, userData]
-  );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [navigate, userData]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -64,7 +62,7 @@ export default function PasswordResetPage() {
   }, []);
 
   const handleCancel = useCallback(() => {
-    navigate("/home");
+    navigate(-1);
   }, [navigate]);
 
   const fetchSecurityQuestion = useCallback(async () => {
@@ -109,17 +107,14 @@ export default function PasswordResetPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
-            />
-          </div>
+        <article className="space-y-6">
+          <NamedInput
+            label="Email"
+            type="email"
+            name="email"
+            value={userData.email}
+            onChange={handleChange}
+          />
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Security Question
@@ -143,53 +138,30 @@ export default function PasswordResetPage() {
               </button>
             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Security Answer</label>
-            <input
-              type="text"
-              name="securityAnswer"
-              value={userData.securityAnswer}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">New password</label>
-            <input
-              type="password"
-              name="newPassword"
-              value={userData.newPassword}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
-            <input
-              type="password"
-              name="newPasswordConfirmation"
-              ref={passwordConfirmationRef}
-              className="w-full p-3 border border-gray-300 rounded-md focus:ring-3 focus:ring-blue-500 outline-none transition duration-500"
-            />
-          </div>
+          <NamedInput
+            label="Security Answer"
+            name="securityAnswer"
+            value={userData.securityAnswer}
+            onChange={handleChange}
+          />
+          <NamedInput
+            label="New password"
+            name="newPassword"
+            type="password"
+            value={userData.newPassword}
+            onChange={handleChange}
+          />
+          <NamedInput
+            label="Confirm password"
+            name="newPasswordConfirmation"
+            type="password"
+            ref={passwordConfirmationRef}
+          />
           <div className="flex gap-4 pt-2">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-500 text-white py-3 rounded-md enabled:hover:bg-blue-700 transition duration-500 font-medium disabled:opacity-60 enabled:cursor-pointer"
-            >
-              Submit
-            </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              disabled={isLoading}
-              className="w-full bg-gray-300 text-gray-800 py-3 rounded-md enabled:hover:bg-gray-400 transition duration-500 font-medium disabled:opacity-60 enabled:cursor-pointer"
-            >
-              Cancel
-            </button>
+            <Button text="Submit" disabled={isLoading} onClick={handleSubmit} />
+            <Button text="Cancel" disabled={isLoading} onClick={handleCancel} />
           </div>
-        </form>
+        </article>
       </div>
     </div>
   );

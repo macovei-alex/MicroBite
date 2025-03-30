@@ -1,6 +1,8 @@
+import { Role } from "./Role";
+
 export type JwtClaims = {
   sub: string;
-  role: string;
+  role: Role;
   aud: string;
   iss: string;
   iat: number;

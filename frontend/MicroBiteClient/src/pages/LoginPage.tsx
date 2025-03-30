@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useAuthContext } from "../auth/hooks/useAuthContext";
+import NamedInput from "../components/NamedInput";
+import Button from "../components/Button";
 
 export default function LoginPage() {
   const authContext = useAuthContext();
@@ -46,39 +48,27 @@ export default function LoginPage() {
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
-              required
-            />
-          </div>
+          <NamedInput
+            label="Email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <NamedInput
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           <Link
             to="/password-reset"
             className="text-sm text-blue-500 self-end cursor-pointer hover:underline"
           >
             Forgot your password?
           </Link>
-          <button
-            type="submit"
-            disabled={authContext.isAuthenticating}
-            className="w-full text-white py-3 mt-8 rounded transition duration-500 enabled:cursor-pointer bg-blue-500 enabled:hover:bg-blue-700 disabled:opacity-60"
-          >
-            Login
-          </button>
+          <Button text="Login" type="submit" disabled={authContext.isAuthenticating} />
         </form>
       </div>
     </div>
