@@ -1,11 +1,25 @@
-import { ReactNode, useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { authApi, resApi, config } from "../../api";
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../types/AuthContext";
+import { JwtClaims } from "../types/JwtClaims";
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null | undefined>(undefined);
   const [isAuthenticating, setIsAuthenticating] = useState(true);
+
+  const jwtClaims = useMemo<JwtClaims | null>(() => {
+    if (!accessToken) {
+      return null;
+    }
+    try {
+      const payload = accessToken.split(".").slice(0, 2)[1];
+      return JSON.parse(atob(payload));
+    } catch (error) {
+      console.error("Invalid JWT format:", accessToken, error);
+      return null;
+    }
+  }, [accessToken]);
 
   const isAuthenticated = useCallback(() => {
     return accessToken !== null && accessToken !== undefined;
@@ -13,7 +27,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const tryRefreshAccessToken = useCallback(async () => {
     try {
-      const response = await authApi.post("/refresh", {}, { withCredentials: true });
+      const response = await authApi.post("/auth/refresh", {}, { withCredentials: true });
       console.log("Access token refresh successfully");
       setAccessToken(response.data.accessToken);
     } catch (error) {
@@ -90,7 +104,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
       setIsAuthenticating(true);
       try {
         const response = await authApi.post(
-          "/login",
+          "/auth/login",
           { email, password, clientId: config.CLIENT_ID },
           { withCredentials: true }
         );
@@ -111,7 +125,9 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <AuthContext.Provider value={{ accessToken, isAuthenticated, isAuthenticating, login }}>
+    <AuthContext.Provider
+      value={{ accessToken, jwtClaims, isAuthenticated, isAuthenticating, login }}
+    >
       {children}
     </AuthContext.Provider>
   );

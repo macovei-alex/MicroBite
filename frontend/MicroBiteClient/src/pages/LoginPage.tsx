@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useAuthContext } from "../auth/context/useAuthContext";
+import { useAuthContext } from "../auth/hooks/useAuthContext";
 
 export default function LoginPage() {
   const authContext = useAuthContext();

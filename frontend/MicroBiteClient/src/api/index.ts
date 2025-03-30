@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const AUTH_BASE_URL = "http://localhost:5095/api/auth";
+const AUTH_BASE_URL = "http://localhost:5095/api";
 const RES_BASE_URL = "http://localhost:5247/api";
 const CLIENT_ID = "MicroBiteClient";
 const NON_REFRESHING_ROUTES = ["api/auth/refresh"];

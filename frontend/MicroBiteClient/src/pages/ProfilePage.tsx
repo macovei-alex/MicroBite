@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useAuthContext } from "../auth/context/useAuthContext";
+import { useAuthContext } from "../auth/hooks/useAuthContext";
 import { authApi } from "../api";
 import ProfileSkeletonLoader from "../profile/components/ProfileSkeletonLoader";
 import ProfileEdit from "../profile/components/ProfileEdit";

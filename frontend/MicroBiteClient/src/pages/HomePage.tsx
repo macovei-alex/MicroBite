@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { authApi } from "../api";
-import { useAuthContext } from "../auth/context/useAuthContext";
+import { useAuthContext } from "../auth/hooks/useAuthContext";
 import { useState } from "react";
 
 export default function HomePage() {
@@ -10,7 +10,7 @@ export default function HomePage() {
 
   function checkCookies() {
     authApi
-      .get("/jwt-inspect", { withCredentials: true })
+      .get("/auth/jwt-inspect", { withCredentials: true })
       .then((res) => setResponse(() => JSON.stringify(res.data)))
       .catch((error) => setResponse(() => JSON.stringify(error)));
   }
@@ -38,8 +38,15 @@ export default function HomePage() {
       >
         Check tokens
       </button>
-      <p>Access token from memory: {authContext.accessToken}</p>
-      <p>Tokens mirrored by the server: {response}</p>
+      <div>
+        <p>Access token from memory: </p>
+        {Object.entries(authContext.jwtClaims ?? {}).map((entry) => (
+          <p key={entry[0]} className="ml-8">{`${entry[0]}: ${entry[1]}`}</p>
+        ))}
+      </div>
+      <div>
+        <p>Tokens mirrored by the server: {response}</p>
+      </div>
       {/* Buton pentru a merge la My Profile */}
       {authContext.accessToken && (
         <button

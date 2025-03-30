@@ -6,10 +6,11 @@ import LoginPage from "./pages/LoginPage.tsx";
 import MenuPage from "./pages/MenuPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import HomePage from "./pages/HomePage.tsx";
-import AuthProtectedOutlet from "./auth/AuthProtectedOutlet.tsx";
+import AuthProtectedOutlet from "./auth/components/AuthProtectedOutlet.tsx";
 import { AuthContextProvider } from "./auth/context/AuthContextProvider.tsx";
 import PasswordResetPage from "./pages/PasswordResetPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Header from "./header/Header.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <AuthContextProvider>
         <QueryClientProvider client={queryClient}>
+          <Header />
           <Routes>
             <Route index path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />

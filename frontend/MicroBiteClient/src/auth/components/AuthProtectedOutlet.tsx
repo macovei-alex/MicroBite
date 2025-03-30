@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuthContext } from "./context/useAuthContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export default function AuthProtectedOutlet({ redirectTo }: { redirectTo: string }) {
   const authContext = useAuthContext();
