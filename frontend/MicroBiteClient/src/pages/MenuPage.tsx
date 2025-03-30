@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
-import { useProductsQuery } from "../menu/hooks/useProducts";
-import { Category } from "../menu/types/Category";
-import { Product } from "../menu/types/Product";
+import { useProductsQuery } from "../api/hooks/useProductsQuery";
+import { Category } from "../api/types/Category";
+import { Product } from "../api/types/Product";
 import ProductCard from "../menu/components/ProductCard";
 import MenuSkeleton from "../menu/components/MenuSkeleton";
 

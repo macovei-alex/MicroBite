@@ -41,21 +41,9 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <CreateProductDialog
-        isVisible={activeDialog === "CreateProduct"}
-        onCommit={(product) => console.log(product)}
-        closeDialog={closeDialog}
-      />
-      <UpdateProductDialog
-        isVisible={activeDialog === "UpdateProduct"}
-        onCommit={(product) => console.log(product)}
-        closeDialog={closeDialog}
-      />
-      <DeleteProductDialog
-        isVisible={activeDialog === "DeleteProduct"}
-        onCommit={(productId) => console.log(productId)}
-        closeDialog={closeDialog}
-      />
+      <CreateProductDialog isVisible={activeDialog === "CreateProduct"} closeDialog={closeDialog} />
+      <UpdateProductDialog isVisible={activeDialog === "UpdateProduct"} closeDialog={closeDialog} />
+      <DeleteProductDialog isVisible={activeDialog === "DeleteProduct"} closeDialog={closeDialog} />
     </>
   );
 }

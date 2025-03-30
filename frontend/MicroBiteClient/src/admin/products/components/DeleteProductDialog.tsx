@@ -1,14 +1,18 @@
+import { useCallback } from "react";
+import Button from "../../../components/Button";
 import { BaseDialogProps } from "../types/BaseDialogProps";
 
-type DeleteProductDialogProps = BaseDialogProps & {
-  onCommit: (id: number) => void;
-};
+type DeleteProductDialogProps = BaseDialogProps;
 
-export default function DeleteProductDialog({
-  isVisible,
-  onCommit,
-  closeDialog,
-}: DeleteProductDialogProps) {
+export default function DeleteProductDialog({ isVisible, closeDialog }: DeleteProductDialogProps) {
+  const saveChanges = useCallback(async () => {
+    try {
+      closeDialog();
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  }, [closeDialog]);
+
   if (!isVisible) {
     return null;
   }
@@ -23,17 +27,9 @@ export default function DeleteProductDialog({
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-bold mb-4 text-gray-800">Delete Product</h2>
-        <p className="text-gray-600">Dialog content goes here...</p>
+        <p className="text-gray-600 mb-8">Dialog content goes here...</p>
+        <Button text="Save changes" onClick={saveChanges} />
       </div>
-      <button
-        className="mt-4 bg-blue-600 text-white hover:bg-blue-700 rounded-lg py-2 px-6 transition duration-500"
-        onClick={() => {
-          onCommit(null);
-          closeDialog();
-        }}
-      >
-        Save changes
-      </button>
     </div>
   );
 }

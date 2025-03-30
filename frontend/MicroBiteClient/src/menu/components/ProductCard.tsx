@@ -1,5 +1,5 @@
 import Button from "../../components/Button";
-import { Product } from "../types/Product";
+import { Product } from "../../api/types/Product";
 
 type ProductCardProps = {
   product: Product;

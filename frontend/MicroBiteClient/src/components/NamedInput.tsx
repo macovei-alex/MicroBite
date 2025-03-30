@@ -2,7 +2,7 @@ type NamedInputProps = {
   label: string;
   type?: string;
   name?: string;
-  value?: string;
+  value?: string | number;
   required?: boolean;
   ref?: React.Ref<HTMLInputElement>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
