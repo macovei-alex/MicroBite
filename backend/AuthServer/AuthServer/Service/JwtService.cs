@@ -9,8 +9,8 @@ namespace AuthServer.Service;
 
 public class JwtService
 {
-	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(2);
-	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(10);
+	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(10);
+	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(30);
 
 	private readonly JwtSecurityTokenHandler _jwtHandler;
 

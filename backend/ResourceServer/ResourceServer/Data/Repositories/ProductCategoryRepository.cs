@@ -1,51 +1,45 @@
 ﻿using ResourceServer.Data.Models;
 
-namespace ResourceServer.Data.Repositories
+namespace ResourceServer.Data.Repositories;
+
+public class ProductCategoryRepository(AppDbContext context) : IProductCategoryRepository
 {
-    public class ProductCategoryRepository
+    private readonly AppDbContext _context = context;
+
+    public IEnumerable<ProductCategory> GetAll()
     {
-        private readonly AppDbContext _context;
+        return [.. _context.ProductCategories];
+    }
 
-        public ProductCategoryRepository(AppDbContext context)
-        {
-            _context = context;
-        }
+    public ProductCategory? GetById(int id)
+    {
+        return _context.ProductCategories.Find(id);
+    }
 
-        public IEnumerable<ProductCategory> GetAll()
-        {
-            return _context.ProductCategories.ToList();
-        }
+    public ProductCategory Add(ProductCategory category)
+    {
+        _context.ProductCategories.Add(category);
+        _context.SaveChanges();
+        return category;
+    }
 
-        public ProductCategory? GetById(int id)
-        {
-            return _context.ProductCategories.Find(id);
-        }
+    public bool Update(int id, ProductCategory category)
+    {
+        var existing = _context.ProductCategories.Find(id);
+        if (existing == null) return false;
 
-        public ProductCategory Add(ProductCategory category)
-        {
-            _context.ProductCategories.Add(category);
-            _context.SaveChanges();
-            return category;
-        }
+        existing.Name = category.Name;
+        _context.SaveChanges();
+        return true;
+    }
 
-        public bool Update(int id, ProductCategory category)
-        {
-            var existing = _context.ProductCategories.Find(id);
-            if (existing == null) return false;
+    public bool Delete(int id)
+    {
+        var category = _context.ProductCategories.Find(id);
+        if (category == null) return false;
 
-            existing.Name = category.Name;
-            _context.SaveChanges();
-            return true;
-        }
-
-        public bool Delete(int id)
-        {
-            var category = _context.ProductCategories.Find(id);
-            if (category == null) return false;
-
-            _context.ProductCategories.Remove(category);
-            _context.SaveChanges();
-            return true;
-        }
+        _context.ProductCategories.Remove(category);
+        _context.SaveChanges();
+        return true;
     }
 }

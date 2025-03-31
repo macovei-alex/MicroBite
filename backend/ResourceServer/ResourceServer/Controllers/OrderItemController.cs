@@ -7,9 +7,9 @@ namespace ResourceServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrderItemController(OrderItemRepository repository) : ControllerBase
+public class OrderItemController(IOrderItemRepository repository) : ControllerBase
 {
-    private readonly OrderItemRepository _repository = repository;
+    private readonly IOrderItemRepository _repository = repository;
 
     [HttpGet]
     public ActionResult<IEnumerable<OrderItem>> GetAll()
