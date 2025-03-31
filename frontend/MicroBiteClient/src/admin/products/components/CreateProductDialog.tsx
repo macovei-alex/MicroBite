@@ -48,8 +48,7 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
 
     try {
       setError(null);
-      const response = await resApi.post("/Product", product);
-      console.log(response);
+      await resApi.post("/Product", product);
       queryClient.invalidateQueries({ queryKey: ["products"] });
       closeDialog();
     } catch (error) {

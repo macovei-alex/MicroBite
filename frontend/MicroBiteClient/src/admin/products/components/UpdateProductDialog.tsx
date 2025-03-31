@@ -56,8 +56,8 @@ export default function UpdateProductDialog({ isVisible, closeDialog }: UpdatePr
     try {
       setError(null);
       setIsSaving(true);
-      const response = await resApi.put(`/Product/${product.id}`, product);
-      console.log(response);
+      console.log(product);
+      await resApi.put(`/Product/${product.id}`, product);
       queryClient.invalidateQueries({ queryKey: ["products"] });
       closeDialog();
     } catch (error) {
@@ -131,10 +131,10 @@ export default function UpdateProductDialog({ isVisible, closeDialog }: UpdatePr
             name="product"
             disabled={isLoadingData}
             onChange={handleProductChange}
-            className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
+            className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500 text-blue-500 font-bold"
           >
             {productsQuery.data?.map((product) => (
-              <option key={product.id} value={product.id}>
+              <option key={product.id} value={product.id} className="font-bold">
                 {product.name}
               </option>
             ))}
