@@ -8,6 +8,7 @@ import ErrorLabel from "../../../components/ErrorLabel";
 import { useCategoriesQuery } from "../../../api/hooks/useCategoriesQuery";
 import { resApi } from "../../../api";
 import ContainedImage from "../../../components/ContainedImage";
+import { useQueryClient } from "@tanstack/react-query";
 
 function validateProduct(product: Omit<Product, "id">) {
   if (!product) return "Product is null";
@@ -24,6 +25,7 @@ function validateProduct(product: Omit<Product, "id">) {
 type CreateProductDialogProps = BaseDialogProps;
 
 export default function CreateProductDialog({ isVisible, closeDialog }: CreateProductDialogProps) {
+  const queryClient = useQueryClient();
   const categoriesQuery = useCategoriesQuery();
   const [product, setProduct] = useState<Omit<Product, "id">>({
     name: "",
@@ -38,12 +40,6 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = useCallback(async () => {
-    const category = categoriesQuery.data!.find((cat) => cat.id === product.category.id);
-    if (!category) {
-      setError("Category not found");
-      return;
-    }
-    product.category = category;
     const errorMessage = validateProduct(product);
     if (errorMessage) {
       setError(errorMessage);
@@ -54,12 +50,13 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
       setError(null);
       const response = await resApi.post("/Product", product);
       console.log(response);
+      queryClient.invalidateQueries({ queryKey: ["products"] });
       closeDialog();
     } catch (error) {
       console.error("Error creating product:", error);
       setError(axios.isAxiosError(error) ? error.response?.data : "An unexpected error occurred");
     }
-  }, [closeDialog, product, categoriesQuery.data]);
+  }, [queryClient, closeDialog, product]);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -83,10 +80,7 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
 
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) {
-      setProduct((prev) => ({ ...prev, image: undefined }));
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -97,9 +91,7 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
     };
   }, []);
 
-  if (!isVisible) {
-    return null;
-  }
+  if (!isVisible) return null;
 
   return (
     <div
@@ -169,7 +161,9 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
                 <span className="text-white">Click to upload an image</span>
               </div>
             </div>
-            {product.image && <ContainedImage image={product.image} />}
+            <div className="w-120 h-80">
+              {product.image && <ContainedImage image={product.image} />}
+            </div>
           </div>
         </div>
         <Button

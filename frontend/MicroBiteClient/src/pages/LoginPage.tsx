@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useAuthContext } from "../auth/hooks/useAuthContext";
 import NamedInput from "../components/NamedInput";
 import Button from "../components/Button";
@@ -8,6 +8,7 @@ import ErrorLabel from "../components/ErrorLabel";
 export default function LoginPage() {
   const authContext = useAuthContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +32,11 @@ export default function LoginPage() {
         setError(message);
         return;
       }
-      navigate("/home");
+      if (location.state?.from) {
+        navigate(location.state.from, { replace: true });
+      } else {
+        navigate("/home");
+      }
     } catch (error) {
       console.error(error);
     }

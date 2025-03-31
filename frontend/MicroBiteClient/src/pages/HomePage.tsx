@@ -2,14 +2,37 @@ import { authApi } from "../api";
 import { useAuthContext } from "../auth/hooks/useAuthContext";
 import { useState } from "react";
 
+function mapObjectEntries(obj: any, indent = 8): any {
+  return Object.entries(obj).map(([key, value]) => {
+    if (typeof value === "string") {
+      return <p key={key} style={{ marginLeft: indent }}>{`${key}: ${value}`}</p>;
+    }
+
+    if (Array.isArray(value)) {
+      return (
+        <div style={{ marginLeft: indent }}>
+          <p>{key}:</p>
+          {value.map((item) => mapObjectEntries(item, indent + 8))}
+        </div>
+      );
+    }
+
+    if (typeof value === "object" && value !== null) {
+      return mapObjectEntries(value, indent + 8);
+    }
+
+    return null;
+  });
+}
+
 export default function HomePage() {
   const authContext = useAuthContext();
-  const [response, setResponse] = useState("");
+  const [response, setResponse] = useState({});
 
   function checkCookies() {
     authApi
       .get("/auth/jwt-inspect", { withCredentials: true })
-      .then((res) => setResponse(() => JSON.stringify(res.data)))
+      .then((res) => setResponse(res.data))
       .catch((error) => setResponse(() => JSON.stringify(error)));
   }
 
@@ -29,7 +52,8 @@ export default function HomePage() {
         ))}
       </div>
       <div>
-        <p>Tokens mirrored by the server: {response}</p>
+        <p>Tokens mirrored by the server:</p>
+        {response && mapObjectEntries(response)}
       </div>
     </>
   );
