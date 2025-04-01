@@ -10,39 +10,91 @@ import { useProductsQuery } from "../../../api/hooks/useProductsQuery";
 import Papa from "papaparse";
 import { Category } from "../../../api/types/Category";
 
-type CsvProduct = {
+type FileProduct = {
   name: string;
   description: string;
   price: number;
   category: string;
 };
 
-function mapCsvProduct(csvProduct: any, categories: Category[]): Omit<Product, "id"> {
-  if (!csvProduct.name) throw new Error("Product name is required");
-  if (!csvProduct.description) throw new Error("Product description is required");
-  csvProduct.price = parseFloat(csvProduct.price);
-  if (csvProduct.price === "NaN") throw new Error("Product price is invalid");
-  if (csvProduct.price <= 0) throw new Error("Product price must be greater than 0");
-  if (!csvProduct.category) throw new Error("Product category is required");
-  const category = categories.find((cat) => cat.name === csvProduct.category);
-  if (!category) throw new Error(`Category "${csvProduct.category}" not found`);
-  return {
-    ...csvProduct,
-    category: {
-      id: category.id,
-      name: category.name,
-    },
-  };
+function validateFileProducts(products: any[]): boolean {
+  let areValid = true;
+  for (const product of products) {
+    let mes = null;
+    if (!mes && !product) mes = "Product is null";
+    if (!mes && !product.name) mes = "Product name is required";
+    if (!mes && !product.description) mes = "Product description is required";
+    if (!mes && !product.price) mes = "Product price is required";
+    product.price = parseFloat(product.price);
+    if (!mes && isNaN(product.price)) mes = "Product price must be a number";
+    if (!mes && product.price <= 0) mes = "Product price must be greater than 0";
+    if (!product.category) mes = "Product category is required";
+
+    if (mes) {
+      areValid = false;
+      console.error("Error validating product:", product, mes);
+    }
+  }
+  return areValid;
 }
 
-function validateProduct(product: Omit<Product, "id">) {
-  if (!product) return "Product is null";
-  if (!product.name) return "Product name is required";
-  if (!product.description) return "Product description is required";
-  if (product.price <= 0) return "Product price must be greater than 0";
-  if (!product.category) return "Product category is required";
-  if (product.category.id <= 0) return "Product category ID must be greater than 0";
-  return null;
+function mapFileProducts(
+  fileProducts: FileProduct[],
+  categories: Category[]
+): Omit<Product, "id">[] {
+  const mappedProducts = [] as Omit<Product, "id">[];
+  let areValid = true;
+  for (const fileProduct of fileProducts) {
+    let mes = null;
+    const category = categories.find((cat) => cat.name === fileProduct.category);
+    if (!mes && !category) mes = `Category "${fileProduct.category}" not found`;
+
+    if (mes) {
+      areValid = false;
+      console.error("Error mapping product:", fileProduct, mes);
+    } else {
+      mappedProducts.push({
+        ...fileProduct,
+        category: {
+          id: category!.id,
+          name: category!.name,
+        },
+      });
+    }
+  }
+  if (!areValid) {
+    throw new Error("Invalid product found. Check the console for more information");
+  }
+  return mappedProducts;
+}
+
+function parseCsv(fileString: string, categories: Category[]): Omit<Product, "id">[] {
+  const result = Papa.parse(fileString, { header: true, skipEmptyLines: true });
+  if (result.errors.length > 0) {
+    console.error("File parsing errors:");
+    result.errors.forEach((error) => {
+      console.error(error);
+    });
+    throw new Error("Error parsing file. Check the console for more information");
+  }
+  const validationResult = validateFileProducts(result.data);
+  if (!validationResult) {
+    throw new Error("Invalid file format. Check the console for more information");
+  }
+  return mapFileProducts(result.data as FileProduct[], categories);
+}
+
+function parseJson(fileString: string, categories: Category[]): Omit<Product, "id">[] {
+  const result = JSON.parse(fileString);
+  console.log(result);
+  if (!result || !Array.isArray(result)) {
+    throw new Error("Invalid JSON file format. Expected an array of products.");
+  }
+  const validationResult = validateFileProducts(result);
+  if (!validationResult) {
+    throw new Error("Invalid JSON file format. Check the console for more information");
+  }
+  return mapFileProducts(result as FileProduct[], categories);
 }
 
 type CreateProductBulkDialogProps = BaseDialogProps;
@@ -63,63 +115,50 @@ export default function CreateProductBulkDialog({
     console.log(products);
   }, [queryClient, products]);
 
-  const handleCsvFile = useCallback(
-    (reader: FileReader) => {
-      if (!(typeof reader.result === "string")) return;
-      const result = Papa.parse(reader.result, { header: true, skipEmptyLines: true });
-      if (result.errors.length > 0) {
-        setError("Error parsing file. Check the console for more information");
-        console.error("File parsing errors:");
-        result.errors.forEach((error) => {
-          console.error(error);
-        });
-        return;
-      }
-      let invalidProductFound = false;
-      const mappedProducts = [] as Omit<Product, "id">[];
-      for (const csvProduct of result.data as CsvProduct[]) {
-        try {
-          const mappedProduct = mapCsvProduct(csvProduct, categoriesQuery.data || []);
-          mappedProducts.push(mappedProduct);
-          const message = validateProduct(mappedProduct);
-          if (message) {
-            setError("Invalid product found. Check the console for more information");
-            console.error("Invalid product:", mappedProduct, message);
-            invalidProductFound = true;
-          }
-        } catch (error) {
-          setError("Invalid product found. Check the console for more information");
-          console.error("Invalid product:", csvProduct, error);
-          invalidProductFound = true;
-          break;
-        }
-      }
-      if (!invalidProductFound) {
-        setProducts(mappedProducts);
-      }
-    },
-    [categoriesQuery.data]
-  );
-
   const handleFileUpload = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
-
       const reader = new FileReader();
       reader.readAsText(file);
       reader.onload = () => {
-        setIsBusy(true);
-        if (typeof reader.result === "string") {
-          handleCsvFile(reader);
+        if (!(typeof reader.result === "string")) {
+          setError("File is not a string");
+          return;
         }
-        setIsBusy(false);
+        const fileTermination = file.name.split(".").pop();
+        if (!fileTermination) {
+          setError("File does not have a valid extension");
+          return;
+        }
+        try {
+          setIsBusy(true);
+          switch (fileTermination) {
+            case "csv":
+              setProducts(parseCsv(reader.result, categoriesQuery.data || []));
+              break;
+            case "json":
+              setProducts(parseJson(reader.result, categoriesQuery.data || []));
+              break;
+            default:
+              setError("File is not a CSV or JSON file");
+              break;
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            setError(error.message);
+          } else {
+            setError("Unexpected error parsing file. Check the console for more information");
+          }
+        } finally {
+          setIsBusy(false);
+        }
       };
 
       // reset the value to trigger onChange on the same file selected the second time
       e.target.value = "";
     },
-    [handleCsvFile]
+    [categoriesQuery.data]
   );
 
   if (!isVisible) return null;
