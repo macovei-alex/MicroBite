@@ -7,95 +7,9 @@ import DialogCard from "./DialogCard";
 import ErrorLabel from "../../../components/ErrorLabel";
 import Button from "../../../components/Button";
 import { useProductsQuery } from "../../../api/hooks/useProductsQuery";
-import Papa from "papaparse";
-import { Category } from "../../../api/types/Category";
-
-type FileProduct = {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-};
-
-function validateFileProducts(products: any[]): boolean {
-  let areValid = true;
-  for (const product of products) {
-    let mes = null;
-    if (!mes && !product) mes = "Product is null";
-    if (!mes && !product.name) mes = "Product name is required";
-    if (!mes && !product.description) mes = "Product description is required";
-    if (!mes && !product.price) mes = "Product price is required";
-    product.price = parseFloat(product.price);
-    if (!mes && isNaN(product.price)) mes = "Product price must be a number";
-    if (!mes && product.price <= 0) mes = "Product price must be greater than 0";
-    if (!product.category) mes = "Product category is required";
-
-    if (mes) {
-      areValid = false;
-      console.error("Error validating product:", product, mes);
-    }
-  }
-  return areValid;
-}
-
-function mapFileProducts(
-  fileProducts: FileProduct[],
-  categories: Category[]
-): Omit<Product, "id">[] {
-  const mappedProducts = [] as Omit<Product, "id">[];
-  let areValid = true;
-  for (const fileProduct of fileProducts) {
-    let mes = null;
-    const category = categories.find((cat) => cat.name === fileProduct.category);
-    if (!mes && !category) mes = `Category "${fileProduct.category}" not found`;
-
-    if (mes) {
-      areValid = false;
-      console.error("Error mapping product:", fileProduct, mes);
-    } else {
-      mappedProducts.push({
-        ...fileProduct,
-        category: {
-          id: category!.id,
-          name: category!.name,
-        },
-      });
-    }
-  }
-  if (!areValid) {
-    throw new Error("Invalid product found. Check the console for more information");
-  }
-  return mappedProducts;
-}
-
-function parseCsv(fileString: string, categories: Category[]): Omit<Product, "id">[] {
-  const result = Papa.parse(fileString, { header: true, skipEmptyLines: true });
-  if (result.errors.length > 0) {
-    console.error("File parsing errors:");
-    result.errors.forEach((error) => {
-      console.error(error);
-    });
-    throw new Error("Error parsing file. Check the console for more information");
-  }
-  const validationResult = validateFileProducts(result.data);
-  if (!validationResult) {
-    throw new Error("Invalid file format. Check the console for more information");
-  }
-  return mapFileProducts(result.data as FileProduct[], categories);
-}
-
-function parseJson(fileString: string, categories: Category[]): Omit<Product, "id">[] {
-  const result = JSON.parse(fileString);
-  console.log(result);
-  if (!result || !Array.isArray(result)) {
-    throw new Error("Invalid JSON file format. Expected an array of products.");
-  }
-  const validationResult = validateFileProducts(result);
-  if (!validationResult) {
-    throw new Error("Invalid JSON file format. Check the console for more information");
-  }
-  return mapFileProducts(result as FileProduct[], categories);
-}
+import { parseCsv, parseJson } from "../utils/bulk-upload";
+import { resApi } from "../../../api";
+import axios from "axios";
 
 type CreateProductBulkDialogProps = BaseDialogProps;
 
@@ -111,9 +25,33 @@ export default function CreateProductBulkDialog({
   const [isBusy, setIsBusy] = useState(false);
 
   const handleSubmit = useCallback(async () => {
-    queryClient.invalidateQueries({ queryKey: ["products"] });
-    console.log(products);
-  }, [queryClient, products]);
+    try {
+      setIsBusy(true);
+      setError(null);
+      await resApi.post(
+        "/Product/all",
+        products.map((p) => {
+          return {
+            name: p.name,
+            categoryId: p.category.id,
+            description: p.description,
+            price: p.price,
+          };
+        })
+      );
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      closeDialog();
+    } catch (error) {
+      console.error("Error creating product:", error);
+      setError(
+        axios.isAxiosError(error) && typeof error.response?.data === "string"
+          ? error.response.data
+          : "An unexpected error occurred"
+      );
+    } finally {
+      setIsBusy(false);
+    }
+  }, [queryClient, products, closeDialog]);
 
   const handleFileUpload = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -195,7 +133,9 @@ export default function CreateProductBulkDialog({
                 <td className="border border-blue-300 px-4 py-2 text-blue-700">
                   {product.description}
                 </td>
-                <td className="border border-blue-300 px-4 py-2 text-blue-700">${product.price}</td>
+                <td className="border border-blue-300 px-4 py-2 text-blue-700">
+                  {product.price} RON
+                </td>
                 <td className="border border-blue-300 px-4 py-2 text-blue-700">
                   {product.category.name}
                 </td>
@@ -206,7 +146,7 @@ export default function CreateProductBulkDialog({
       </div>
       <Button
         text="Save changes"
-        disabled={isLoadingData || isBusy}
+        disabled={isLoadingData || isBusy || products.length === 0}
         onClick={handleSubmit}
         className="mt-8"
       />

@@ -40,7 +40,6 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       newState = state;
   }
 
-  console.log("Cart Updated:", newState.cartItems);
   return newState;
 };
 
@@ -54,17 +53,13 @@ export default function CartProvider({ children }: CartContextProviderProps) {
   useEffect(() => {
     const storedCart = localStorage.getItem("shopping_cart");
     if (storedCart) {
-      console.log("Cart Loaded from LocalStorage:", JSON.parse(storedCart)); // 🔹 Debugging
       dispatch({ type: "SET_CART", payload: JSON.parse(storedCart) });
     }
   }, []);
 
   useEffect(() => {
-    console.log("Cart Updated in LocalStorage:", state.cartItems); // 🔹 Debugging
     localStorage.setItem("shopping_cart", JSON.stringify(state.cartItems));
   }, [state.cartItems]);
-
-  console.log("CartProvider Initialized", state.cartItems); // 🔹 Debugging
 
   return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>;
 }

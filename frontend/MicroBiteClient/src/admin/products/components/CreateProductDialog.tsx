@@ -56,7 +56,11 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
       closeDialog();
     } catch (error) {
       console.error("Error creating product:", error);
-      setError(axios.isAxiosError(error) ? error.response?.data : "An unexpected error occurred");
+      setError(
+        axios.isAxiosError(error) && typeof error.response?.data === "string"
+          ? error.response.data
+          : "An unexpected error occurred"
+      );
     } finally {
       setIsSaving(false);
     }
