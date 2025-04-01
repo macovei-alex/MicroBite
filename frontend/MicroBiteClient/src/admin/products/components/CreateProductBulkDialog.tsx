@@ -20,6 +20,8 @@ type CsvProduct = {
 function mapCsvProduct(csvProduct: any, categories: Category[]): Omit<Product, "id"> {
   if (!csvProduct.name) throw new Error("Product name is required");
   if (!csvProduct.description) throw new Error("Product description is required");
+  csvProduct.price = parseFloat(csvProduct.price);
+  if (csvProduct.price === "NaN") throw new Error("Product price is invalid");
   if (csvProduct.price <= 0) throw new Error("Product price must be greater than 0");
   if (!csvProduct.category) throw new Error("Product category is required");
   const category = categories.find((cat) => cat.name === csvProduct.category);
@@ -40,7 +42,6 @@ function validateProduct(product: Omit<Product, "id">) {
   if (product.price <= 0) return "Product price must be greater than 0";
   if (!product.category) return "Product category is required";
   if (product.category.id <= 0) return "Product category ID must be greater than 0";
-  if (!product.image) return "Product image is required";
   return null;
 }
 
@@ -94,7 +95,6 @@ export default function CreateProductBulkDialog({
         }
       }
       if (!invalidProductFound) {
-        console.log(mappedProducts);
         setProducts(mappedProducts);
       }
     },
@@ -138,6 +138,32 @@ export default function CreateProductBulkDialog({
           className="absolute inset-0 w-full object-contain opacity-0 cursor-pointer"
         />
         <span className="text-white">Click to upload a CSV/JSON file</span>
+      </div>
+      <div className="w-180 overflow-y-auto h-100 border border-blue-500 rounded-lg shadow-md">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-blue-500 text-white">
+              <th className="border border-blue-700 px-4 py-2">Name</th>
+              <th className="border border-blue-700 px-4 py-2">Description</th>
+              <th className="border border-blue-700 px-4 py-2">Price</th>
+              <th className="border border-blue-700 px-4 py-2">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products.map((product, index) => (
+              <tr key={index} className="border border-blue-300 hover:bg-blue-100 transition">
+                <td className="border border-blue-300 px-4 py-2 text-blue-700">{product.name}</td>
+                <td className="border border-blue-300 px-4 py-2 text-blue-700">
+                  {product.description}
+                </td>
+                <td className="border border-blue-300 px-4 py-2 text-blue-700">${product.price}</td>
+                <td className="border border-blue-300 px-4 py-2 text-blue-700">
+                  {product.category.name}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <Button
         text="Save changes"
