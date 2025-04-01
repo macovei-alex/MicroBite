@@ -12,6 +12,8 @@ import PasswordResetPage from "./pages/PasswordResetPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Header from "./header/Header.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
+import CartPage from "./pages/CartPage.tsx";
+import CartProvider from "./cart/context/CartContextProvider.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,25 +28,28 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <AuthContextProvider>
-        <QueryClientProvider client={queryClient}>
-          <Header />
-          <Routes>
-            <Route index path="/" element={<HomePage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/password-reset" element={<PasswordResetPage />} />
-            <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
-              <Route path="/menu" element={<MenuPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-            </Route>
-            <Route element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}>
-              <Route path="/admin" element={<AdminPage />} />
-            </Route>
-            <Route path="*" element={<div>404 Not Found</div>} />
-          </Routes>
-        </QueryClientProvider>
-      </AuthContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+          <CartProvider>
+            <Header />
+            <Routes>
+              <Route index path="/" element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/password-reset" element={<PasswordResetPage />} />
+              <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
+                <Route path="/menu" element={<MenuPage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
+              <Route element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}>
+                <Route path="/admin" element={<AdminPage />} />
+              </Route>
+              <Route path="*" element={<div>404 Not Found</div>} />
+            </Routes>
+          </CartProvider>
+        </AuthContextProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
 );
