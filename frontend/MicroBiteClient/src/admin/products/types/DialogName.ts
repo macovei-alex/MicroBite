@@ -1,1 +1,1 @@
-export type DialogName = "CreateProduct" | "UpdateProduct" | "DeleteProduct";
+export type DialogName = "CreateProduct" | "UpdateProduct" | "DeleteProduct" | "CreateProductBulk";

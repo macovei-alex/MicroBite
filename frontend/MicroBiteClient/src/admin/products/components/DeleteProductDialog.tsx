@@ -7,6 +7,7 @@ import { Product } from "../../../api/types/Product";
 import ContainedImage from "../../../components/ContainedImage";
 import ErrorLabel from "../../../components/ErrorLabel";
 import { resApi } from "../../../api";
+import DialogCard from "./DialogCard";
 
 type DeleteProductDialogProps = BaseDialogProps;
 
@@ -46,41 +47,33 @@ export default function DeleteProductDialog({ isVisible, closeDialog }: DeletePr
   }
 
   return (
-    <div
-      onClick={closeDialog}
-      className="absolute inset-0 flex flex-col justify-center items-center backdrop-blur-md"
-    >
-      <div
-        className="bg-white p-12 rounded-lg shadow-lg min-w-96 w-auto relative flex flex-col gap-4 items-center"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-xl font-bold mb-4 text-gray-800">Delete Product</h2>
-        <ErrorLabel error={error} />
-        <div>
-          <select
-            name="product"
-            disabled={productsQuery.isLoading}
-            onChange={handleProductChange}
-            className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500 text-blue-500 font-bold"
-          >
-            {productsQuery.data?.map((product) => (
-              <option key={product.id} value={product.id} className="font-bold">
-                {product.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="w-120 h-80 flex flex-col justify-center items-center">
-          {product?.image && <ContainedImage image={product.image} />}
-        </div>
-
-        <Button
-          text="Confirm delete"
-          disabled={productsQuery.isLoading || isSaving}
-          onClick={confirmDelete}
-        />
+    <DialogCard closeDialog={closeDialog}>
+      <h2 className="text-xl font-bold mb-4 text-gray-800">Delete Product</h2>
+      <ErrorLabel error={error} />
+      <div>
+        <select
+          name="product"
+          disabled={productsQuery.isLoading}
+          onChange={handleProductChange}
+          className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500 text-blue-500 font-bold"
+        >
+          {productsQuery.data?.map((product) => (
+            <option key={product.id} value={product.id} className="font-bold">
+              {product.name}
+            </option>
+          ))}
+        </select>
       </div>
-    </div>
+
+      <div className="w-120 h-80 flex flex-col justify-center items-center">
+        {product?.image && <ContainedImage image={product.image} />}
+      </div>
+
+      <Button
+        text="Confirm delete"
+        disabled={productsQuery.isLoading || isSaving}
+        onClick={confirmDelete}
+      />
+    </DialogCard>
   );
 }

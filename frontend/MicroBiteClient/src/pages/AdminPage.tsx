@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import CreateProductDialog from "../admin/products/components/CreateProductDialog";
 import UpdateProductDialog from "../admin/products/components/UpdateProductDialog";
 import DeleteProductDialog from "../admin/products/components/DeleteProductDialog";
+import CreateProductBulkDialog from "../admin/products/components/CreateProductBulkDialog";
 import { DialogName } from "../admin/products/types/DialogName";
 
 export default function AdminPage() {
@@ -38,12 +39,23 @@ export default function AdminPage() {
           >
             Delete Product
           </button>
+          <button
+            onClick={() => setActiveDialog("CreateProductBulk")}
+            className="w-full block bg-blue-600 text-white text-center py-3 rounded-lg shadow-md
+            hover:bg-blue-500 transition duration-500 cursor-pointer"
+          >
+            Create Products in Bulk
+          </button>
         </div>
       </div>
 
       <CreateProductDialog isVisible={activeDialog === "CreateProduct"} closeDialog={closeDialog} />
       <UpdateProductDialog isVisible={activeDialog === "UpdateProduct"} closeDialog={closeDialog} />
       <DeleteProductDialog isVisible={activeDialog === "DeleteProduct"} closeDialog={closeDialog} />
+      <CreateProductBulkDialog
+        isVisible={activeDialog === "CreateProductBulk"}
+        closeDialog={closeDialog}
+      />
     </>
   );
 }
