@@ -1,18 +1,18 @@
 import { useMemo, useState } from "react";
 import { useProductsQuery } from "../api/hooks/useProductsQuery";
-import { Category } from "../api/types/Category";
+import { Category} from "../api/types/Category";
 import { Product } from "../api/types/Product";
 import ProductCard from "../menu/components/ProductCard";
 import MenuSkeleton from "../menu/components/MenuSkeleton";
+import { useCart } from "../context/CartContext";
 
 export default function MenuPage() {
   const productsQuery = useProductsQuery();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const { dispatch } = useCart();
 
   const categories = useMemo<Category[]>(() => {
-    if (!productsQuery.data) {
-      return [];
-    }
+    if (!productsQuery.data) return [];
     const uniqueCategories = new Map<number, Category>();
     productsQuery.data.forEach((product) => {
       uniqueCategories.set(product.category.id, product.category);
@@ -24,35 +24,41 @@ export default function MenuPage() {
   }, [productsQuery.data]);
 
   const filteredProducts = useMemo<Product[]>(() => {
-    if (!productsQuery.data) {
-      return [];
-    }
-    if (!selectedCategory) {
-      return productsQuery.data;
-    }
-
+    if (!productsQuery.data) return [];
     return selectedCategory
-      ? productsQuery.data.filter((product) => product.category.id === selectedCategory)
+      ? productsQuery.data.filter((p) => p.category.id === selectedCategory)
       : productsQuery.data;
   }, [productsQuery.data, selectedCategory]);
+
+  const handleAddToCart = (product: Product, quantity: number) => {
+    dispatch({
+      type: "ADD_ITEM",
+      payload: {
+        id: product.id.toString(),
+        name: product.name,
+        price: product.price,
+        quantity: quantity,
+        ...(product.image && { image: product.image })
+      }
+    });
+  };
 
   if (productsQuery.isError) {
     console.error(productsQuery.error);
     const message = productsQuery.error.response?.data;
-    return <p>Error: {typeof message === "string" ? message : "An unknown error occured"}</p>;
+    return <p>Error: {typeof message === "string" ? message : "An unknown error occurred"}</p>;
   }
 
-  if (productsQuery.isLoading) {
-    return <MenuSkeleton />;
-  }
+  if (productsQuery.isLoading) return <MenuSkeleton />;
 
   return (
     <div className="p-6 max-w-6xl mx-auto text-blue-500">
       <h1 className="text-3xl font-bold mb-4 text-center">Menu</h1>
+      
       <div className="flex gap-4 mb-6 justify-center">
         <button
           className={`px-4 py-2 rounded-md font-medium border transition duration-500 cursor-pointer ${
-            selectedCategory === null
+            !selectedCategory
               ? "bg-blue-500 text-white"
               : "border-blue-500 text-blue-500 hover:bg-blue-100 hover:text-blue-600"
           }`}
@@ -80,7 +86,7 @@ export default function MenuPage() {
           <ProductCard
             key={product.id}
             product={product}
-            onAddToCart={(prod) => console.log(prod)}
+            onAddToCart={handleAddToCart}
           />
         ))}
       </div>

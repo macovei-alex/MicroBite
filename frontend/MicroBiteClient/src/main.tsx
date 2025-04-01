@@ -14,8 +14,6 @@ import Header from "./header/Header.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import { CartProvider } from "./context/CartContext.tsx";
 import CartPage from "./pages/CartPage.tsx";
-import AddToCartPage from "./pages/ProductDetailsPage.tsx";
-import ProductsPage from "./pages/ProductsPage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,8 +36,6 @@ createRoot(document.getElementById("root")!).render(
             <Route index path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/add-to-cart/:productId" element={<AddToCartPage />} />
-            <Route path="/products" element={<ProductsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/password-reset" element={<PasswordResetPage />} />
             <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
