@@ -8,6 +8,7 @@ import ProfileIcon from "../profile/components/ProfileIcon";
 import { useNavigate } from "react-router-dom";
 import NamedField from "../components/NamedField";
 import Button from "../components/Button";
+import PageTitle from "../components/PageTitle";
 
 export default function ProfilePage() {
   const { accessToken } = useAuthContext();
@@ -84,7 +85,7 @@ export default function ProfilePage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
             <ProfileIcon />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800">My Profile</h1>
+          <PageTitle text="My Profile" />
           <p className="text-gray-600 mt-1">View and update your personal information</p>
         </div>
 

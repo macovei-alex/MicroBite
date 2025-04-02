@@ -1,13 +1,12 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useRef, useCallback, Dispatch } from "react";
 import { CartAction, CartContext, CartState } from "./CartContext";
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
-  let newState: CartState;
   switch (action.type) {
     case "ADD_ITEM": {
       const existingItem = state.cartItems.find((item) => item.id === action.payload.id);
       if (existingItem) {
-        newState = {
+        return {
           cartItems: state.cartItems.map((item) =>
             item.id === action.payload.id
               ? { ...item, quantity: item.quantity + action.payload.quantity }
@@ -15,32 +14,27 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
           ),
         };
       } else {
-        newState = { cartItems: [...state.cartItems, action.payload] };
+        return {
+          cartItems: [...state.cartItems, action.payload].sort((a, b) =>
+            a.name.localeCompare(b.name)
+          ),
+        };
       }
-      break;
     }
     case "REMOVE_ITEM":
-      newState = { cartItems: state.cartItems.filter((item) => item.id !== action.payload) };
-      break;
+      return { cartItems: state.cartItems.filter((item) => item.id !== action.payload) };
     case "UPDATE_QUANTITY":
-      newState = {
+      return {
         cartItems: state.cartItems.map((item) =>
           item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
         ),
       };
-      break;
     case "SET_CART":
-      newState = { cartItems: action.payload };
-      break;
+      return { cartItems: action.payload };
     case "CLEAR_CART":
-      newState = { cartItems: [] };
-      break;
-
-    default:
-      newState = state;
+      return { cartItems: [] };
   }
-
-  return newState;
+  throw new Error("Unhandled action type: " + (action as any).type);
 };
 
 type CartContextProviderProps = {
@@ -49,17 +43,28 @@ type CartContextProviderProps = {
 
 export default function CartProvider({ children }: CartContextProviderProps) {
   const [state, dispatch] = useReducer(cartReducer, { cartItems: [] });
+  const lastCartAction = useRef<CartAction["type"]>("SET_CART");
+
+  const dispatchWrapper = useCallback<Dispatch<CartAction>>((action) => {
+    lastCartAction.current = action.type;
+    dispatch(action);
+  }, []);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("shopping_cart");
     if (storedCart) {
-      dispatch({ type: "SET_CART", payload: JSON.parse(storedCart) });
+      dispatchWrapper({ type: "SET_CART", payload: JSON.parse(storedCart) });
     }
-  }, []);
+  }, [dispatchWrapper]);
 
   useEffect(() => {
+    if (lastCartAction.current === "SET_CART") return;
     localStorage.setItem("shopping_cart", JSON.stringify(state.cartItems));
   }, [state.cartItems]);
 
-  return <CartContext.Provider value={{ state, dispatch }}>{children}</CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ state, dispatch: dispatchWrapper }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
