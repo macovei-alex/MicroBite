@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using NSubstitute;
 using ResourceServer.Controllers;
 using ResourceServer.Data.DTO;
@@ -15,13 +16,17 @@ namespace ResourcesServes.Tests.Controllers;
 public class OrderControllerTests
 {
 	private IOrderRepository _repository;
+	private IOrderStatusRepository _statusRepository;
+	private IHubContext<NotificationsHub> _hubContext;
 	private OrderController _controller;
 
 	[TestInitialize]
 	public void Setup()
 	{
 		_repository = Substitute.For<IOrderRepository>();
-		_controller = new OrderController(_repository);
+		_statusRepository = Substitute.For<IOrderStatusRepository>();
+		_hubContext = Substitute.For<IHubContext<NotificationsHub>>();
+		_controller = new OrderController(_repository, _statusRepository, _hubContext);
 	}
 
 	[TestMethod]
