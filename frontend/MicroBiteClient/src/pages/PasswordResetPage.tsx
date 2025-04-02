@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import NamedInput from "../components/NamedInput";
 import Button from "../components/Button";
+import PageTitle from "../components/PageTitle";
 
 export default function PasswordResetPage() {
   const navigate = useNavigate();
@@ -97,9 +98,7 @@ export default function PasswordResetPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 md:p-6">
       <div className="w-full max-w-2xl p-8 bg-white rounded-lg shadow-xl">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-800">Reset your password</h1>
-        </div>
+        <PageTitle text="Reset your Password" className="mb-8" />
 
         {error && (
           <div className="mb-6 p-4 border-l-4 rounded bg-red-50 border-red-500 text-red-700">
