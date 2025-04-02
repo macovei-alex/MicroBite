@@ -1,13 +1,23 @@
-import { useCallback } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useCartContext } from "../cart/context/useCartContext";
 import Button from "../components/Button";
 import NamedInput from "../components/NamedInput";
 import PageTitle from "../components/PageTitle";
+import axios from "axios";
+import ErrorLabel from "../components/ErrorLabel";
+import { resApi } from "../api";
+// import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const { state, dispatch } = useCartContext();
+  // const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const totalPrice = state.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = useMemo(
+    () => state.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [state.cartItems]
+  );
 
   const handleAdjustQuantity = useCallback(
     (id: string, adjustment: number) => {
@@ -28,11 +38,39 @@ export default function CartPage() {
     [state, dispatch]
   );
 
-  const handlePaceOrder = useCallback(() => {}, []);
+  const handlePaceOrder = useCallback(async () => {
+    if (state.cartItems.length === 0) return;
+    setError(null);
+    try {
+      setIsSaving(true);
+      await resApi.post("/Order", {
+        address: state.address,
+        additionalNotes: state.additionalNotes,
+        orderItems: state.cartItems.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+        })),
+      });
+      dispatch({ type: "CLEAR_CART" });
+      // TODO: Navigate to /orders page after that page is created
+      // navigate("/orders");
+    } catch (error) {
+      if (axios.isAxiosError(error) && typeof error.response?.data === "string") {
+        setError(error.response.data);
+      } else if (error instanceof Error) {
+        setError(error.message);
+      }
+      setError("An unexpected error occurred. Check the console for more information.");
+      console.error(error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [state, dispatch]);
 
   return (
     <div className="p-5 max-w-200 mx-auto">
       <PageTitle text="My Cart" />
+      <ErrorLabel error={error} />
 
       {state.cartItems.length === 0 ? (
         <p>The cart is empty.</p>
@@ -109,7 +147,7 @@ export default function CartPage() {
               labelClassName="!text-blue-500 !font-bold !text-lg"
             />
           </div>
-          <Button text="Place order" onClick={handlePaceOrder} />
+          <Button text="Place order" disabled={isSaving} onClick={handlePaceOrder} />
         </div>
       )}
     </div>
