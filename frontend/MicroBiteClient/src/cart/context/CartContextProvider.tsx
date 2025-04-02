@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef, useCallback, Dispatch } from "react";
+import { useReducer, useEffect, useRef, useCallback } from "react";
 import { CartAction, CartContext, CartState } from "./CartContext";
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
@@ -7,6 +7,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       const existingItem = state.cartItems.find((item) => item.id === action.payload.id);
       if (existingItem) {
         return {
+          ...state,
           cartItems: state.cartItems.map((item) =>
             item.id === action.payload.id
               ? { ...item, quantity: item.quantity + action.payload.quantity }
@@ -15,6 +16,7 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         };
       } else {
         return {
+          ...state,
           cartItems: [...state.cartItems, action.payload].sort((a, b) =>
             a.name.localeCompare(b.name)
           ),
@@ -22,17 +24,22 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
       }
     }
     case "REMOVE_ITEM":
-      return { cartItems: state.cartItems.filter((item) => item.id !== action.payload) };
+      return { ...state, cartItems: state.cartItems.filter((item) => item.id !== action.payload) };
     case "UPDATE_QUANTITY":
       return {
+        ...state,
         cartItems: state.cartItems.map((item) =>
           item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
         ),
       };
     case "SET_CART":
-      return { cartItems: action.payload };
+      return { ...action.payload };
     case "CLEAR_CART":
-      return { cartItems: [] };
+      return { ...state, cartItems: [] };
+    case "UPDATE_ADDRESS":
+      return { ...state, address: action.payload };
+    case "UPDATE_ADDITIONAL_NOTES":
+      return { ...state, additionalNotes: action.payload };
   }
   throw new Error("Unhandled action type: " + (action as any).type);
 };
@@ -42,10 +49,14 @@ type CartContextProviderProps = {
 };
 
 export default function CartProvider({ children }: CartContextProviderProps) {
-  const [state, dispatch] = useReducer(cartReducer, { cartItems: [] });
+  const [state, dispatch] = useReducer(cartReducer, {
+    cartItems: [],
+    address: "",
+    additionalNotes: "",
+  });
   const lastCartAction = useRef<CartAction["type"]>("SET_CART");
 
-  const dispatchWrapper = useCallback<Dispatch<CartAction>>((action) => {
+  const dispatchWrapper = useCallback<React.Dispatch<CartAction>>((action) => {
     lastCartAction.current = action.type;
     dispatch(action);
   }, []);
@@ -53,14 +64,26 @@ export default function CartProvider({ children }: CartContextProviderProps) {
   useEffect(() => {
     const storedCart = localStorage.getItem("shopping_cart");
     if (storedCart) {
-      dispatchWrapper({ type: "SET_CART", payload: JSON.parse(storedCart) });
+      try {
+        const parsedCart = JSON.parse(storedCart) as CartState;
+        dispatchWrapper({
+          type: "SET_CART",
+          payload: {
+            cartItems: parsedCart.cartItems || [],
+            address: parsedCart.address || "",
+            additionalNotes: parsedCart.additionalNotes || "",
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, [dispatchWrapper]);
 
   useEffect(() => {
     if (lastCartAction.current === "SET_CART") return;
-    localStorage.setItem("shopping_cart", JSON.stringify(state.cartItems));
-  }, [state.cartItems]);
+    localStorage.setItem("shopping_cart", JSON.stringify(state));
+  }, [state]);
 
   return (
     <CartContext.Provider value={{ state, dispatch: dispatchWrapper }}>
