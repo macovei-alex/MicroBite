@@ -6,18 +6,18 @@ namespace ResourceServer.Data.Models;
 
 public class OrderItem
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public int Id { get; set; }
 
-    public Product? Product { get; set; }
+	public Product? Product { get; set; }
 
-    [JsonIgnore] //crapa get-u fara asta
-    public Order? Order { get; set; }
+	[JsonIgnore]
+	public Order? Order { get; set; }
 
-    [Required]
-    public decimal TotalPrice { get; set; }
+	[Required]
+	public decimal TotalPrice { get; set; }
 
-    [Required]
-    public int Count { get; set; }
+	[Required]
+	public int Count { get; set; }
 }
