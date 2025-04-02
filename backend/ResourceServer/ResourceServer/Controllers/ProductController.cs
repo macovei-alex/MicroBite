@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using ResourceServer.Data.DTO;
 using ResourceServer.Data.Models;
 using ResourceServer.Data.Repositories;
 
@@ -24,6 +26,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpPost]
+	[Authorize(Roles = "admin")]
 	public ActionResult<Product> Create([FromBody] Product product)
 	{
 		try
@@ -38,6 +41,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpPut("{id}")]
+	[Authorize(Roles = "admin")]
 	public IActionResult Update(int id, [FromBody] Product product)
 	{
 		return _productRepository.Update(id, product)
@@ -46,10 +50,31 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpDelete("{id}")]
+	[Authorize(Roles = "admin")]
 	public IActionResult Delete(int id)
 	{
 		return _productRepository.Delete(id)
 			? NoContent()
 			: NotFound();
+	}
+
+	[HttpPost("all")]
+	[Authorize(Roles = "admin")]
+	public ActionResult<Product> CreateAll([FromBody] List<ProductCreateDto> products)
+	{
+		if (products.Count == 0)
+		{
+			return BadRequest("No products to create");
+		}
+
+		try
+		{
+			var createdProducts = _productRepository.CreateAll(products);
+			return CreatedAtAction(nameof(GetById), new { id = createdProducts[0].Id }, createdProducts);
+		}
+		catch (ArgumentException ex)
+		{
+			return BadRequest(ex.Message);
+		}
 	}
 }

@@ -9,6 +9,7 @@ import { useCategoriesQuery } from "../../../api/hooks/useCategoriesQuery";
 import { resApi } from "../../../api";
 import ContainedImage from "../../../components/ContainedImage";
 import { useQueryClient } from "@tanstack/react-query";
+import DialogCard from "./DialogCard";
 
 function validateProduct(product: Omit<Product, "id">) {
   if (!product) return "Product is null";
@@ -38,6 +39,7 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
     },
   });
   const [error, setError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSubmit = useCallback(async () => {
     const errorMessage = validateProduct(product);
@@ -47,13 +49,20 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
     }
 
     try {
+      setIsSaving(true);
       setError(null);
       await resApi.post("/Product", product);
       queryClient.invalidateQueries({ queryKey: ["products"] });
       closeDialog();
     } catch (error) {
       console.error("Error creating product:", error);
-      setError(axios.isAxiosError(error) ? error.response?.data : "An unexpected error occurred");
+      setError(
+        axios.isAxiosError(error) && typeof error.response?.data === "string"
+          ? error.response.data
+          : "An unexpected error occurred"
+      );
+    } finally {
+      setIsSaving(false);
     }
   }, [queryClient, closeDialog, product]);
 
@@ -93,85 +102,77 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
   if (!isVisible) return null;
 
   return (
-    <div
-      onClick={closeDialog}
-      className="absolute inset-0 flex flex-col justify-center items-center backdrop-blur-md"
-    >
-      <div
-        className="bg-white p-12 rounded-lg shadow-lg min-w-96 w-auto relative flex flex-col gap-4 items-center"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-2xl font-bold text-blue-500">Create Product</h2>
-        <ErrorLabel error={error} />
-        <div className="flex flex-row gap-8">
-          <div className="flex flex-col gap-4 min-w-96">
-            <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
-              <select
-                name="category"
-                value={product.category.id}
-                onChange={handleCategoryChange}
-                className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
-              >
-                {categoriesQuery.data?.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <NamedInput
-              label="Name"
-              name="name"
-              value={product.name}
+    <DialogCard closeDialog={closeDialog}>
+      <h2 className="text-2xl font-bold text-blue-500">Create Product</h2>
+      <ErrorLabel error={error} />
+      <div className="flex flex-row gap-8">
+        <div className="flex flex-col gap-4 min-w-96">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
+            <select
+              name="category"
+              value={product.category.id}
+              onChange={handleCategoryChange}
+              className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
+            >
+              {categoriesQuery.data?.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <NamedInput
+            label="Name"
+            name="name"
+            value={product.name}
+            onChange={handleChange}
+            required
+          />
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea
+              name="description"
+              value={product.description}
               onChange={handleChange}
+              className="w-full p-3 rounded-lg border border-gray-300 outline-none focus:ring-3 focus:ring-blue-500 resize-none transition duration-500"
+              rows={4}
               required
-            />
-            <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-              <textarea
-                name="description"
-                value={product.description}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-300 outline-none focus:ring-3 focus:ring-blue-500 resize-none transition duration-500"
-                rows={4}
-                required
-              />
-            </div>
-            <NamedInput
-              label="Price"
-              name="price"
-              value={product.price}
-              onChange={handleChange}
-              required
-              type="number"
             />
           </div>
-          <div className="flex flex-col gap-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-bold">Image</label>
-              <div className="relative w-full p-2 my-2 outline-none rounded-lg bg-blue-500 hover:bg-blue-700 transition duration-500 cursor-pointer text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="absolute inset-0 w-full object-contain opacity-0 cursor-pointer"
-                />
-                <span className="text-white">Click to upload an image</span>
-              </div>
+          <NamedInput
+            label="Price"
+            name="price"
+            value={product.price}
+            onChange={handleChange}
+            required
+            type="number"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold">Image</label>
+            <div className="relative w-full p-2 my-2 outline-none rounded-lg bg-blue-500 hover:bg-blue-700 transition duration-500 cursor-pointer text-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="absolute inset-0 w-full object-contain opacity-0 cursor-pointer"
+              />
+              <span className="text-white">Click to upload an image</span>
             </div>
-            <div className="w-120 h-80">
-              {product.image && <ContainedImage image={product.image} />}
-            </div>
+          </div>
+          <div className="w-120 h-80">
+            {product.image && <ContainedImage image={product.image} />}
           </div>
         </div>
-        <Button
-          text="Save changes"
-          disabled={categoriesQuery.isLoading}
-          onClick={handleSubmit}
-          className="mt-8"
-        />
       </div>
-    </div>
+      <Button
+        text="Save changes"
+        disabled={categoriesQuery.isLoading || isSaving}
+        onClick={handleSubmit}
+        className="mt-8"
+      />
+    </DialogCard>
   );
 }

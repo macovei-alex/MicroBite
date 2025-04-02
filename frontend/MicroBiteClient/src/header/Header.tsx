@@ -22,8 +22,8 @@ export default function Header() {
         <LinkButton to="/home" text="Home" />
         <LinkButton to="/menu" text="Menu" />
         <LinkButton to="/profile" text="Profile" />
+        <LinkButton to="/cart" text="Shopping cart" />
         <LinkButton to="/login" text="Login" />
-        <LinkButton to="/cart" text="Shopping cart"/>
         {authContext.jwtClaims?.role === "admin" && <LinkButton to="/admin" text="Admin" />}
       </nav>
     </header>

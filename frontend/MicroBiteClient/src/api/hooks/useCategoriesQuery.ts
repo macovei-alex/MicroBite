@@ -8,7 +8,7 @@ export function useCategoriesQuery() {
     queryKey: ["categories"],
     queryFn: async () => {
       const categories = (await resApi.get("/ProductCategory")).data as Category[];
-      return categories;
+      return categories.sort((c1, c2) => c1.name.localeCompare(c2.name));
     },
   });
 }

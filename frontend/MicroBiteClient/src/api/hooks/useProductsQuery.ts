@@ -8,7 +8,7 @@ export function useProductsQuery() {
     queryKey: ["products"],
     queryFn: async () => {
       const products = (await resApi.get("/Product")).data as Product[];
-      return products;
+      return products.sort((p1, p2) => p1.name.localeCompare(p2.name));
     },
   });
 }

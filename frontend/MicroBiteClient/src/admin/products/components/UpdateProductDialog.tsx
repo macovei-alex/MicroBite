@@ -10,6 +10,7 @@ import NamedInput from "../../../components/NamedInput";
 import ContainedImage from "../../../components/ContainedImage";
 import { useProductsQuery } from "../../../api/hooks/useProductsQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import DialogCard from "./DialogCard";
 
 function validateProduct(product: Product) {
   if (!product) return "Product is null";
@@ -116,98 +117,90 @@ export default function UpdateProductDialog({ isVisible, closeDialog }: UpdatePr
   const isLoadingData = productsQuery.isLoading || categoriesQuery.isLoading;
 
   return (
-    <div
-      onClick={closeDialog}
-      className="absolute inset-0 flex flex-col justify-center items-center backdrop-blur-md"
-    >
-      <div
-        className="bg-white p-12 rounded-lg shadow-lg min-w-96 w-auto relative flex flex-col gap-4 items-center"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <h2 className="text-2xl font-bold text-blue-500">Update Product</h2>
-        <ErrorLabel error={error} />
-        <div>
-          <select
-            name="product"
-            disabled={isLoadingData}
-            onChange={handleProductChange}
-            className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500 text-blue-500 font-bold"
-          >
-            {productsQuery.data?.map((product) => (
-              <option key={product.id} value={product.id} className="font-bold">
-                {product.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-row gap-8">
-          <div className="flex flex-col gap-4 min-w-96">
-            <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
-              <select
-                name="category"
-                onChange={handleCategoryChange}
-                className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
-              >
-                {categoriesQuery.data?.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <NamedInput
-              label="Name"
-              name="name"
-              value={product?.name || ""}
-              onChange={handleChange}
-              required
-            />
-            <div>
-              <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
-              <textarea
-                name="description"
-                value={product?.description || ""}
-                onChange={handleChange}
-                className="w-full p-3 rounded-lg border border-gray-300 outline-none focus:ring-3 focus:ring-blue-500 resize-none transition duration-500"
-                rows={4}
-                required
-              />
-            </div>
-            <NamedInput
-              label="Price"
-              name="price"
-              value={product?.price || ""}
-              onChange={handleChange}
-              required
-              type="number"
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            <div>
-              <label className="block text-gray-700 text-sm font-bold">Image</label>
-              <div className="relative w-full p-2 my-2 outline-none rounded-lg bg-blue-500 hover:bg-blue-700 transition duration-500 cursor-pointer text-center">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="absolute inset-0 w-full object-contain opacity-0 cursor-pointer"
-                />
-                <span className="text-white">Click to upload an image</span>
-              </div>
-            </div>
-            <div className="w-120 h-80">
-              {product?.image && <ContainedImage image={product.image} />}
-            </div>
-          </div>
-        </div>
-        <Button
-          text="Save changes"
-          disabled={isLoadingData || isSaving || !product}
-          onClick={handleSubmit}
-          className="mt-8"
-        />
+    <DialogCard closeDialog={closeDialog}>
+      <h2 className="text-2xl font-bold text-blue-500">Update Product</h2>
+      <ErrorLabel error={error} />
+      <div>
+        <select
+          name="product"
+          disabled={isLoadingData}
+          onChange={handleProductChange}
+          className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500 text-blue-500 font-bold"
+        >
+          {productsQuery.data?.map((product) => (
+            <option key={product.id} value={product.id} className="font-bold">
+              {product.name}
+            </option>
+          ))}
+        </select>
       </div>
-    </div>
+      <div className="flex flex-row gap-8">
+        <div className="flex flex-col gap-4 min-w-96">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">Category</label>
+            <select
+              name="category"
+              onChange={handleCategoryChange}
+              className="w-full appearance-none p-2 border border-gray-300 rounded-lg outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
+            >
+              {categoriesQuery.data?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <NamedInput
+            label="Name"
+            name="name"
+            value={product?.name || ""}
+            onChange={handleChange}
+            required
+          />
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">Description</label>
+            <textarea
+              name="description"
+              value={product?.description || ""}
+              onChange={handleChange}
+              className="w-full p-3 rounded-lg border border-gray-300 outline-none focus:ring-3 focus:ring-blue-500 resize-none transition duration-500"
+              rows={4}
+              required
+            />
+          </div>
+          <NamedInput
+            label="Price"
+            name="price"
+            value={product?.price || ""}
+            onChange={handleChange}
+            required
+            type="number"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div>
+            <label className="block text-gray-700 text-sm font-bold">Image</label>
+            <div className="relative w-full p-2 my-2 outline-none rounded-lg bg-blue-500 hover:bg-blue-700 transition duration-500 cursor-pointer text-center">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="absolute inset-0 w-full object-contain opacity-0 cursor-pointer"
+              />
+              <span className="text-white">Click to upload an image</span>
+            </div>
+          </div>
+          <div className="w-120 h-80">
+            {product?.image && <ContainedImage image={product.image} />}
+          </div>
+        </div>
+      </div>
+      <Button
+        text="Save changes"
+        disabled={isLoadingData || isSaving || !product}
+        onClick={handleSubmit}
+        className="mt-8"
+      />
+    </DialogCard>
   );
 }
