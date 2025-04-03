@@ -48,7 +48,7 @@ export const useOrdersQuery = () => {
       } catch (error) {
         if (axios.isAxiosError(error)) {
           if (error.response?.status === 401) {
-            throw new Error("Autentificare necesară");
+            throw new Error("Authentication required");
           }
         }
         throw error;
@@ -63,15 +63,15 @@ export default function OrderHistoryPage() {
 
   if (isLoading) return <OrderHistorySkeleton />;
   
-  if (error) return <div className="p-4 text-red-500">Eroare la încărcarea istoricului: {error.message}</div>;
+  if (error) return <div className="p-4 text-red-500">Error loading order history: {error.message}</div>;
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-blue-500">Istoric Comenzi</h1>
+      <h1 className="text-3xl font-bold mb-6 text-blue-500">Order History</h1>
       
       {(orders && orders.length === 0) ? (
         <div className="text-center py-8">
-          <p className="text-gray-600">Nu aveți comenzi înregistrate</p>
+          <p className="text-gray-600">You have no recorded orders</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -79,15 +79,15 @@ export default function OrderHistoryPage() {
             <div key={order.id} className="bg-white rounded-lg shadow-md p-6">
               <div className="flex flex-wrap justify-between items-start mb-4">
                 <div className="mb-2">
-                  <h2 className="text-xl font-semibold">Comanda #{order.id}</h2>
+                  <h2 className="text-xl font-semibold">Order #{order.id}</h2>
                   <p className="text-gray-600">
-                    Dată: {new Date(order.orderTime).toLocaleDateString()}
+                    Date: {new Date(order.orderTime).toLocaleDateString()}
                   </p>
                 </div>
                 
                 <div className="flex flex-col items-end">
                   <span className={`px-3 py-1 rounded-full text-sm ${
-                    order.status.name === 'Finalizată' 
+                    order.status.name === 'Completed' 
                       ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}>
@@ -95,24 +95,24 @@ export default function OrderHistoryPage() {
                   </span>
                   {order.deliveryTime && (
                     <p className="text-sm text-gray-600 mt-1">
-                      Livrare: {new Date(order.deliveryTime).toLocaleDateString()}
+                      Delivery: {new Date(order.deliveryTime).toLocaleDateString()}
                     </p>
                   )}
                 </div>
               </div>
 
               <div className="mb-4">
-                <p className="font-medium">Adresă livrare:</p>
+                <p className="font-medium">Delivery Address:</p>
                 <p className="text-gray-600">{order.address}</p>
                 {order.additionalNotes && (
                   <p className="mt-2 text-gray-600">
-                    <span className="font-medium">Note adiționale:</span> {order.additionalNotes}
+                    <span className="font-medium">Additional Notes:</span> {order.additionalNotes}
                   </p>
                 )}
               </div>
 
               <div className="border-t pt-4">
-                <h3 className="font-medium mb-2">Produse:</h3>
+                <h3 className="font-medium mb-2">Products:</h3>
                 <div className="space-y-3">
                   {order.orderItems.map((item) => (
                     <div key={item.id} className="flex justify-between items-center">
@@ -125,7 +125,7 @@ export default function OrderHistoryPage() {
                           />
                         )}
                         <div>
-                          <p className="font-medium">{item.product?.name || 'Produs indisponibil'}</p>
+                          <p className="font-medium">{item.product?.name || 'Product unavailable'}</p>
                           <p className="text-sm text-gray-600">
                             {item.count} × {item.product?.price.toFixed(2)} RON
                           </p>
