@@ -22,23 +22,22 @@ public class OrderController(IOrderRepository repository) : ControllerBase
         return Ok(_repository.GetAll());
     }
 
-    //[Authorize]
-    //[HttpGet("my-orders")]
-    //public ActionResult<IEnumerable<Order>> GetUserOrders()
-    //{
-    //    //var jwtUser = JwtUser.GetFromPrincipal(User);
-    //    ////jwtUser.Id;
+    [Authorize]
+    [HttpGet("my-orders")]
+    public ActionResult<IEnumerable<Order>> GetUserOrders()
+    {
+        try
+        {
+            var jwtUser = JwtUser.GetFromPrincipal(User);
+            var orders = _repository.GetUserOrders(jwtUser.Id);
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "Eroare internă", Details = ex.Message });
+        }
 
-    //    //try
-    //    //{
-    //    //    var orders = _repository.GetUserOrders(userId);
-    //    //    return Ok(orders);
-    //    //}
-    //    //catch (Exception ex)
-    //    //{
-    //    //    return StatusCode(500, new { Message = ex.Message });
-    //    //}
-    //}
+    }
 
     [HttpGet("{id}")]
     public ActionResult<Order> GetById(int id)

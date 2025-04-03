@@ -17,10 +17,12 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 			.ThenInclude(oi => oi.Category)];
 	}
 
-    public IEnumerable<Order> GetUserOrders(string userId)
+    public IEnumerable<Order> GetUserOrders(Guid userId)
     {
+        string userIdString = userId.ToString();
+
         return _context.Orders
-            .Where(o => o.AccountId == userId)
+            .Where(o => o.AccountId == userIdString)
             .Include(o => o.Status)
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)

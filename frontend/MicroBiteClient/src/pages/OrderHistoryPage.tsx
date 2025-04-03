@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { resApi } from "../api";
 import OrderHistorySkeleton from "../components/OrderHistorySkeleton";
+import axios from "axios";
 
 type OrderStatus = {
   id: number;
@@ -41,9 +42,19 @@ export const useOrdersQuery = () => {
   return useQuery<Order[]>({
     queryKey: ['orders'],
     queryFn: async () => {
-      const response = await resApi.get('/order/my-orders');
-      return response.data;
-    }
+      try {
+        const response = await resApi.get('/order/my-orders');
+        return response.data;
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            throw new Error("Autentificare necesară");
+          }
+        }
+        throw error;
+      }
+    },
+    retry: false
   });
 };
 
