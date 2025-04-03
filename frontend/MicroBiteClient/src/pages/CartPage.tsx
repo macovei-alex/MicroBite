@@ -6,11 +6,13 @@ import PageTitle from "../components/PageTitle";
 import axios from "axios";
 import ErrorLabel from "../components/ErrorLabel";
 import { resApi } from "../api";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartPage() {
   const { state, dispatch } = useCartContext();
-  // const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,8 +54,8 @@ export default function CartPage() {
         })),
       });
       dispatch({ type: "CLEAR_CART" });
-      // TODO: Navigate to /orders page after that page is created
-      // navigate("/orders");
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      navigate("/orders");
     } catch (error) {
       if (axios.isAxiosError(error) && typeof error.response?.data === "string") {
         setError(error.response.data);
@@ -65,7 +67,7 @@ export default function CartPage() {
     } finally {
       setIsSaving(false);
     }
-  }, [state, dispatch]);
+  }, [state, dispatch, navigate, queryClient]);
 
   return (
     <div className="p-6 max-w-200 mx-auto">

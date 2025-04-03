@@ -68,7 +68,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 		return order;
 	}
 
-	public Order Add(CreateOrderDto orderDto, Guid accountId)
+	public Order Add(OrderCreateDto orderDto, Guid accountId)
 	{
 		if (orderDto.OrderItems.Count == 0)
 		{

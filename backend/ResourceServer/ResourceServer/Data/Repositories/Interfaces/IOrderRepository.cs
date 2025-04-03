@@ -9,7 +9,7 @@ public interface IOrderRepository
 	Order? GetById(int id);
     IEnumerable<Order> GetUserOrders(Guid userId);
     Order Add(Order order);
-	Order Add(CreateOrderDto orderDto, Guid accountId);
+	Order Add(OrderCreateDto orderDto, Guid accountId);
 	bool Update(int id, Order updatedOrder);
 	bool Delete(int id); //nu avem stergere in cascada , deci trebuie manuala.
 }
