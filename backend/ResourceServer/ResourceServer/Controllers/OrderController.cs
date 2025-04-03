@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using ResourceServer.Data.DTO;
 using ResourceServer.Data.Models;
 using ResourceServer.Data.Repositories;
+using ResourceServer.Data.Security;
 using System.Security.Claims;
 
 namespace ResourceServer.Controllers;
@@ -18,26 +22,23 @@ public class OrderController(IOrderRepository repository) : ControllerBase
         return Ok(_repository.GetAll());
     }
 
-    [Authorize]
-    [HttpGet("my-orders")]
-    public ActionResult<IEnumerable<Order>> GetUserOrders()
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Unauthorized();
-        }
+    //[Authorize]
+    //[HttpGet("my-orders")]
+    //public ActionResult<IEnumerable<Order>> GetUserOrders()
+    //{
+    //    //var jwtUser = JwtUser.GetFromPrincipal(User);
+    //    ////jwtUser.Id;
 
-        try
-        {
-            var orders = _repository.GetUserOrders(userId);
-            return Ok(orders);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { Message = ex.Message });
-        }
-    }
+    //    //try
+    //    //{
+    //    //    var orders = _repository.GetUserOrders(userId);
+    //    //    return Ok(orders);
+    //    //}
+    //    //catch (Exception ex)
+    //    //{
+    //    //    return StatusCode(500, new { Message = ex.Message });
+    //    //}
+    //}
 
     [HttpGet("{id}")]
     public ActionResult<Order> GetById(int id)
@@ -47,10 +48,24 @@ public class OrderController(IOrderRepository repository) : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Order> Create([FromBody] Order order)
+    [Authorize]
+    public ActionResult<Order> Create([FromBody] CreateOrderDto order)
     {
-        var created = _repository.Add(order);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        try
+        {
+            var jwtUser = JwtUser.GetFromPrincipal(User);
+            var created = _repository.Add(order, jwtUser.Id);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return StatusCode(500, "Something went wrong");
+        }
     }
 
     [HttpPut("{id}")]
@@ -64,4 +79,6 @@ public class OrderController(IOrderRepository repository) : ControllerBase
     {
         return _repository.Delete(id) ? NoContent() : NotFound();
     }
+
+
 }
