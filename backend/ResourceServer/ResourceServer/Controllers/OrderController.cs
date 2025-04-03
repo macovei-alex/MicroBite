@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ResourceServer.Data.Models;
 using ResourceServer.Data.Repositories;
+using System.Security.Claims;
 
 namespace ResourceServer.Controllers;
 
@@ -14,6 +16,27 @@ public class OrderController(IOrderRepository repository) : ControllerBase
     public ActionResult<IEnumerable<Order>> GetAll()
     {
         return Ok(_repository.GetAll());
+    }
+
+    [Authorize]
+    [HttpGet("my-orders")]
+    public ActionResult<IEnumerable<Order>> GetUserOrders()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized();
+        }
+
+        try
+        {
+            var orders = _repository.GetUserOrders(userId);
+            return Ok(orders);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
     }
 
     [HttpGet("{id}")]

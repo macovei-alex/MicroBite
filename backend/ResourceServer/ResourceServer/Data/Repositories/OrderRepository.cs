@@ -16,6 +16,17 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
             .ThenInclude(oi => oi.Category)];
     }
 
+    public IEnumerable<Order> GetUserOrders(string userId)
+    {
+        return _context.Orders
+            .Where(o => o.AccountId == userId)
+            .Include(o => o.Status)
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+            .OrderByDescending(o => o.OrderTime)
+            .ToList();
+    }
+
     public Order? GetById(int id)
     {
         return _context.Orders

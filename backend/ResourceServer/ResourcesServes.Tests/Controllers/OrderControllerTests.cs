@@ -147,4 +147,10 @@ public class OrderControllerTests
             OrderTime = DateTime.UtcNow
         }
     ];
+
+    [TestMethod]
+    public void test()
+    {
+        Assert.IsTrue(false);
+    }
 }

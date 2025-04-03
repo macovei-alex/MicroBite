@@ -5,6 +5,7 @@ namespace ResourceServer.Data.Repositories;
 public interface IOrderRepository
 {
     IEnumerable<Order> GetAll();
+    IEnumerable<Order> GetUserOrders(string userId);
     Order? GetById(int id);
     Order Add(Order order);
     bool Update(int id, Order updatedOrder);

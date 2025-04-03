@@ -21,3 +21,11 @@ export const resApi = axios.create({
   baseURL: config.RES_BASE_URL,
   withCredentials: false,
 });
+
+resApi.interceptors.request.use((cfg) => {
+  const token = localStorage.getItem("access_token");
+  if (token) {
+    cfg.headers.Authorization = `Bearer ${token}`;
+  }
+  return cfg;
+});
