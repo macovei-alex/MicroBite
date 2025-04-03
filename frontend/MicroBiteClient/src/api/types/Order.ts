@@ -3,15 +3,15 @@ export type Order = {
   status: OrderStatus;
   accountId: string;
   address: string;
-  orderTime: string;
-  deliveryTime?: string;
+  orderTime: Date;
+  deliveryTime?: Date;
   additionalNotes?: string;
   orderItems: OrderItem[];
 };
 
 export type OrderItem = {
   id: number;
-  product?: Product;
+  product: Product;
   totalPrice: number;
   count: number;
 };

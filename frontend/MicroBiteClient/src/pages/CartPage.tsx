@@ -68,7 +68,7 @@ export default function CartPage() {
   }, [state, dispatch]);
 
   return (
-    <div className="p-5 max-w-200 mx-auto">
+    <div className="p-6 max-w-200 mx-auto">
       <PageTitle text="My Cart" />
       <ErrorLabel error={error} />
 

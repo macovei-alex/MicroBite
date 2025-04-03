@@ -37,12 +37,12 @@ createRoot(document.getElementById("root")!).render(
               <Route index path="/" element={<HomePage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/orders" element={<OrderHistoryPage />} />
               <Route path="/password-reset" element={<PasswordResetPage />} />
               <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
                 <Route path="/menu" element={<MenuPage />} />
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/orders" element={<OrderHistoryPage />} />
               </Route>
               <Route element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}>
                 <Route path="/admin" element={<AdminPage />} />

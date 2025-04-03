@@ -4,7 +4,7 @@ import { authApi } from "../api";
 import ProfileSkeletonLoader from "../profile/components/ProfileSkeletonLoader";
 import ProfileEdit from "../profile/components/ProfileEdit";
 import { AccountInformation } from "../profile/types/AccountInformation";
-import ProfileIcon from "../profile/components/ProfileIcon";
+import ProfileIcon from "../components/ProfileIcon";
 import { useNavigate } from "react-router-dom";
 import NamedField from "../components/NamedField";
 import Button from "../components/Button";

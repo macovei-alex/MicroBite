@@ -1,145 +1,96 @@
-import { useQuery } from "@tanstack/react-query";
-import { resApi } from "../api";
-import OrderHistorySkeleton from "../components/OrderHistorySkeleton";
-import axios from "axios";
-
-type OrderStatus = {
-  id: number;
-  name: string;
-};
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  image?: string;
-  category: {
-    id: number;
-    name: string;
-  };
-};
-
-type OrderItem = {
-  id: number;
-  product?: Product;
-  totalPrice: number;
-  count: number;
-};
-
-type Order = {
-  id: number;
-  status: OrderStatus;
-  accountId: string;
-  address: string;
-  orderTime: string;
-  deliveryTime?: string;
-  additionalNotes?: string;
-  orderItems: OrderItem[];
-};
-
-export const useOrdersQuery = () => {
-  return useQuery<Order[]>({
-    queryKey: ['orders'],
-    queryFn: async () => {
-      try {
-        const response = await resApi.get('/order/my-orders');
-        return response.data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            throw new Error("Authentication required");
-          }
-        }
-        throw error;
-      }
-    },
-    retry: false
-  });
-};
+import OrderHistorySkeleton from "../orders/components/OrderHistorySkeleton";
+import { useOrdersQuery } from "../orders/api/useOrdersQuery";
+import ErrorLabel from "../components/ErrorLabel";
+import PageTitle from "../components/PageTitle";
+import { useMemo } from "react";
+import { defaultProductImage } from "../assets/defaultProductImage";
 
 export default function OrderHistoryPage() {
   const { data: orders, isLoading, error } = useOrdersQuery();
 
-  if (isLoading) return <OrderHistorySkeleton />;
-  
-  if (error) return <div className="p-4 text-red-500">Error loading order history: {error.message}</div>;
+  const dateTimeFormat = useMemo(() => Intl.DateTimeFormat("en-CA"), []);
+
+  if (isLoading) {
+    return <OrderHistorySkeleton />;
+  }
+
+  if (error) {
+    return <ErrorLabel error={error.message} />;
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-blue-500">Order History</h1>
-      
-      {(orders && orders.length === 0) ? (
+      <PageTitle text="My Orders" />
+
+      {orders && orders.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-gray-600">You have no recorded orders</p>
         </div>
       ) : (
         <div className="space-y-6">
           {orders?.map((order) => (
-            <div key={order.id} className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex flex-wrap justify-between items-start mb-4">
-                <div className="mb-2">
-                  <h2 className="text-xl font-semibold">Order #{order.id}</h2>
-                  <p className="text-gray-600">
-                    Date: {new Date(order.orderTime).toLocaleDateString()}
-                  </p>
+            <div
+              key={order.id}
+              className="bg-white border-1 border-blue-500 rounded-lg shadow-lg p-6"
+            >
+              <div className="flex justify-between mb-2 items-center">
+                <h2 className="text-xl font-semibold bg-blue-500 text-white w-fit px-4 py-2 rounded-lg">
+                  Order #{order.id}
+                </h2>
+                <span
+                  className={`px-3 py-1 rounded-full text-lg text-center ${
+                    order.status.name === "Completed"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-yellow-100 text-yellow-800"
+                  }`}
+                >
+                  {order.status.name}
+                </span>
+              </div>
+
+              <div className="flex gap-16 my-4">
+                <div className="flex flex-wrap flex-col items-start gap-2 font-semibold">
+                  <p>Ordered:</p>
+                  {order.deliveryTime && <p>Delivery:</p>}
+                  <p>Delivery Address:</p>
+                  {order.additionalNotes && <p>Additional Notes:</p>}
                 </div>
-                
-                <div className="flex flex-col items-end">
-                  <span className={`px-3 py-1 rounded-full text-sm ${
-                    order.status.name === 'Completed' 
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {order.status.name}
-                  </span>
-                  {order.deliveryTime && (
-                    <p className="text-sm text-gray-600 mt-1">
-                      Delivery: {new Date(order.deliveryTime).toLocaleDateString()}
-                    </p>
-                  )}
+                <div className="flex flex-wrap flex-col items-start gap-2 font-semibold">
+                  <p>{dateTimeFormat.format(order.orderTime)}</p>
+                  {order.deliveryTime && <p>{dateTimeFormat.format(order.deliveryTime)}</p>}
+                  <p>{order.address}</p>
+                  {order.additionalNotes && <p>{order.additionalNotes}</p>}
                 </div>
               </div>
 
-              <div className="mb-4">
-                <p className="font-medium">Delivery Address:</p>
-                <p className="text-gray-600">{order.address}</p>
-                {order.additionalNotes && (
-                  <p className="mt-2 text-gray-600">
-                    <span className="font-medium">Additional Notes:</span> {order.additionalNotes}
-                  </p>
-                )}
-              </div>
-
-              <div className="border-t pt-4">
-                <h3 className="font-medium mb-2">Products:</h3>
+              <div className="border-t pt-4 text-blue-500">
+                <h3 className="mb-2 font-bold">Products:</h3>
                 <div className="space-y-3">
                   {order.orderItems.map((item) => (
                     <div key={item.id} className="flex justify-between items-center">
-                      <div className="flex items-center gap-4">
-                        {item.product?.image && (
-                          <img 
-                            src={item.product.image} 
-                            alt={item.product.name}
-                            className="w-16 h-16 object-contain"
-                          />
-                        )}
+                      <div className="flex items-center gap-4 font-medium">
+                        <img
+                          src={item.product.image || defaultProductImage}
+                          alt={item.product.name}
+                          className="w-24 h-24 object-contain"
+                        />
                         <div>
-                          <p className="font-medium">{item.product?.name || 'Product unavailable'}</p>
-                          <p className="text-sm text-gray-600">
+                          <p>{item.product?.name || "Product unavailable"}</p>
+                          <p className="text-sm text-gray-500">
                             {item.count} × {item.product?.price.toFixed(2)} RON
                           </p>
                         </div>
                       </div>
-                      <p className="font-medium">{item.totalPrice.toFixed(2)} RON</p>
+                      <p className="font-medium text-blue-500">{item.totalPrice.toFixed(2)} RON</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="border-t pt-4 mt-4 flex justify-end">
-                <p className="text-lg font-bold">
-                  Total: {order.orderItems.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2)} RON
+              <div className="border-t pt-4 mt-4 flex justify-between text-lg text-blue-500 font-bold">
+                <p>Total:</p>
+                <p>
+                  {order.orderItems.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2)} RON
                 </p>
               </div>
             </div>
