@@ -1,7 +1,6 @@
 import { authApi } from "../api";
 import { useAuthContext } from "../auth/hooks/useAuthContext";
-import { useCallback, useState } from "react";
-import { useOrderStatusUpdates } from "../cart/hooks/useOrderStatusUpdates";
+import { useState } from "react";
 
 function mapObjectEntries(obj: any, indent = 8): any {
   return Object.entries(obj).map(([key, value]) => {
@@ -29,12 +28,6 @@ function mapObjectEntries(obj: any, indent = 8): any {
 export default function HomePage() {
   const authContext = useAuthContext();
   const [response, setResponse] = useState({});
-
-  const handleOrderStatusUpdated = useCallback((orderId: number, status: string) => {
-    console.log(`Order ( ${orderId} ) status updated to: ${status}`);
-  }, []);
-
-  useOrderStatusUpdates(handleOrderStatusUpdated);
 
   function checkCookies() {
     authApi

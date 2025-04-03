@@ -2,22 +2,52 @@ import OrderHistorySkeleton from "../orders/components/OrderHistorySkeleton";
 import { useOrdersQuery } from "../orders/api/useOrdersQuery";
 import ErrorLabel from "../components/ErrorLabel";
 import PageTitle from "../components/PageTitle";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { defaultProductImage } from "../assets/defaultProductImage";
 import { useProductsQuery } from "../api/hooks/useProductsQuery";
 import { Product } from "../api/types/Product";
+import { useQueryClient } from "@tanstack/react-query";
+import { Order } from "../api/types/Order";
+import { useOrderStatusUpdatesContext } from "../orders/context/useOrderStatusUpdatesContext";
 
 export default function OrderHistoryPage() {
+  const queryClient = useQueryClient();
   const ordersQuery = useOrdersQuery();
   const productsQuery = useProductsQuery();
 
   const dateTimeFormat = useMemo(() => Intl.DateTimeFormat("en-CA"), []);
+
   const productsMap = useMemo(() => {
     if (!productsQuery.data) {
       return new Map<number, Product>();
     }
     return new Map(productsQuery.data.map((p) => [p.id, p]));
   }, [productsQuery.data]);
+
+  const orderStatusContext = useOrderStatusUpdatesContext();
+
+  useEffect(() => {
+    function handleStatusUpdate(orderId: number, status: string) {
+      if (!ordersQuery.data) {
+        return;
+      }
+      queryClient.setQueryData<Order[]>(["orders"], (oldData) => {
+        const updatedOrders = oldData?.map((order) => {
+          if (order.id === orderId) {
+            return { ...order, status };
+          }
+          return order;
+        });
+        return updatedOrders;
+      });
+    }
+
+    orderStatusContext.observable.subscribe(handleStatusUpdate);
+
+    return () => {
+      orderStatusContext.observable.unsubscribe(handleStatusUpdate);
+    };
+  }, [orderStatusContext.observable, queryClient, ordersQuery.data]);
 
   const isLoading = ordersQuery.isLoading || productsQuery.isLoading;
   const error = ordersQuery.error || productsQuery.error;
