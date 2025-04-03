@@ -1,6 +1,6 @@
 ﻿namespace ResourceServer.Data.DTO;
 
-public class CreateOrderDto
+public class OrderCreateDto
 {
 	public required string Address { get; set; }
 	public string? AdditionalNotes { get; set; }

@@ -65,9 +65,26 @@ public class OrderControllerTests
 	}
 
 	[TestMethod]
+	public void GetUserOrders_ShouldReturnOkResult_WhenUserOrdersExist()
+	{
+		var order = GetOrder();
+		List<OrderGetDto> expectedOrders = [GetOrderGetDto()];
+		_repository.GetUserOrders(Guid.Parse(order.AccountId)).Returns([order]);
+		SetJwtUser(_controller, Guid.Parse(order.AccountId));
+
+		var actionResult = _controller.GetUserOrders();
+		var okResult = actionResult.Result as OkObjectResult;
+
+		Assert.IsNotNull(okResult, "Expected an OkObjectResult");
+		var returnedOrders = (okResult.Value as IEnumerable<OrderGetDto>)!.ToList();
+		Assert.IsNotNull(returnedOrders, "Expected a list of Order");
+		CollectionAssert.AreEqual(expectedOrders, returnedOrders);
+	}
+
+	[TestMethod]
 	public void Create_ShouldReturnCreatedAtActionResult_WhenOrderCreated()
 	{
-		var newOrder = GetCreateOrder();
+		var newOrder = GetOrderCreateDto();
 		var createdOrder = GetOrder();
 		_repository.Add(newOrder, Guid.Parse(createdOrder.AccountId)).Returns(createdOrder);
 
@@ -125,6 +142,8 @@ public class OrderControllerTests
 		Assert.IsInstanceOfType<NotFoundResult>(result, "Expected a NotFoundResult");
 	}
 
+	private static readonly DateTime ConstantNow = DateTime.UtcNow;
+
 	private static Order GetOrder() => GetOrders().First();
 
 	private static List<Order> GetOrders() =>
@@ -139,7 +158,7 @@ public class OrderControllerTests
 			},
 			AccountId = "b495d8c6-46ed-470d-ba20-507cd1e4e509",
 			Address = "123 Main St",
-			OrderTime = DateTime.UtcNow
+			OrderTime = ConstantNow
 		},
 		new Order
 		{
@@ -151,44 +170,73 @@ public class OrderControllerTests
 			},
 			AccountId = "aa6e7309-d53c-481e-b179-e13fdfaf6c47",
 			Address = "456 Elm St",
-			OrderTime = DateTime.UtcNow
+			OrderTime = ConstantNow
 		}
 	];
 
-	private static CreateOrderDto GetCreateOrder() => GetCreateOrders().First();
+	private static OrderCreateDto GetOrderCreateDto() => GetOrdersCreateDto().First();
 
-	private static List<CreateOrderDto> GetCreateOrders() =>
+	private static List<OrderCreateDto> GetOrdersCreateDto() =>
 	[
-		new CreateOrderDto
+		new OrderCreateDto
 		{
 			OrderItems = [],
 			Address = "123 Main St",
 		},
-		new CreateOrderDto
+		new OrderCreateDto
 		{
 			OrderItems = [],
 			Address = "456 Elm St"
 		}
 	];
 
-	private static void SetJwtUser(ControllerBase controller)
+	private static OrderGetDto GetOrderGetDto() => GetOrdersGetDto().First();
+
+	private static List<OrderGetDto> GetOrdersGetDto() =>
+	[
+		new OrderGetDto
+		{
+			Id = 1,
+			AccountId = Guid.Parse("b495d8c6-46ed-470d-ba20-507cd1e4e509"),
+			Status = "Pending",
+			Address = "123 Main St",
+			OrderTime = ConstantNow,
+			OrderItems = []
+		},
+		new OrderGetDto
+		{
+			Id = 2,
+			AccountId = Guid.Parse("aa6e7309-d53c-481e-b179-e13fdfaf6c47"),
+			Status = "Pending",
+			Address = "456 Elm St",
+			OrderTime = ConstantNow,
+			OrderItems = []
+		}
+	];
+
+	private static void SetJwtUser(ControllerBase controller, Guid accountId)
 	{
 		var claims = new List<Claim>
 		{
 			new(nameof(JwtUser), JsonSerializer.Serialize(new JwtUser
 			{
-				Id = Guid.Parse(GetOrder().AccountId),
+				Id = accountId,
 				Issuer = "",
 				Audience = "",
 				Role = "customer",
-				NotBefore = DateTime.UtcNow,
-				IssuedAt = DateTime.UtcNow,
-				ExpiresAt = DateTime.UtcNow,
+				NotBefore = ConstantNow,
+				IssuedAt = ConstantNow,
+				ExpiresAt = ConstantNow,
 			}))
 		};
 		var identity = new ClaimsIdentity(claims, "TestAuthType");
 		var principal = new ClaimsPrincipal(identity);
 		var httpContext = new DefaultHttpContext { User = principal };
 		controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+	}
+
+	private static void SetJwtUser(ControllerBase controller)
+	{
+		SetJwtUser(controller, Guid.Parse(GetOrder().AccountId));
 	}
 }

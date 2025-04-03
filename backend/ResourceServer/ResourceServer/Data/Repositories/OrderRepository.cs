@@ -17,15 +17,28 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 			.ThenInclude(oi => oi.Category)];
 	}
 
-	public Order? GetById(int id)
-	{
-		return _context.Orders
-			.Include(o => o.Status)
-			.Include(o => o.OrderItems)
-			.ThenInclude(oi => oi.Product)
-			.ThenInclude(oi => oi.Category)
-			.FirstOrDefault(o => o.Id == id);
-	}
+    public IEnumerable<Order> GetUserOrders(Guid userId)
+    {
+        string userIdString = userId.ToString();
+
+        return _context.Orders
+            .Where(o => o.AccountId == userIdString)
+            .Include(o => o.Status)
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+            .OrderByDescending(o => o.OrderTime)
+            .ToList();
+    }
+
+    public Order? GetById(int id)
+    {
+        return _context.Orders
+            .Include(o => o.Status)
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Product)
+            .ThenInclude(oi=> oi.Category)
+            .FirstOrDefault(o => o.Id == id);
+    }
 
 	public Order Add(Order order)
 	{
@@ -55,7 +68,7 @@ public class OrderRepository(AppDbContext context) : IOrderRepository
 		return order;
 	}
 
-	public Order Add(CreateOrderDto orderDto, Guid accountId)
+	public Order Add(OrderCreateDto orderDto, Guid accountId)
 	{
 		if (orderDto.OrderItems.Count == 0)
 		{

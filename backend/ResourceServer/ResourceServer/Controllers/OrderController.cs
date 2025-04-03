@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using ResourceServer.Data.DTO;
 using ResourceServer.Data.Models;
@@ -20,6 +19,45 @@ public class OrderController(IOrderRepository repository) : ControllerBase
 		return Ok(_repository.GetAll());
 	}
 
+	[Authorize]
+	[HttpGet("my-orders")]
+	public ActionResult<IEnumerable<OrderGetDto>> GetUserOrders()
+	{
+		try
+		{
+			var jwtUser = JwtUser.GetFromPrincipal(User);
+			var orders = _repository.GetUserOrders(jwtUser.Id);
+			var ordersDto = orders.Select(o =>
+			{
+				return new OrderGetDto
+				{
+					Id = o.Id,
+					AccountId = jwtUser.Id,
+					Status = o.Status.Name,
+					Address = o.Address,
+					OrderTime = o.OrderTime,
+					DeliveryTime = o.DeliveryTime,
+					AdditionalNotes = o.AdditionalNotes,
+					OrderItems = o.OrderItems
+						.Where(oi => oi.Product != null)
+						.Select(oi => new OrderGetDto.Item
+						{
+							ProductId = oi.Product!.Id,
+							Quantity = oi.Count,
+							TotalPrice = oi.TotalPrice
+						})
+						.ToList()
+				};
+			});
+			return Ok(ordersDto);
+		}
+		catch (Exception ex)
+		{
+			return StatusCode(500, new { Message = "Eroare internă", Details = ex.Message });
+		}
+
+	}
+
 	[HttpGet("{id}")]
 	public ActionResult<Order> GetById(int id)
 	{
@@ -29,7 +67,7 @@ public class OrderController(IOrderRepository repository) : ControllerBase
 
 	[HttpPost]
 	[Authorize]
-	public ActionResult<Order> Create([FromBody] CreateOrderDto order)
+	public ActionResult<Order> Create([FromBody] OrderCreateDto order)
 	{
 		try
 		{
@@ -44,7 +82,7 @@ public class OrderController(IOrderRepository repository) : ControllerBase
 		catch (Exception ex)
 		{
 			Console.WriteLine(ex);
-			return StatusCode(500, "Something went wrong");
+			return StatusCode(500, "Something went wrong");
 		}
 	}
 
@@ -59,4 +97,6 @@ public class OrderController(IOrderRepository repository) : ControllerBase
 	{
 		return _repository.Delete(id) ? NoContent() : NotFound();
 	}
+
+
 }
