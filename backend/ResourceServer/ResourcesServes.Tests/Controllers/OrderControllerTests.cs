@@ -125,12 +125,6 @@ public class OrderControllerTests
 		Assert.IsInstanceOfType<NotFoundResult>(result, "Expected a NotFoundResult");
 	}
 
-    [TestMethod]
-    public void test()
-    {
-        Assert.IsTrue(false);
-    }
-
 	private static Order GetOrder() => GetOrders().First();
 
 	private static List<Order> GetOrders() =>
