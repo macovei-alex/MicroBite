@@ -4,12 +4,13 @@ import { Category } from "../api/types/Category";
 import { Product } from "../api/types/Product";
 import ProductCard from "../menu/components/ProductCard";
 import MenuSkeleton from "../menu/components/MenuSkeleton";
-import { useCart } from "../cart/context/useCartContext";
+import { useCartContext } from "../cart/context/useCartContext";
+import PageTitle from "../components/PageTitle";
 
 export default function MenuPage() {
   const productsQuery = useProductsQuery();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const { dispatch } = useCart();
+  const { dispatch } = useCartContext();
 
   const categories = useMemo<Category[]>(() => {
     if (!productsQuery.data) return [];
@@ -38,7 +39,6 @@ export default function MenuPage() {
         name: product.name,
         price: product.price,
         quantity: quantity,
-        ...(product.image && { image: product.image }),
       },
     });
   };
@@ -53,8 +53,7 @@ export default function MenuPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto text-blue-500">
-      <h1 className="text-3xl font-bold mb-4 text-center">Menu</h1>
-
+      <PageTitle text="Menu" />
       <div className="flex gap-4 mb-6 justify-center">
         <button
           className={`px-4 py-2 rounded-md font-medium border transition duration-500 cursor-pointer ${
