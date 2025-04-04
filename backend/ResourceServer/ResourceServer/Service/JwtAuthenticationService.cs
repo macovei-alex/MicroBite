@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ResourceServer.Controllers;
 using ResourceServer.Data.Security;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -38,6 +38,11 @@ public class JwtAuthenticationService(
 
 	protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
 	{
+		if (Request.Path.Value?.Contains(NotificationsHub.ApiRoute) ?? false)
+		{
+			return AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(), ""));
+		}
+
 		var authorizationHeader = Request.Headers.Authorization.FirstOrDefault();
 		if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
 		{

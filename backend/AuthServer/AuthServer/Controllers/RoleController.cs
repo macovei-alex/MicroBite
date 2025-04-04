@@ -2,6 +2,8 @@
 using AuthServer.Data.Models;
 using AuthServer.Data.Repositories;
 using AuthServer.Data.Dto;
+using Microsoft.EntityFrameworkCore;
+using AuthServer.Utils;
 
 namespace AuthServer.Controllers;
 
@@ -27,7 +29,7 @@ public class RoleController(RoleRepository repository) : ControllerBase
 	[HttpPost]
 	public async Task<ActionResult<Role>> Create([FromBody] CreateRoleDto roleDto)
 	{
-		var createdRole = await _repository.AddAsync(new Role { Name = roleDto.Name });
+		var createdRole = await _repository.AddAsync(new Role { Name = Functions.ToSnakeCase(roleDto.Name) });
 		return CreatedAtAction(nameof(GetById), new { id = createdRole.Id }, createdRole);
 	}
 

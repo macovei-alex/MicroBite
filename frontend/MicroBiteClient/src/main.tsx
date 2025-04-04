@@ -15,6 +15,7 @@ import AdminPage from "./pages/AdminPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import CartProvider from "./cart/context/CartContextProvider.tsx";
 import OrderHistoryPage from "./pages/OrderHistoryPage.tsx";
+import OrderStatusUpdatesContextProvider from "./orders/context/OrderStatusUpdatesContextProvider.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,23 +33,27 @@ createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <AuthContextProvider>
           <CartProvider>
-            <Header />
-            <Routes>
-              <Route index path="/" element={<HomePage />} />
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/password-reset" element={<PasswordResetPage />} />
-              <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
-                <Route path="/menu" element={<MenuPage />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/orders" element={<OrderHistoryPage />} />
-              </Route>
-              <Route element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}>
-                <Route path="/admin" element={<AdminPage />} />
-              </Route>
-              <Route path="*" element={<div>404 Not Found</div>} />
-            </Routes>
+            <OrderStatusUpdatesContextProvider>
+              <Header />
+              <Routes>
+                <Route index path="/" element={<HomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/password-reset" element={<PasswordResetPage />} />
+                <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
+                  <Route path="/menu" element={<MenuPage />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/orders" element={<OrderHistoryPage />} />
+                </Route>
+                <Route
+                  element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}
+                >
+                  <Route path="/admin" element={<AdminPage />} />
+                </Route>
+                <Route path="*" element={<div>404 Not Found</div>} />
+              </Routes>
+            </OrderStatusUpdatesContextProvider>
           </CartProvider>
         </AuthContextProvider>
       </QueryClientProvider>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ResourceServer.Data.DTO;
 using ResourceServer.Data.Models;
 using ResourceServer.Data.Repositories;
@@ -9,9 +10,14 @@ namespace ResourceServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class OrderController(IOrderRepository repository) : ControllerBase
+public class OrderController(
+	IOrderRepository repository,
+	IOrderStatusRepository statusRepository,
+	IHubContext<NotificationsHub> hubContext) : ControllerBase
 {
 	private readonly IOrderRepository _repository = repository;
+	private readonly IOrderStatusRepository _statusRepository = statusRepository;
+	private readonly IHubContext<NotificationsHub> _hubContext = hubContext;
 
 	[HttpGet]
 	public ActionResult<IEnumerable<Order>> GetAll()
@@ -98,5 +104,32 @@ public class OrderController(IOrderRepository repository) : ControllerBase
 		return _repository.Delete(id) ? NoContent() : NotFound();
 	}
 
+	[HttpPut("status/{id}")]
+	[Authorize(Roles = "admin")]
+	public IActionResult UpdateStatus(int id, [FromBody] UpdateOrderStatusDto statusDto)
+	{
+		try
+		{
+			var order = _repository.GetById(id);
+			if (order == null)
+			{
+				return BadRequest($"No order found for id ( {id} )");
+			}
+			var status = _statusRepository.GetByName(statusDto.Status);
+			if (status == null)
+			{
+				return BadRequest($"No status found for name ( {statusDto.Status} )");
+			}
 
+			order.Status = status;
+			_repository.Update(order.Id, order);
+			_hubContext.Clients.All.SendAsync("OrderStatusUpdated", order.Id, status.Name);
+
+			return Ok(order);
+		}
+		catch (ArgumentException ex)
+		{
+			return BadRequest(ex.Message);
+		}
+	}
 }
