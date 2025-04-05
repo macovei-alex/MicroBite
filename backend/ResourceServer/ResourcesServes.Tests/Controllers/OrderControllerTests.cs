@@ -77,7 +77,7 @@ public class OrderControllerTests
 		_repository.GetUserOrders(Guid.Parse(order.AccountId)).Returns([order]);
 		SetJwtUser(_controller, Guid.Parse(order.AccountId));
 
-		var actionResult = _controller.GetUserOrders();
+		var actionResult = _controller.GetOrders(Guid.Parse(order.AccountId));
 		var okResult = actionResult.Result as OkObjectResult;
 
 		Assert.IsNotNull(okResult, "Expected an OkObjectResult");

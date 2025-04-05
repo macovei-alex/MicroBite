@@ -27,7 +27,7 @@ public class OrderController(
 
 	[HttpGet("user/{userId}")]
 	[Authorize]
-	public ActionResult<IEnumerable<OrderGetDto>> GetUserOrdersByAdmin(Guid userId)
+	public ActionResult<IEnumerable<OrderGetDto>> GetOrders(Guid userId)
 	{
 		try
 		{

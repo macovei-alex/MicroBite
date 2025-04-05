@@ -31,4 +31,3 @@ export default function SearchBar({ onTextChange, className }: SearchBarProps) {
     </div>
   );
 }
-
