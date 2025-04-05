@@ -16,6 +16,7 @@ import CartPage from "./pages/CartPage.tsx";
 import CartProvider from "./cart/context/CartContextProvider.tsx";
 import OrderHistoryPage from "./pages/OrderHistoryPage.tsx";
 import OrderStatusUpdatesContextProvider from "./orders/context/OrderStatusUpdatesContextProvider.tsx";
+import AdminUserOrdersPage from "./pages/AdminUserOrdersPage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ createRoot(document.getElementById("root")!).render(
                   element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}
                 >
                   <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/admin/orders" element={<AdminUserOrdersPage />} />
                 </Route>
                 <Route path="*" element={<div>404 Not Found</div>} />
               </Routes>

@@ -25,43 +25,26 @@ public class OrderController(
 		return Ok(_repository.GetAll());
 	}
 
+	[HttpGet("user/{userId}")]
 	[Authorize]
-	[HttpGet("my-orders")]
-	public ActionResult<IEnumerable<OrderGetDto>> GetUserOrders()
+	public ActionResult<IEnumerable<OrderGetDto>> GetOrders(Guid userId)
 	{
 		try
 		{
 			var jwtUser = JwtUser.GetFromPrincipal(User);
-			var orders = _repository.GetUserOrders(jwtUser.Id);
-			var ordersDto = orders.Select(o =>
+			if (jwtUser.Id != userId && jwtUser.Role != "admin")
 			{
-				return new OrderGetDto
-				{
-					Id = o.Id,
-					AccountId = jwtUser.Id,
-					Status = o.Status.Name,
-					Address = o.Address,
-					OrderTime = o.OrderTime,
-					DeliveryTime = o.DeliveryTime,
-					AdditionalNotes = o.AdditionalNotes,
-					OrderItems = o.OrderItems
-						.Where(oi => oi.Product != null)
-						.Select(oi => new OrderGetDto.Item
-						{
-							ProductId = oi.Product!.Id,
-							Quantity = oi.Count,
-							TotalPrice = oi.TotalPrice
-						})
-						.ToList()
-				};
-			});
+				return Forbid();
+			}
+
+			var orders = _repository.GetUserOrders(userId);
+			var ordersDto = MapOrdersToDto(orders, userId);
 			return Ok(ordersDto);
 		}
 		catch (Exception ex)
 		{
 			return StatusCode(500, new { Message = "Eroare internă", Details = ex.Message });
 		}
-
 	}
 
 	[HttpGet("{id}")]
@@ -131,5 +114,27 @@ public class OrderController(
 		{
 			return BadRequest(ex.Message);
 		}
+	}
+
+	private static IEnumerable<OrderGetDto> MapOrdersToDto(IEnumerable<Order> orders, Guid accountId)
+	{
+		return orders.Select(o => new OrderGetDto
+		{
+			Id = o.Id,
+			AccountId = accountId,
+			Status = o.Status?.Name,
+			Address = o.Address,
+			OrderTime = o.OrderTime,
+			DeliveryTime = o.DeliveryTime,
+			AdditionalNotes = o.AdditionalNotes,
+			OrderItems = [.. o.OrderItems
+				.Where(oi => oi.Product != null)
+				.Select(oi => new OrderGetDto.Item
+				{
+					ProductId = oi.Product.Id,
+					Quantity = oi.Count,
+					TotalPrice = oi.TotalPrice
+				})]
+		});
 	}
 }
