@@ -57,9 +57,6 @@ export default function Header() {
             >
               <DropDownLink to="/profile" text="Profile" onClick={() => setIsDropdownOpen(false)} />
               <DropDownLink to="/orders" text="Orders" onClick={() => setIsDropdownOpen(false)} />
-              {authContext.jwtClaims?.role === "admin" && (
-                <DropDownLink to="/adminuserorderspage" text="Admin Orders" onClick={() => setIsDropdownOpen(false)} />
-              )}
               <DropDownLink
                 to="/login"
                 text="Change Account"

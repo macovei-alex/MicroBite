@@ -46,12 +46,12 @@ createRoot(document.getElementById("root")!).render(
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/orders" element={<OrderHistoryPage />} />
-                  <Route path="/adminuserorderspage" element={<AdminUserOrdersPage />} />
                 </Route>
                 <Route
                   element={<AuthProtectedOutlet allowedRoles={["admin"]} redirectTo="/login" />}
                 >
                   <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/admin/orders" element={<AdminUserOrdersPage />} />
                 </Route>
                 <Route path="*" element={<div>404 Not Found</div>} />
               </Routes>

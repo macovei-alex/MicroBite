@@ -4,8 +4,11 @@ import UpdateProductDialog from "../admin/products/components/UpdateProductDialo
 import DeleteProductDialog from "../admin/products/components/DeleteProductDialog";
 import CreateProductBulkDialog from "../admin/products/components/CreateProductBulkDialog";
 import { DialogName } from "../admin/products/types/DialogName";
+import { useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 
 export default function AdminPage() {
+  const navigate = useNavigate();
   const [activeDialog, setActiveDialog] = useState<DialogName | null>(null);
 
   const closeDialog = useCallback(() => {
@@ -21,31 +24,31 @@ export default function AdminPage() {
       >
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Admin Page</h1>
         <div className="space-y-4 w-full max-w-sm">
-          <button
+          <Button
+            text="Create Product"
             onClick={() => setActiveDialog("CreateProduct")}
-            className="w-full block bg-blue-600 text-white text-center py-3 rounded-lg shadow-md hover:bg-blue-500 transition duration-500 cursor-pointer"
-          >
-            Create Product
-          </button>
-          <button
+            className="!bg-green-600 hover:!bg-green-500"
+          />
+          <Button
+            text="Update Product"
             onClick={() => setActiveDialog("UpdateProduct")}
-            className="w-full block bg-yellow-600 text-white text-center py-3 rounded-lg shadow-md hover:bg-yellow-500 transition duration-500 cursor-pointer"
-          >
-            Update Product
-          </button>
-          <button
+            className="!bg-yellow-600 hover:!bg-yellow-500"
+          />
+          <Button
+            text="Delete Product"
             onClick={() => setActiveDialog("DeleteProduct")}
-            className="w-full block bg-red-600 text-white text-center py-3 rounded-lg shadow-md hover:bg-red-500 transition duration-500 cursor-pointer"
-          >
-            Delete Product
-          </button>
-          <button
+            className="!bg-red-600 hover:!bg-red-500"
+          />
+          <Button
+            text="Create Products in Bulk"
             onClick={() => setActiveDialog("CreateProductBulk")}
-            className="w-full block bg-blue-600 text-white text-center py-3 rounded-lg shadow-md
-            hover:bg-blue-500 transition duration-500 cursor-pointer"
-          >
-            Create Products in Bulk
-          </button>
+            className="!bg-green-600 hover:!bg-green-500"
+          />
+          <Button
+            text="View Orders"
+            className="!bg-blue-600 hover:!bg-blue-500"
+            onClick={() => navigate("/admin/orders")}
+          />
         </div>
       </div>
 
