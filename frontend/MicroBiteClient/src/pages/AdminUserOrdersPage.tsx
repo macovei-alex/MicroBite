@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo } from "react";
-import { useQuery} from "@tanstack/react-query";
+import { useState, useEffect, useMemo, useContext } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { authApi, resApi } from "../api";
 import { Order } from "../api/types/Order";
 import { useProductsQuery } from "../api/hooks/useProductsQuery";
@@ -11,6 +11,8 @@ import { Account } from "../api/types/Account";
 import Button from "../components/Button";
 import { Product } from "../api/types/Product";
 import { defaultProductImage } from "../assets/defaultProductImage";
+import { AuthContext } from "../auth/types/AuthContext"; // Import your AuthContext
+import { Navigate } from 'react-router-dom'; // Import Navigate for redirection
 
 async function fetchAllAccounts(): Promise<Account[]> {
   const response = await authApi.get<Account[]>("/Account");
@@ -53,16 +55,16 @@ function OrderDetails({ orders, productsMap, dateTimeFormat }: {
 
           <div className="flex gap-16 my-4">
             <div className="flex flex-wrap flex-col items-start gap-2 font-semibold">
-            <p>
+              <p>
                 Ordered: {order.orderTime ? dateTimeFormat.format(new Date(order.orderTime)) : 'N/A'}
-                </p>
-                {order.deliveryTime && (
+              </p>
+              {order.deliveryTime && (
                 <p>
-                    Delivery: {order.deliveryTime ? dateTimeFormat.format(new Date(order.deliveryTime)) : 'N/A'}
+                  Delivery: {order.deliveryTime ? dateTimeFormat.format(new Date(order.deliveryTime)) : 'N/A'}
                 </p>
-                )}
-                <p>Delivery Address: {order.address}</p>
-                {order.additionalNotes && <p>Additional Notes: {order.additionalNotes}</p>}
+              )}
+              <p>Delivery Address: {order.address}</p>
+              {order.additionalNotes && <p>Additional Notes: {order.additionalNotes}</p>}
             </div>
           </div>
 
@@ -111,6 +113,12 @@ function OrderDetails({ orders, productsMap, dateTimeFormat }: {
 }
 
 export default function AdminUserOrdersPage() {
+  const authContext = useContext(AuthContext);
+
+  if (authContext == null || authContext.jwtClaims?.role !== "admin") {
+    return <Navigate to="/unauthorized" replace />;
+  }
+
   const allAccountsQuery = useQuery({
     queryKey: ["admin", "accounts"],
     queryFn: fetchAllAccounts,
@@ -122,6 +130,13 @@ export default function AdminUserOrdersPage() {
   const [errorOrders, setErrorOrders] = useState<Record<string, any>>({});
 
   const orderStatusContext = useOrderStatusUpdatesContext();
+  const dateTimeFormat = useMemo(() => Intl.DateTimeFormat("en-CA"), []);
+  const productsMap = useMemo(() => {
+    if (!productsQuery.data) {
+      return new Map<number, Product>();
+    }
+    return new Map(productsQuery.data.map((p) => [p.id, p]));
+  }, [productsQuery.data]);
 
   useEffect(() => {
     function handleStatusUpdate(orderId: number, status: string) {
@@ -174,15 +189,6 @@ export default function AdminUserOrdersPage() {
   }
 
   const accounts = allAccountsQuery.data;
-
-  const dateTimeFormat = useMemo(() => Intl.DateTimeFormat("en-CA"), []);
-
-  const productsMap = useMemo(() => {
-    if (!productsQuery.data) {
-      return new Map<number, Product>();
-    }
-    return new Map(productsQuery.data.map((p) => [p.id, p]));
-  }, [productsQuery.data]);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
