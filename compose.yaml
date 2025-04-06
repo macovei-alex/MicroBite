@@ -1,0 +1,12 @@
+services:
+  mb-client:
+    build:
+      context: ./frontend/MicroBiteClient
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend/MicroBiteClient:/app
+      - /app/node_modules
+    environment:
+      VITE_AUTH_BASE_URL: http://localhost:5095/api
+      VITE_RES_BASE_URL: http://localhost:5247/api
