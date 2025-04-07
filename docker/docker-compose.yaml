@@ -8,12 +8,12 @@ services:
       - ./frontend/MicroBiteClient:/app
       - /app/node_modules
     environment:
-      VITE_AUTH_BASE_URL: http://auth-api:5095/api
-      VITE_RES_BASE_URL: http://res-api:5247/api
+      VITE_AUTH_BASE_URL: http://localhost:5095/api
+      VITE_RES_BASE_URL: http://localhost:5247/api
     depends_on:
       - auth-api
       - res-api
-
+  
   auth-api:
     build:
       context: ./backend/AuthServer
@@ -22,24 +22,10 @@ services:
     volumes:
       - ./backend/AuthServer/dataProtectionKeys:/root/.aspnet/DataProtection-Keys
     environment:
-      ConnectionStrings__ResourceDb: Host=auth-db;Port=5432;Database=MicroBiteAuth;Username=postgres;Password=1q2w3e
+      ConnectionStrings__AuthDb: Host=auth-db;Port=5432;Database=MicroBiteAuth;Username=postgres;Password=1q2w3e
     depends_on:
       - auth-db
   
-  res-api:
-    build:
-      context: ./backend/ResourceServer/ResourceServer
-    ports:
-      - "5247:5247"
-    volumes:
-      - ./backend/ResourceServer/dataProtectionKeys:/root/.aspnet/DataProtection-Keys
-    environment:
-      ConnectionStrings__ResourceDb: Host=res-db;Port=5432;Database=MicroBiteResources;Username=postgres;Password=1q2w3e
-      JwtSettings__JwksUrl: http://auth-api:5095/api/.well-known/jwks.json
-    depends_on:
-      - res-db
-      - auth-api
-
   auth-db:
     image: postgres:16
     environment:
@@ -47,7 +33,21 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1q2w3e
     ports:
-      - "5432:5432"
+      - "15432:5432"
+  
+  res-api:
+    build:
+      context: ./backend/ResourceServer
+    ports:
+      - "5247:5247"
+    volumes:
+      - ./backend/ResourceServer/dataProtectionKeys:/root/.aspnet/DataProtection-Keys
+    environment:
+      ConnectionStrings__ResourceDb: Host=res-db;Port=5432;Database=MicroBiteResources;Username=postgres;Password=1q2w3e
+      JwtSettings__JwksUrl: http://localhost:5095/api/.well-known/jwks.json
+    depends_on:
+      - res-db
+      - auth-api
   
   res-db:
     image: postgres:16
@@ -56,7 +56,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1q2w3e
     ports:
-      - "5433:5432"
+      - "15433:5432"
 
 networks:
   default:
