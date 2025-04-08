@@ -34,6 +34,9 @@ builder.Services.AddSingleton<JwtService>();
 builder.Services.AddScoped<IClaimsTransformation, JwtClaimsTransformer>();
 builder.Services.AddScoped<AuthService>();
 
+builder.Services.AddSingleton<IBackupService, PostgresAuthBackupService>();
+builder.Services.AddHostedService<BackupSchedulerService>();
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowAnyOrigin",
