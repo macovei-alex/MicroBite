@@ -9,13 +9,13 @@ namespace ResourceServer.Service
         Task CleanOldBackups(int daysToKeep);
     }
 
-    public class PostgresBackupService : IBackupService
+    public class PostgresResBackupService : IBackupService
     {
         private readonly IConfiguration _config;
-        private readonly ILogger<PostgresBackupService> _logger;
-        private readonly string _backupDir = Path.Combine(Directory.GetCurrentDirectory(), "backups");
+        private readonly ILogger<PostgresResBackupService> _logger;
+        private readonly string _backupDir = Path.Combine(Directory.GetCurrentDirectory(), "res_backups");
 
-        public PostgresBackupService(IConfiguration config, ILogger<PostgresBackupService> logger)
+        public PostgresResBackupService(IConfiguration config, ILogger<PostgresResBackupService> logger)
         {
             _config = config;
             _logger = logger;
@@ -28,7 +28,7 @@ namespace ResourceServer.Service
             var builder = new NpgsqlConnectionStringBuilder(connectionString);
 
             var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            var backupFile = Path.Combine(_backupDir, $"backup_{timestamp}.sql");
+            var backupFile = Path.Combine(_backupDir, $"res_backup_{timestamp}.dump");
 
             var processInfo = new ProcessStartInfo
             {
@@ -43,22 +43,23 @@ namespace ResourceServer.Service
 
             try
             {
-                using var process = Process.Start(processInfo);
+                using var process = Process.Start(processInfo)
+                    ?? throw new Exception("Failed to create the database backup process");
                 string error = await process.StandardError.ReadToEndAsync();
                 await process.WaitForExitAsync();
 
                 if (process.ExitCode != 0)
                 {
-                    _logger.LogError("Backup failed: {Error}", error);
-                    throw new Exception($"Backup failed: {error}");
+                    _logger.LogError("Res backup failed: {Error}", error);
+                    throw new Exception($"Res backup failed: {error}");
                 }
 
-                _logger.LogInformation("Backup created: {BackupFile}", backupFile);
+                _logger.LogInformation("Res backup created: {BackupFile}", backupFile);
                 return backupFile;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Backup error");
+                _logger.LogError(ex, "Res backup error");
                 throw;
             }
         }
@@ -71,7 +72,7 @@ namespace ResourceServer.Service
                 if (File.GetLastWriteTime(file) < cutoff)
                 {
                     File.Delete(file);
-                    _logger.LogInformation("Deleted old backup: {File}", file);
+                    _logger.LogInformation("Deleted old res backup: {File}", file);
                 }
             }
             return Task.CompletedTask;

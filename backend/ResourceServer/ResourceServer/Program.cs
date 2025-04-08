@@ -28,7 +28,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 
-builder.Services.AddSingleton<IBackupService, PostgresBackupService>();
+builder.Services.AddSingleton<IBackupService, PostgresResBackupService>();
 builder.Services.AddHostedService<BackupSchedulerService>();
 
 builder.Services.AddSingleton<JwtKeysService>();

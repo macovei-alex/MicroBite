@@ -28,7 +28,7 @@ namespace AuthServer.Service
             var builder = new NpgsqlConnectionStringBuilder(connectionString);
 
             var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            var backupFile = Path.Combine(_backupDir, $"auth_backup_{timestamp}.sql");
+            var backupFile = Path.Combine(_backupDir, $"auth_backup_{timestamp}.dump");
 
             var processInfo = new ProcessStartInfo
             {
@@ -43,7 +43,8 @@ namespace AuthServer.Service
 
             try
             {
-                using var process = Process.Start(processInfo);
+                using var process = Process.Start(processInfo)
+                    ?? throw new Exception("Failed to create the database backup process");
                 string error = await process.StandardError.ReadToEndAsync();
                 await process.WaitForExitAsync();
 
