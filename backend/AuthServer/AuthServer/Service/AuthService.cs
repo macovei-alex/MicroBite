@@ -11,15 +11,10 @@ public class AuthService(AccountRepository accountRepository, JwtService jwtServ
 
 	public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload)
 	{
-		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result;
-		if (account == null)
-		{
-			throw new ArgumentException("No user account matched the provided credentials");
-		}
+		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result ?? throw new ArgumentException("No user account matched the provided credentials");
+
 		if (!Argon2.Verify(account.PasswordHash, loginPayload.Password))
-		{
 			throw new ArgumentException("Incorrect username or password");
-		}
 
 		var accessToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay);
 		var refreshToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay);

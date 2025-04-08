@@ -11,9 +11,7 @@ public class JwtClaimsTransformer : IClaimsTransformation
 	public Task<ClaimsPrincipal> TransformAsync(ClaimsPrincipal principal)
 	{
 		if (principal.Identity is not ClaimsIdentity identity || !identity.IsAuthenticated)
-		{
 			return Task.FromResult(principal);
-		}
 
 		try
 		{
@@ -30,4 +28,3 @@ public class JwtClaimsTransformer : IClaimsTransformation
 		}
 	}
 }
-

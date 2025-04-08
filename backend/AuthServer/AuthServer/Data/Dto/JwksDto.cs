@@ -14,9 +14,7 @@ public class JwksDto
 	public static JwksDto FromSecurityKey(SecurityKey key, string algorithm)
 	{
 		if (key.KeyId == null)
-		{
 			throw new ArgumentException("Key id was null");
-		}
 
 		return key switch
 		{
@@ -29,13 +27,10 @@ public class JwksDto
 	{
 		var keyParams = rsaKey.Rsa.ExportParameters(false);
 		if (keyParams.Modulus == null)
-		{
 			throw new ArgumentException("Key modulus was null");
-		}
+
 		if (keyParams.Exponent == null)
-		{
 			throw new ArgumentException("Key exponent was null");
-		}
 
 		return new JwksDto
 		{
