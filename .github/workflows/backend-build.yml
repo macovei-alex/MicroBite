@@ -31,7 +31,7 @@ jobs:
           cd backend/AuthServer
           dotnet build --configuration Release
 
-      - name: Run tests for AuthServer (optional)
+      - name: Run tests for AuthServer
         run: |
           cd backend/AuthServer
           dotnet test --configuration Release
@@ -58,7 +58,7 @@ jobs:
           cd backend/ResourceServer
           dotnet build --configuration Release
 
-      - name: Run tests for ResourceServer (optional)
+      - name: Run tests for ResourceServer
         run: |
           cd backend/ResourceServer
           dotnet test --configuration Release

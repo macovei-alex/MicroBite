@@ -1,0 +1,220 @@
+name: Generate and Deploy .NET Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Check .NET Version
+        run: dotnet --info
+
+      - name: Restore dependencies pentru AuthServer
+        run: dotnet restore backend/AuthServer/AuthServer.sln
+
+      - name: Build AuthServer cu generare XML
+        run: dotnet build backend/AuthServer/AuthServer.sln --configuration Release /p:GenerateDocumentationFile=true
+        
+      - name: Restore dependencies pentru ResourceServer
+        run: dotnet restore backend/ResourceServer/ResourceServer.sln
+
+      - name: Build ResourceServer cu generare XML
+        run: dotnet build backend/ResourceServer/ResourceServer.sln --configuration Release /p:GenerateDocumentationFile=true
+
+      - name: Install DocFX
+        run: dotnet tool install -g docfx
+
+      - name: Generate Documentation
+        run: |
+          # Creează directorul pentru documentație
+          mkdir -p docs
+
+          # Creează manual fișierul docfx.json
+          cat > docs/docfx.json << 'EOF'
+          {
+            "metadata": [
+              {
+                "src": [
+                  {
+                    "src": "../backend/AuthServer",
+                    "files": ["**/*.csproj"],
+                    "exclude": ["**/bin/**", "**/obj/**"]
+                  }
+                ],
+                "dest": "api/authserver",
+                "disableGitFeatures": false,
+                "disableDefaultFilter": false
+              },
+              {
+                "src": [
+                  {
+                    "src": "../backend/ResourceServer",
+                    "files": ["**/*.csproj"],
+                    "exclude": ["**/bin/**", "**/obj/**"]
+                  }
+                ],
+                "dest": "api/resourceserver",
+                "disableGitFeatures": false,
+                "disableDefaultFilter": false
+              }
+            ],
+            "build": {
+              "content": [
+                {
+                  "files": ["api/**/**.yml", "api/**/index.md"]
+                },
+                {
+                  "files": ["articles/**.md", "articles/**/toc.yml", "toc.yml", "*.md"]
+                }
+              ],
+              "resource": [
+                {
+                  "files": ["images/**"]
+                }
+              ],
+              "overwrite": [
+                {
+                  "files": ["apidoc/**.md"],
+                  "exclude": ["obj/**", "_site/**"]
+                }
+              ],
+              "dest": "_site",
+              "globalMetadataFiles": [],
+              "fileMetadataFiles": [],
+              "template": ["default"],
+              "postProcessors": [],
+              "markdownEngineName": "markdig",
+              "noLangKeyword": false,
+              "keepFileLink": false,
+              "cleanupCacheHistory": false,
+              "disableGitFeatures": false,
+              "force": true
+            }
+          }
+          EOF
+
+          # Creează fișierul index.md
+          mkdir -p docs/articles
+          cat > docs/index.md << 'EOF'
+          # Documentație Server
+
+          Bine ați venit la documentația serverelor. Aceasta este o documentație generată automat pentru API-urile backend.
+
+          **[Accesați Table of Contents AuthServer →](api/authserver/toc.html)**
+
+          **[Accesați Table of Contents ResourceServer →](api/resourceserver/toc.html)**
+
+          ## Cum să utilizați această documentație
+
+          * În secțiunea API Reference puteți găsi detalii despre clasele și metodele disponibile
+          * Consultați [articolele](articles/intro.md) pentru ghiduri și tutoriale
+
+          ## Link-uri rapide
+
+          * [Ghid de start](articles/intro.md)
+          * [API Reference AuthServer](api/authserver/index.html)
+          * [API Reference ResourceServer](api/resourceserver/index.html)
+          EOF
+
+          # Creează un articol introductiv
+          cat > docs/articles/intro.md << 'EOF'
+          # Introducere în serverele noastre
+
+          Serverele sunt dezvoltate cu .NET și C#.
+
+          ## AuthServer
+
+          AuthServer este un backend de autentificare.
+
+          ### Caracteristici principale
+
+          * Autentificare și autorizare
+          * Gestionarea conturilor de utilizator
+          * Recuperarea conturilor
+          * Role-based access control
+
+          ## ResourceServer
+
+          ResourceServer este un backend pentru gestionarea resurselor aplicației.
+
+          ### Caracteristici principale
+
+          * API management
+          * Resource handling
+          * Data processing
+          * Secure resource access
+          EOF
+
+          # Creează TOC pentru articole
+          cat > docs/articles/toc.yml << 'EOF'
+          - name: Introducere
+            href: intro.md
+          EOF
+
+          # Creează TOC principal
+          cat > docs/toc.yml << 'EOF'
+          - name: Articole
+            href: articles/
+          - name: API Reference AuthServer
+            href: api/authserver/
+          - name: API Reference ResourceServer
+            href: api/resourceserver/
+          EOF
+
+          # Adaugă index.md pentru AuthServer
+          mkdir -p docs/api/authserver
+          cat > docs/api/authserver/index.md << 'EOF'
+          # AuthServer API Documentation
+          
+          Documentația API pentru AuthServer. Vedeți [Table of Contents](toc.html) pentru o listă completă de clase și metode.
+          EOF
+          
+          # Adaugă index.md pentru ResourceServer
+          mkdir -p docs/api/resourceserver
+          cat > docs/api/resourceserver/index.md << 'EOF'
+          # ResourceServer API Documentation
+          
+          Documentația API pentru ResourceServer. Vedeți [Table of Contents](toc.html) pentru o listă completă de clase și metode.
+          EOF
+
+          # Generează documentația API
+          cd docs
+          ~/.dotnet/tools/docfx metadata
+          
+          # Verifică dacă s-au generat fișierele pentru ResourceServer
+          if [ ! -f "api/resourceserver/toc.yml" ]; then
+            echo "AVERTISMENT: Nu s-a generat documentația pentru ResourceServer!"
+            # Creează un TOC gol pentru ResourceServer pentru a evita erorile
+            mkdir -p api/resourceserver
+            echo "- name: ResourceServer API" > api/resourceserver/toc.yml
+          fi
+
+          # Generează site-ul
+          ~/.dotnet/tools/docfx build
+
+      - name: Deploy la GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs/_site
+          branch: gh-pages
