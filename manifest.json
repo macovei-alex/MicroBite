@@ -438,6 +438,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.BackupSchedulerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.BackupSchedulerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.BackupSchedulerService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.IBackupService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.IBackupService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.IBackupService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/authserver/AuthServer.Service.JwtClaimsTransformer.yml",
       "output": {
         ".html": {
@@ -462,6 +490,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AuthServer.Service.JwtService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.PostgresAuthBackupService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.PostgresAuthBackupService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.PostgresAuthBackupService",
       "Summary": null
     },
     {
@@ -1119,6 +1161,34 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.BackupSchedulerService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.BackupSchedulerService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.BackupSchedulerService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.IBackupService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.IBackupService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.IBackupService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/resourceserver/ResourceServer.Service.JwtAuthenticationService.yml",
       "output": {
         ".html": {
@@ -1157,6 +1227,20 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "ResourceServer.Service.JwtKeysService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.PostgresBackupService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.PostgresBackupService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.PostgresBackupService",
       "Summary": null
     },
     {

@@ -1893,6 +1893,79 @@ references:
   isSpec: "True"
   fullName: AuthServer.Service.AuthService.Login
   nameWithType: AuthService.Login
+- uid: AuthServer.Service.BackupSchedulerService
+  name: BackupSchedulerService
+  href: api/authserver/AuthServer.Service.BackupSchedulerService.html
+  commentId: T:AuthServer.Service.BackupSchedulerService
+  fullName: AuthServer.Service.BackupSchedulerService
+  nameWithType: BackupSchedulerService
+- uid: AuthServer.Service.BackupSchedulerService.#ctor(AuthServer.Service.IBackupService,Microsoft.Extensions.Logging.ILogger{AuthServer.Service.BackupSchedulerService})
+  name: BackupSchedulerService(IBackupService, ILogger<BackupSchedulerService>)
+  href: api/authserver/AuthServer.Service.BackupSchedulerService.html#AuthServer_Service_BackupSchedulerService__ctor_AuthServer_Service_IBackupService_Microsoft_Extensions_Logging_ILogger_AuthServer_Service_BackupSchedulerService__
+  commentId: M:AuthServer.Service.BackupSchedulerService.#ctor(AuthServer.Service.IBackupService,Microsoft.Extensions.Logging.ILogger{AuthServer.Service.BackupSchedulerService})
+  name.vb: New(IBackupService, ILogger(Of BackupSchedulerService))
+  fullName: AuthServer.Service.BackupSchedulerService.BackupSchedulerService(AuthServer.Service.IBackupService, Microsoft.Extensions.Logging.ILogger<AuthServer.Service.BackupSchedulerService>)
+  fullName.vb: AuthServer.Service.BackupSchedulerService.New(AuthServer.Service.IBackupService, Microsoft.Extensions.Logging.ILogger(Of AuthServer.Service.BackupSchedulerService))
+  nameWithType: BackupSchedulerService.BackupSchedulerService(IBackupService, ILogger<BackupSchedulerService>)
+  nameWithType.vb: BackupSchedulerService.New(IBackupService, ILogger(Of BackupSchedulerService))
+- uid: AuthServer.Service.BackupSchedulerService.#ctor*
+  name: BackupSchedulerService
+  href: api/authserver/AuthServer.Service.BackupSchedulerService.html#AuthServer_Service_BackupSchedulerService__ctor_
+  commentId: Overload:AuthServer.Service.BackupSchedulerService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: AuthServer.Service.BackupSchedulerService.BackupSchedulerService
+  fullName.vb: AuthServer.Service.BackupSchedulerService.New
+  nameWithType: BackupSchedulerService.BackupSchedulerService
+  nameWithType.vb: BackupSchedulerService.New
+- uid: AuthServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  name: ExecuteAsync(CancellationToken)
+  href: api/authserver/AuthServer.Service.BackupSchedulerService.html#AuthServer_Service_BackupSchedulerService_ExecuteAsync_System_Threading_CancellationToken_
+  commentId: M:AuthServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  fullName: AuthServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  nameWithType: BackupSchedulerService.ExecuteAsync(CancellationToken)
+- uid: AuthServer.Service.BackupSchedulerService.ExecuteAsync*
+  name: ExecuteAsync
+  href: api/authserver/AuthServer.Service.BackupSchedulerService.html#AuthServer_Service_BackupSchedulerService_ExecuteAsync_
+  commentId: Overload:AuthServer.Service.BackupSchedulerService.ExecuteAsync
+  isSpec: "True"
+  fullName: AuthServer.Service.BackupSchedulerService.ExecuteAsync
+  nameWithType: BackupSchedulerService.ExecuteAsync
+- uid: AuthServer.Service.IBackupService
+  name: IBackupService
+  href: api/authserver/AuthServer.Service.IBackupService.html
+  commentId: T:AuthServer.Service.IBackupService
+  fullName: AuthServer.Service.IBackupService
+  nameWithType: IBackupService
+- uid: AuthServer.Service.IBackupService.CleanOldBackups(System.Int32)
+  name: CleanOldBackups(int)
+  href: api/authserver/AuthServer.Service.IBackupService.html#AuthServer_Service_IBackupService_CleanOldBackups_System_Int32_
+  commentId: M:AuthServer.Service.IBackupService.CleanOldBackups(System.Int32)
+  name.vb: CleanOldBackups(Integer)
+  fullName: AuthServer.Service.IBackupService.CleanOldBackups(int)
+  fullName.vb: AuthServer.Service.IBackupService.CleanOldBackups(Integer)
+  nameWithType: IBackupService.CleanOldBackups(int)
+  nameWithType.vb: IBackupService.CleanOldBackups(Integer)
+- uid: AuthServer.Service.IBackupService.CleanOldBackups*
+  name: CleanOldBackups
+  href: api/authserver/AuthServer.Service.IBackupService.html#AuthServer_Service_IBackupService_CleanOldBackups_
+  commentId: Overload:AuthServer.Service.IBackupService.CleanOldBackups
+  isSpec: "True"
+  fullName: AuthServer.Service.IBackupService.CleanOldBackups
+  nameWithType: IBackupService.CleanOldBackups
+- uid: AuthServer.Service.IBackupService.CreateBackup
+  name: CreateBackup()
+  href: api/authserver/AuthServer.Service.IBackupService.html#AuthServer_Service_IBackupService_CreateBackup
+  commentId: M:AuthServer.Service.IBackupService.CreateBackup
+  fullName: AuthServer.Service.IBackupService.CreateBackup()
+  nameWithType: IBackupService.CreateBackup()
+- uid: AuthServer.Service.IBackupService.CreateBackup*
+  name: CreateBackup
+  href: api/authserver/AuthServer.Service.IBackupService.html#AuthServer_Service_IBackupService_CreateBackup_
+  commentId: Overload:AuthServer.Service.IBackupService.CreateBackup
+  isSpec: "True"
+  fullName: AuthServer.Service.IBackupService.CreateBackup
+  nameWithType: IBackupService.CreateBackup
 - uid: AuthServer.Service.JwtClaimsTransformer
   name: JwtClaimsTransformer
   href: api/authserver/AuthServer.Service.JwtClaimsTransformer.html
@@ -2049,6 +2122,60 @@ references:
   isSpec: "True"
   fullName: AuthServer.Service.JwtService.TryVerifyAppClaims
   nameWithType: JwtService.TryVerifyAppClaims
+- uid: AuthServer.Service.PostgresAuthBackupService
+  name: PostgresAuthBackupService
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html
+  commentId: T:AuthServer.Service.PostgresAuthBackupService
+  fullName: AuthServer.Service.PostgresAuthBackupService
+  nameWithType: PostgresAuthBackupService
+- uid: AuthServer.Service.PostgresAuthBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{AuthServer.Service.PostgresAuthBackupService})
+  name: PostgresAuthBackupService(IConfiguration, ILogger<PostgresAuthBackupService>)
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService__ctor_Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_AuthServer_Service_PostgresAuthBackupService__
+  commentId: M:AuthServer.Service.PostgresAuthBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{AuthServer.Service.PostgresAuthBackupService})
+  name.vb: New(IConfiguration, ILogger(Of PostgresAuthBackupService))
+  fullName: AuthServer.Service.PostgresAuthBackupService.PostgresAuthBackupService(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger<AuthServer.Service.PostgresAuthBackupService>)
+  fullName.vb: AuthServer.Service.PostgresAuthBackupService.New(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger(Of AuthServer.Service.PostgresAuthBackupService))
+  nameWithType: PostgresAuthBackupService.PostgresAuthBackupService(IConfiguration, ILogger<PostgresAuthBackupService>)
+  nameWithType.vb: PostgresAuthBackupService.New(IConfiguration, ILogger(Of PostgresAuthBackupService))
+- uid: AuthServer.Service.PostgresAuthBackupService.#ctor*
+  name: PostgresAuthBackupService
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService__ctor_
+  commentId: Overload:AuthServer.Service.PostgresAuthBackupService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: AuthServer.Service.PostgresAuthBackupService.PostgresAuthBackupService
+  fullName.vb: AuthServer.Service.PostgresAuthBackupService.New
+  nameWithType: PostgresAuthBackupService.PostgresAuthBackupService
+  nameWithType.vb: PostgresAuthBackupService.New
+- uid: AuthServer.Service.PostgresAuthBackupService.CleanOldBackups(System.Int32)
+  name: CleanOldBackups(int)
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService_CleanOldBackups_System_Int32_
+  commentId: M:AuthServer.Service.PostgresAuthBackupService.CleanOldBackups(System.Int32)
+  name.vb: CleanOldBackups(Integer)
+  fullName: AuthServer.Service.PostgresAuthBackupService.CleanOldBackups(int)
+  fullName.vb: AuthServer.Service.PostgresAuthBackupService.CleanOldBackups(Integer)
+  nameWithType: PostgresAuthBackupService.CleanOldBackups(int)
+  nameWithType.vb: PostgresAuthBackupService.CleanOldBackups(Integer)
+- uid: AuthServer.Service.PostgresAuthBackupService.CleanOldBackups*
+  name: CleanOldBackups
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService_CleanOldBackups_
+  commentId: Overload:AuthServer.Service.PostgresAuthBackupService.CleanOldBackups
+  isSpec: "True"
+  fullName: AuthServer.Service.PostgresAuthBackupService.CleanOldBackups
+  nameWithType: PostgresAuthBackupService.CleanOldBackups
+- uid: AuthServer.Service.PostgresAuthBackupService.CreateBackup
+  name: CreateBackup()
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService_CreateBackup
+  commentId: M:AuthServer.Service.PostgresAuthBackupService.CreateBackup
+  fullName: AuthServer.Service.PostgresAuthBackupService.CreateBackup()
+  nameWithType: PostgresAuthBackupService.CreateBackup()
+- uid: AuthServer.Service.PostgresAuthBackupService.CreateBackup*
+  name: CreateBackup
+  href: api/authserver/AuthServer.Service.PostgresAuthBackupService.html#AuthServer_Service_PostgresAuthBackupService_CreateBackup_
+  commentId: Overload:AuthServer.Service.PostgresAuthBackupService.CreateBackup
+  isSpec: "True"
+  fullName: AuthServer.Service.PostgresAuthBackupService.CreateBackup
+  nameWithType: PostgresAuthBackupService.CreateBackup
 - uid: AuthServer.Service.RequestLogger
   name: RequestLogger
   href: api/authserver/AuthServer.Service.RequestLogger.html
@@ -5010,6 +5137,79 @@ references:
   commentId: N:ResourceServer.Service
   fullName: ResourceServer.Service
   nameWithType: ResourceServer.Service
+- uid: ResourceServer.Service.BackupSchedulerService
+  name: BackupSchedulerService
+  href: api/resourceserver/ResourceServer.Service.BackupSchedulerService.html
+  commentId: T:ResourceServer.Service.BackupSchedulerService
+  fullName: ResourceServer.Service.BackupSchedulerService
+  nameWithType: BackupSchedulerService
+- uid: ResourceServer.Service.BackupSchedulerService.#ctor(ResourceServer.Service.IBackupService,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.BackupSchedulerService})
+  name: BackupSchedulerService(IBackupService, ILogger<BackupSchedulerService>)
+  href: api/resourceserver/ResourceServer.Service.BackupSchedulerService.html#ResourceServer_Service_BackupSchedulerService__ctor_ResourceServer_Service_IBackupService_Microsoft_Extensions_Logging_ILogger_ResourceServer_Service_BackupSchedulerService__
+  commentId: M:ResourceServer.Service.BackupSchedulerService.#ctor(ResourceServer.Service.IBackupService,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.BackupSchedulerService})
+  name.vb: New(IBackupService, ILogger(Of BackupSchedulerService))
+  fullName: ResourceServer.Service.BackupSchedulerService.BackupSchedulerService(ResourceServer.Service.IBackupService, Microsoft.Extensions.Logging.ILogger<ResourceServer.Service.BackupSchedulerService>)
+  fullName.vb: ResourceServer.Service.BackupSchedulerService.New(ResourceServer.Service.IBackupService, Microsoft.Extensions.Logging.ILogger(Of ResourceServer.Service.BackupSchedulerService))
+  nameWithType: BackupSchedulerService.BackupSchedulerService(IBackupService, ILogger<BackupSchedulerService>)
+  nameWithType.vb: BackupSchedulerService.New(IBackupService, ILogger(Of BackupSchedulerService))
+- uid: ResourceServer.Service.BackupSchedulerService.#ctor*
+  name: BackupSchedulerService
+  href: api/resourceserver/ResourceServer.Service.BackupSchedulerService.html#ResourceServer_Service_BackupSchedulerService__ctor_
+  commentId: Overload:ResourceServer.Service.BackupSchedulerService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: ResourceServer.Service.BackupSchedulerService.BackupSchedulerService
+  fullName.vb: ResourceServer.Service.BackupSchedulerService.New
+  nameWithType: BackupSchedulerService.BackupSchedulerService
+  nameWithType.vb: BackupSchedulerService.New
+- uid: ResourceServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  name: ExecuteAsync(CancellationToken)
+  href: api/resourceserver/ResourceServer.Service.BackupSchedulerService.html#ResourceServer_Service_BackupSchedulerService_ExecuteAsync_System_Threading_CancellationToken_
+  commentId: M:ResourceServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  fullName: ResourceServer.Service.BackupSchedulerService.ExecuteAsync(System.Threading.CancellationToken)
+  nameWithType: BackupSchedulerService.ExecuteAsync(CancellationToken)
+- uid: ResourceServer.Service.BackupSchedulerService.ExecuteAsync*
+  name: ExecuteAsync
+  href: api/resourceserver/ResourceServer.Service.BackupSchedulerService.html#ResourceServer_Service_BackupSchedulerService_ExecuteAsync_
+  commentId: Overload:ResourceServer.Service.BackupSchedulerService.ExecuteAsync
+  isSpec: "True"
+  fullName: ResourceServer.Service.BackupSchedulerService.ExecuteAsync
+  nameWithType: BackupSchedulerService.ExecuteAsync
+- uid: ResourceServer.Service.IBackupService
+  name: IBackupService
+  href: api/resourceserver/ResourceServer.Service.IBackupService.html
+  commentId: T:ResourceServer.Service.IBackupService
+  fullName: ResourceServer.Service.IBackupService
+  nameWithType: IBackupService
+- uid: ResourceServer.Service.IBackupService.CleanOldBackups(System.Int32)
+  name: CleanOldBackups(int)
+  href: api/resourceserver/ResourceServer.Service.IBackupService.html#ResourceServer_Service_IBackupService_CleanOldBackups_System_Int32_
+  commentId: M:ResourceServer.Service.IBackupService.CleanOldBackups(System.Int32)
+  name.vb: CleanOldBackups(Integer)
+  fullName: ResourceServer.Service.IBackupService.CleanOldBackups(int)
+  fullName.vb: ResourceServer.Service.IBackupService.CleanOldBackups(Integer)
+  nameWithType: IBackupService.CleanOldBackups(int)
+  nameWithType.vb: IBackupService.CleanOldBackups(Integer)
+- uid: ResourceServer.Service.IBackupService.CleanOldBackups*
+  name: CleanOldBackups
+  href: api/resourceserver/ResourceServer.Service.IBackupService.html#ResourceServer_Service_IBackupService_CleanOldBackups_
+  commentId: Overload:ResourceServer.Service.IBackupService.CleanOldBackups
+  isSpec: "True"
+  fullName: ResourceServer.Service.IBackupService.CleanOldBackups
+  nameWithType: IBackupService.CleanOldBackups
+- uid: ResourceServer.Service.IBackupService.CreateBackup
+  name: CreateBackup()
+  href: api/resourceserver/ResourceServer.Service.IBackupService.html#ResourceServer_Service_IBackupService_CreateBackup
+  commentId: M:ResourceServer.Service.IBackupService.CreateBackup
+  fullName: ResourceServer.Service.IBackupService.CreateBackup()
+  nameWithType: IBackupService.CreateBackup()
+- uid: ResourceServer.Service.IBackupService.CreateBackup*
+  name: CreateBackup
+  href: api/resourceserver/ResourceServer.Service.IBackupService.html#ResourceServer_Service_IBackupService_CreateBackup_
+  commentId: Overload:ResourceServer.Service.IBackupService.CreateBackup
+  isSpec: "True"
+  fullName: ResourceServer.Service.IBackupService.CreateBackup
+  nameWithType: IBackupService.CreateBackup
 - uid: ResourceServer.Service.JwtAuthenticationService
   name: JwtAuthenticationService
   href: api/resourceserver/ResourceServer.Service.JwtAuthenticationService.html
@@ -5108,6 +5308,60 @@ references:
   isSpec: "True"
   fullName: ResourceServer.Service.JwtKeysService.GetSecurityKeyAsync
   nameWithType: JwtKeysService.GetSecurityKeyAsync
+- uid: ResourceServer.Service.PostgresBackupService
+  name: PostgresBackupService
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html
+  commentId: T:ResourceServer.Service.PostgresBackupService
+  fullName: ResourceServer.Service.PostgresBackupService
+  nameWithType: PostgresBackupService
+- uid: ResourceServer.Service.PostgresBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresBackupService})
+  name: PostgresBackupService(IConfiguration, ILogger<PostgresBackupService>)
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService__ctor_Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_ResourceServer_Service_PostgresBackupService__
+  commentId: M:ResourceServer.Service.PostgresBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresBackupService})
+  name.vb: New(IConfiguration, ILogger(Of PostgresBackupService))
+  fullName: ResourceServer.Service.PostgresBackupService.PostgresBackupService(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger<ResourceServer.Service.PostgresBackupService>)
+  fullName.vb: ResourceServer.Service.PostgresBackupService.New(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger(Of ResourceServer.Service.PostgresBackupService))
+  nameWithType: PostgresBackupService.PostgresBackupService(IConfiguration, ILogger<PostgresBackupService>)
+  nameWithType.vb: PostgresBackupService.New(IConfiguration, ILogger(Of PostgresBackupService))
+- uid: ResourceServer.Service.PostgresBackupService.#ctor*
+  name: PostgresBackupService
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService__ctor_
+  commentId: Overload:ResourceServer.Service.PostgresBackupService.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: ResourceServer.Service.PostgresBackupService.PostgresBackupService
+  fullName.vb: ResourceServer.Service.PostgresBackupService.New
+  nameWithType: PostgresBackupService.PostgresBackupService
+  nameWithType.vb: PostgresBackupService.New
+- uid: ResourceServer.Service.PostgresBackupService.CleanOldBackups(System.Int32)
+  name: CleanOldBackups(int)
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CleanOldBackups_System_Int32_
+  commentId: M:ResourceServer.Service.PostgresBackupService.CleanOldBackups(System.Int32)
+  name.vb: CleanOldBackups(Integer)
+  fullName: ResourceServer.Service.PostgresBackupService.CleanOldBackups(int)
+  fullName.vb: ResourceServer.Service.PostgresBackupService.CleanOldBackups(Integer)
+  nameWithType: PostgresBackupService.CleanOldBackups(int)
+  nameWithType.vb: PostgresBackupService.CleanOldBackups(Integer)
+- uid: ResourceServer.Service.PostgresBackupService.CleanOldBackups*
+  name: CleanOldBackups
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CleanOldBackups_
+  commentId: Overload:ResourceServer.Service.PostgresBackupService.CleanOldBackups
+  isSpec: "True"
+  fullName: ResourceServer.Service.PostgresBackupService.CleanOldBackups
+  nameWithType: PostgresBackupService.CleanOldBackups
+- uid: ResourceServer.Service.PostgresBackupService.CreateBackup
+  name: CreateBackup()
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CreateBackup
+  commentId: M:ResourceServer.Service.PostgresBackupService.CreateBackup
+  fullName: ResourceServer.Service.PostgresBackupService.CreateBackup()
+  nameWithType: PostgresBackupService.CreateBackup()
+- uid: ResourceServer.Service.PostgresBackupService.CreateBackup*
+  name: CreateBackup
+  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CreateBackup_
+  commentId: Overload:ResourceServer.Service.PostgresBackupService.CreateBackup
+  isSpec: "True"
+  fullName: ResourceServer.Service.PostgresBackupService.CreateBackup
+  nameWithType: PostgresBackupService.CreateBackup
 - uid: ResourcesServes.Tests.Controllers
   name: ResourcesServes.Tests.Controllers
   href: api/resourceserver/ResourcesServes.Tests.Controllers.html
