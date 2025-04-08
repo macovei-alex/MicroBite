@@ -1,36 +1,11 @@
-import { useAuthContext } from "../auth/hooks/useAuthContext";
-import { useEffect, useRef, useState } from "react";
-import DropDownArrowSvg from "./DropDownArrowSvg";
-import DropDownLink from "./DropDownLink";
-import MenuLinkButton from "./MenuLinkButton";
-import ProfileIcon from "../components/ProfileIcon";
+import ProfileIcon from "../../components/ProfileIcon";
+import DropDownArrowSvg from "../components/DropDownArrowSvg";
+import DropDownLink from "../components/DropDownLink";
+import { useHeaderHook } from "../hooks/useHeaderHook";
+import MenuLinkButton from "../components/MenuLinkButton";
 
-export default function Header() {
-  const authContext = useAuthContext();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
+export default function HeaderDesktopLayout() {
+  const { authContext, isDropdownOpen, setIsDropdownOpen, dropdownRef } = useHeaderHook();
 
   return (
     <header className="bg-blue-500 text-white p-4 flex justify-between items-center shadow-md">

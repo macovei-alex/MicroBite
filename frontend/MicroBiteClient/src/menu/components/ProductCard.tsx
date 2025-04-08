@@ -26,7 +26,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       </div>
       <div className="flex flex-col flex-1">
         <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
-        <p className="text-sm text-gray-600 flex-1 line-clamp-3 mb-4 min-h-[4em]">
+        <p className="text-sm text-gray-600 flex-1 line-clamp-3 mb-4 min-h-[4.3em]">
           {product.description}
         </p>
 

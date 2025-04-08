@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Order } from "../../api/types/Order";
 import { Product } from "../../api/types/Product";
 import { defaultProductImage } from "../../assets/defaultProductImage";
+import { useMediaQuery } from "react-responsive";
 
 type OrderDetailsProps = {
   order: Order;
@@ -10,6 +11,7 @@ type OrderDetailsProps = {
 
 export default function OrderDetails({ order, productsMap }: OrderDetailsProps) {
   const dateTimeFormat = useMemo(() => Intl.DateTimeFormat("en-CA"), []);
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
 
   return (
     <div key={order.id} className="bg-white border-1 border-blue-500 rounded-lg shadow-lg p-6">
@@ -61,12 +63,23 @@ export default function OrderDetails({ order, productsMap }: OrderDetailsProps) 
                   />
                   <div>
                     <p>{product.name || "Product unavailable"}</p>
-                    <p className="text-sm text-gray-500">
-                      {item.quantity} × {product.price.toFixed(2)} RON
-                    </p>
+                    {isDesktop.valueOf() ? (
+                      <p className="text-sm text-gray-500">
+                        {item.quantity} × {product.price.toFixed(2)} RON
+                      </p>
+                    ) : (
+                      <>
+                        <p className="font-bold text-blue-500">{item.totalPrice.toFixed(2)} RON</p>
+                        <p className="text-sm text-gray-500 mt-2">
+                          {item.quantity} × {product.price.toFixed(2)} RON
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
-                <p className="font-medium text-blue-500">{item.totalPrice.toFixed(2)} RON</p>
+                {isDesktop.valueOf() && (
+                  <p className="font-bold text-blue-500">{item.totalPrice.toFixed(2)} RON</p>
+                )}
               </div>
             );
           })}
