@@ -111,7 +111,7 @@ export default function ProfilePage() {
                   <NamedField label="Phone" value={user.phoneNumber} />
                   <NamedField label="Security Question" value={user.securityQuestion || ""} />
                 </div>
-                <div className="flex flex-row gap-4 pt-4">
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
                   <Button text="Edit Profile" onClick={handleEditClick} />
                   <Button text="Change Password" onClick={handleChangePasswordClick} />
                 </div>

@@ -10,7 +10,7 @@ import AuthProtectedOutlet from "./auth/components/AuthProtectedOutlet.tsx";
 import { AuthContextProvider } from "./auth/context/AuthContextProvider.tsx";
 import PasswordResetPage from "./pages/PasswordResetPage.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Header from "./header/Header.tsx";
+import Header from "./header/components/Header.tsx";
 import AdminPage from "./pages/AdminPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import CartProvider from "./cart/context/CartContextProvider.tsx";
