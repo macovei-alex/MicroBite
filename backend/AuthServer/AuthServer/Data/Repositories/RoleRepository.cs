@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.Data.Repositories;
 
-public class RoleRepository(AppDbContext context)
+public class RoleRepository(AppDbContext context) : IRoleRepository
 {
     private readonly AppDbContext _context = context;
 

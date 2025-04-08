@@ -2,7 +2,6 @@
 using AuthServer.Data.Models;
 using AuthServer.Data.Repositories;
 using AuthServer.Data.Dto;
-using Microsoft.EntityFrameworkCore;
 using AuthServer.Utils;
 
 namespace AuthServer.Controllers;

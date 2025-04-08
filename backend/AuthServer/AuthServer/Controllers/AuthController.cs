@@ -5,7 +5,6 @@ using AuthServer.Service;
 using AuthServer.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Dynamic;
 
 namespace AuthServer.Controllers;
 

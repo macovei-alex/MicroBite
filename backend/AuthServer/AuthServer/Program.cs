@@ -25,9 +25,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseNpgsql(config.GetConnectionString("AuthDb"));
 });
 
-builder.Services.AddScoped<AccountRepository>();
-builder.Services.AddScoped<AuthenticationRecoveryRepository>();
-builder.Services.AddScoped<RoleRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAuthenticationRecoveryRepository, AuthenticationRecoveryRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 builder.Services.AddSingleton<RequestLogger>();
 builder.Services.AddSingleton<JwtService>();
