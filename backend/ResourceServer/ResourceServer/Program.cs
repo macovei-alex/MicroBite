@@ -28,6 +28,9 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
 
+builder.Services.AddSingleton<IBackupService, PostgresBackupService>();
+builder.Services.AddHostedService<BackupSchedulerService>();
+
 builder.Services.AddSingleton<JwtKeysService>();
 
 // Custom authentiation service because I cannot find a way to make
