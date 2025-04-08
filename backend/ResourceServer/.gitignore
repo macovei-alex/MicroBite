@@ -400,4 +400,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 Migrations/
+dataProtectionKeys/
 res_backups/

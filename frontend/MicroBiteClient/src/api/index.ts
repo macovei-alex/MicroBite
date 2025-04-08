@@ -1,15 +1,10 @@
 import axios from "axios";
 
-const AUTH_BASE_URL = "http://localhost:5095/api";
-const RES_BASE_URL = "http://localhost:5247/api";
-const CLIENT_ID = "MicroBiteClient";
-const NON_REFRESHING_ROUTES = ["api/auth/refresh"];
-
 export const config = Object.freeze({
-  AUTH_BASE_URL,
-  RES_BASE_URL,
-  CLIENT_ID,
-  NON_REFRESHING_ROUTES,
+  AUTH_BASE_URL: import.meta.env.VITE_AUTH_BASE_URL || "http://localhost:5095/api",
+  RES_BASE_URL: import.meta.env.VITE_RES_BASE_URL || "http://localhost:5247/api",
+  CLIENT_ID: "MicroBiteClient",
+  NON_REFRESHING_ROUTES: ["api/auth/refresh"],
 });
 
 export const authApi = axios.create({
@@ -20,12 +15,4 @@ export const authApi = axios.create({
 export const resApi = axios.create({
   baseURL: config.RES_BASE_URL,
   withCredentials: false,
-});
-
-resApi.interceptors.request.use((cfg) => {
-  const token = localStorage.getItem("access_token");
-  if (token) {
-    cfg.headers.Authorization = `Bearer ${token}`;
-  }
-  return cfg;
 });
