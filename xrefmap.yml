@@ -5308,60 +5308,60 @@ references:
   isSpec: "True"
   fullName: ResourceServer.Service.JwtKeysService.GetSecurityKeyAsync
   nameWithType: JwtKeysService.GetSecurityKeyAsync
-- uid: ResourceServer.Service.PostgresBackupService
-  name: PostgresBackupService
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html
-  commentId: T:ResourceServer.Service.PostgresBackupService
-  fullName: ResourceServer.Service.PostgresBackupService
-  nameWithType: PostgresBackupService
-- uid: ResourceServer.Service.PostgresBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresBackupService})
-  name: PostgresBackupService(IConfiguration, ILogger<PostgresBackupService>)
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService__ctor_Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_ResourceServer_Service_PostgresBackupService__
-  commentId: M:ResourceServer.Service.PostgresBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresBackupService})
-  name.vb: New(IConfiguration, ILogger(Of PostgresBackupService))
-  fullName: ResourceServer.Service.PostgresBackupService.PostgresBackupService(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger<ResourceServer.Service.PostgresBackupService>)
-  fullName.vb: ResourceServer.Service.PostgresBackupService.New(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger(Of ResourceServer.Service.PostgresBackupService))
-  nameWithType: PostgresBackupService.PostgresBackupService(IConfiguration, ILogger<PostgresBackupService>)
-  nameWithType.vb: PostgresBackupService.New(IConfiguration, ILogger(Of PostgresBackupService))
-- uid: ResourceServer.Service.PostgresBackupService.#ctor*
-  name: PostgresBackupService
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService__ctor_
-  commentId: Overload:ResourceServer.Service.PostgresBackupService.#ctor
+- uid: ResourceServer.Service.PostgresResBackupService
+  name: PostgresResBackupService
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html
+  commentId: T:ResourceServer.Service.PostgresResBackupService
+  fullName: ResourceServer.Service.PostgresResBackupService
+  nameWithType: PostgresResBackupService
+- uid: ResourceServer.Service.PostgresResBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresResBackupService})
+  name: PostgresResBackupService(IConfiguration, ILogger<PostgresResBackupService>)
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService__ctor_Microsoft_Extensions_Configuration_IConfiguration_Microsoft_Extensions_Logging_ILogger_ResourceServer_Service_PostgresResBackupService__
+  commentId: M:ResourceServer.Service.PostgresResBackupService.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{ResourceServer.Service.PostgresResBackupService})
+  name.vb: New(IConfiguration, ILogger(Of PostgresResBackupService))
+  fullName: ResourceServer.Service.PostgresResBackupService.PostgresResBackupService(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger<ResourceServer.Service.PostgresResBackupService>)
+  fullName.vb: ResourceServer.Service.PostgresResBackupService.New(Microsoft.Extensions.Configuration.IConfiguration, Microsoft.Extensions.Logging.ILogger(Of ResourceServer.Service.PostgresResBackupService))
+  nameWithType: PostgresResBackupService.PostgresResBackupService(IConfiguration, ILogger<PostgresResBackupService>)
+  nameWithType.vb: PostgresResBackupService.New(IConfiguration, ILogger(Of PostgresResBackupService))
+- uid: ResourceServer.Service.PostgresResBackupService.#ctor*
+  name: PostgresResBackupService
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService__ctor_
+  commentId: Overload:ResourceServer.Service.PostgresResBackupService.#ctor
   isSpec: "True"
   name.vb: New
-  fullName: ResourceServer.Service.PostgresBackupService.PostgresBackupService
-  fullName.vb: ResourceServer.Service.PostgresBackupService.New
-  nameWithType: PostgresBackupService.PostgresBackupService
-  nameWithType.vb: PostgresBackupService.New
-- uid: ResourceServer.Service.PostgresBackupService.CleanOldBackups(System.Int32)
+  fullName: ResourceServer.Service.PostgresResBackupService.PostgresResBackupService
+  fullName.vb: ResourceServer.Service.PostgresResBackupService.New
+  nameWithType: PostgresResBackupService.PostgresResBackupService
+  nameWithType.vb: PostgresResBackupService.New
+- uid: ResourceServer.Service.PostgresResBackupService.CleanOldBackups(System.Int32)
   name: CleanOldBackups(int)
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CleanOldBackups_System_Int32_
-  commentId: M:ResourceServer.Service.PostgresBackupService.CleanOldBackups(System.Int32)
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService_CleanOldBackups_System_Int32_
+  commentId: M:ResourceServer.Service.PostgresResBackupService.CleanOldBackups(System.Int32)
   name.vb: CleanOldBackups(Integer)
-  fullName: ResourceServer.Service.PostgresBackupService.CleanOldBackups(int)
-  fullName.vb: ResourceServer.Service.PostgresBackupService.CleanOldBackups(Integer)
-  nameWithType: PostgresBackupService.CleanOldBackups(int)
-  nameWithType.vb: PostgresBackupService.CleanOldBackups(Integer)
-- uid: ResourceServer.Service.PostgresBackupService.CleanOldBackups*
+  fullName: ResourceServer.Service.PostgresResBackupService.CleanOldBackups(int)
+  fullName.vb: ResourceServer.Service.PostgresResBackupService.CleanOldBackups(Integer)
+  nameWithType: PostgresResBackupService.CleanOldBackups(int)
+  nameWithType.vb: PostgresResBackupService.CleanOldBackups(Integer)
+- uid: ResourceServer.Service.PostgresResBackupService.CleanOldBackups*
   name: CleanOldBackups
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CleanOldBackups_
-  commentId: Overload:ResourceServer.Service.PostgresBackupService.CleanOldBackups
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService_CleanOldBackups_
+  commentId: Overload:ResourceServer.Service.PostgresResBackupService.CleanOldBackups
   isSpec: "True"
-  fullName: ResourceServer.Service.PostgresBackupService.CleanOldBackups
-  nameWithType: PostgresBackupService.CleanOldBackups
-- uid: ResourceServer.Service.PostgresBackupService.CreateBackup
+  fullName: ResourceServer.Service.PostgresResBackupService.CleanOldBackups
+  nameWithType: PostgresResBackupService.CleanOldBackups
+- uid: ResourceServer.Service.PostgresResBackupService.CreateBackup
   name: CreateBackup()
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CreateBackup
-  commentId: M:ResourceServer.Service.PostgresBackupService.CreateBackup
-  fullName: ResourceServer.Service.PostgresBackupService.CreateBackup()
-  nameWithType: PostgresBackupService.CreateBackup()
-- uid: ResourceServer.Service.PostgresBackupService.CreateBackup*
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService_CreateBackup
+  commentId: M:ResourceServer.Service.PostgresResBackupService.CreateBackup
+  fullName: ResourceServer.Service.PostgresResBackupService.CreateBackup()
+  nameWithType: PostgresResBackupService.CreateBackup()
+- uid: ResourceServer.Service.PostgresResBackupService.CreateBackup*
   name: CreateBackup
-  href: api/resourceserver/ResourceServer.Service.PostgresBackupService.html#ResourceServer_Service_PostgresBackupService_CreateBackup_
-  commentId: Overload:ResourceServer.Service.PostgresBackupService.CreateBackup
+  href: api/resourceserver/ResourceServer.Service.PostgresResBackupService.html#ResourceServer_Service_PostgresResBackupService_CreateBackup_
+  commentId: Overload:ResourceServer.Service.PostgresResBackupService.CreateBackup
   isSpec: "True"
-  fullName: ResourceServer.Service.PostgresBackupService.CreateBackup
-  nameWithType: PostgresBackupService.CreateBackup
+  fullName: ResourceServer.Service.PostgresResBackupService.CreateBackup
+  nameWithType: PostgresResBackupService.CreateBackup
 - uid: ResourcesServes.Tests.Controllers
   name: ResourcesServes.Tests.Controllers
   href: api/resourceserver/ResourcesServes.Tests.Controllers.html

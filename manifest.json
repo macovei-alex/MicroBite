@@ -1231,16 +1231,16 @@
     },
     {
       "type": "ManagedReference",
-      "source_relative_path": "api/resourceserver/ResourceServer.Service.PostgresBackupService.yml",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.PostgresResBackupService.yml",
       "output": {
         ".html": {
-          "relative_path": "api/resourceserver/ResourceServer.Service.PostgresBackupService.html"
+          "relative_path": "api/resourceserver/ResourceServer.Service.PostgresResBackupService.html"
         }
       },
       "version": "",
       "Uid": null,
       "IsMRef": true,
-      "Title": "ResourceServer.Service.PostgresBackupService",
+      "Title": "ResourceServer.Service.PostgresResBackupService",
       "Summary": null
     },
     {
