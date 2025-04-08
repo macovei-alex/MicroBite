@@ -17,6 +17,10 @@ services:
   auth-api:
     build:
       context: ./backend/AuthServer
+    develop:
+      watch:
+        - path: ./backend/AuthServer/AuthServer
+          action: rebuild
     ports:
       - "5095:5095"
     volumes:
@@ -44,6 +48,10 @@ services:
       context: ./backend/ResourceServer
     ports:
       - "5247:5247"
+    develop:
+      watch:
+        - path: ./backend/ResourceServer/ResourceServer
+          action: rebuild
     volumes:
       - ./backend/ResourceServer/dataProtectionKeys:/root/.aspnet/DataProtection-Keys
     environment:
