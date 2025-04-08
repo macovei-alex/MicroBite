@@ -1,6 +1,6 @@
 ﻿namespace AuthServer.Service;
 
-public class RequestLogger
+public class RequestLogger : IRequestLogger
 {
 	private readonly SemaphoreSlim _semaphore = new(1, 1);
 

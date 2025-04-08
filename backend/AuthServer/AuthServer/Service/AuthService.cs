@@ -4,7 +4,7 @@ using Isopoh.Cryptography.Argon2;
 
 namespace AuthServer.Service;
 
-public class AuthService(AccountRepository accountRepository, JwtService jwtService)
+public class AuthService(AccountRepository accountRepository, JwtService jwtService) : IAuthService
 {
 	private readonly AccountRepository _accountRepository = accountRepository;
 	private readonly JwtService _jwtService = jwtService;
