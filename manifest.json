@@ -1,0 +1,1335 @@
+{
+  "source_base_path": "/home/runner/work/MicroBite/MicroBite/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.AccountController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.AccountController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers.AccountController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.AuthController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.AuthController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers.AuthController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.AuthenticationRecoveryController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.AuthenticationRecoveryController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers.AuthenticationRecoveryController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.JwksController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.JwksController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers.JwksController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.RoleController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.RoleController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers.RoleController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.AppDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.AppDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.AppDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.AccessTokenDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.AccessTokenDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.AccessTokenDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.AccountDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.AccountDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.AccountDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.CreateAccountDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.CreateAccountDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.CreateAccountDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.CreateRoleDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.CreateRoleDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.CreateRoleDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.JwksDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.JwksDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.JwksDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.LoginPayloadDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.LoginPayloadDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.LoginPayloadDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.PasswordChangePayloadDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.PasswordChangePayloadDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.PasswordChangePayloadDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.RefreshPayloadDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.RefreshPayloadDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.RefreshPayloadDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.TokenPairDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.TokenPairDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.TokenPairDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.UserProfileUpdateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.UserProfileUpdateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto.UserProfileUpdateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Dto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Dto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Dto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Models.Account.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Models.Account.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Models.Account",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Models.AuthenticationRecovery.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Models.AuthenticationRecovery.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Models.AuthenticationRecovery",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Models.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Models.Role.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Models.Role",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.AccountRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.AccountRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.AccountRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.AuthenticationRecoveryRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.AuthenticationRecoveryRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.AuthenticationRecoveryRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.RoleRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.RoleRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.RoleRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Security.JwtUser.ClaimNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Security.JwtUser.ClaimNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Security.JwtUser.ClaimNames",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Security.JwtUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Security.JwtUser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Security.JwtUser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Security.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Security.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Security",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.AuthService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.AuthService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.AuthService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.JwtClaimsTransformer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.JwtClaimsTransformer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.JwtClaimsTransformer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.JwtService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.JwtService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.JwtService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.RequestLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.RequestLogger.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.RequestLogger",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Utils.ClaimsPrincipalExtensionMethods.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Utils.ClaimsPrincipalExtensionMethods.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Utils.ClaimsPrincipalExtensionMethods",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Utils.Functions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Utils.Functions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Utils.Functions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Utils.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Utils",
+      "Summary": null
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/authserver/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/authserver/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "api/authserver/toc.json"
+        },
+        ".html": {
+          "relative_path": "api/authserver/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.JwtInspectionController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.JwtInspectionController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.JwtInspectionController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.NotificationsHub.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.NotificationsHub.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.NotificationsHub",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.OrderController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.OrderController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.OrderController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.OrderItemController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.OrderItemController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.OrderItemController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.OrderStatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.OrderStatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.OrderStatusController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.ProductCategoryController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.ProductCategoryController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.ProductCategoryController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.ProductController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.ProductController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers.ProductController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.AppDbContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.AppDbContext.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.AppDbContext",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.JwksDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.JwksDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.JwksDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.JwksEndpointPayloadDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.JwksEndpointPayloadDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.JwksEndpointPayloadDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderCreateDto.Item.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderCreateDto.Item.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.OrderCreateDto.Item",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderCreateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.OrderCreateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderGetDto.Item.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderGetDto.Item.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.OrderGetDto.Item",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderGetDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderGetDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.OrderGetDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderItemDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.OrderItemDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.OrderItemDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.ProductCreateDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.ProductCreateDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.ProductCreateDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.UpdateOrderStatusDto.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.UpdateOrderStatusDto.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO.UpdateOrderStatusDto",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.DTO.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.DTO.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.DTO",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.Order.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.Order.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models.Order",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.OrderItem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.OrderItem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models.OrderItem",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.OrderStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.OrderStatus.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models.OrderStatus",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.Product.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.Product.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models.Product",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.ProductCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.ProductCategory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models.ProductCategory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Models.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Models.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Models",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderItemRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderItemRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.IOrderItemRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.IOrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderStatusRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IOrderStatusRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.IOrderStatusRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IProductCategoryRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IProductCategoryRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.IProductCategoryRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IProductRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.IProductRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.IProductRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderItemRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderItemRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.OrderItemRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.OrderRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderStatusRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.OrderStatusRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.OrderStatusRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.ProductCategoryRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.ProductCategoryRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.ProductCategoryRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.ProductRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.ProductRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories.ProductRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Repositories.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Repositories.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Repositories",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Security.JwtUser.ClaimNames.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Security.JwtUser.ClaimNames.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Security.JwtUser.ClaimNames",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Security.JwtUser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Security.JwtUser.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Security.JwtUser",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Security.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Security.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Security",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.JwtAuthenticationService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.JwtAuthenticationService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.JwtAuthenticationService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.JwtClaimsTransformer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.JwtClaimsTransformer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.JwtClaimsTransformer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.JwtKeysService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.JwtKeysService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service.JwtKeysService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Service.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Service.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Service",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrderControllerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrderControllerTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers.OrderControllerTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrderItemControllerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrderItemControllerTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers.OrderItemControllerTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrdersStatusController.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.OrdersStatusController.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers.OrdersStatusController",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.ProductCategoryControllerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.ProductCategoryControllerTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers.ProductCategoryControllerTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.ProductControllerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.ProductControllerTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers.ProductControllerTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourcesServes.Tests.Controllers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourcesServes.Tests.Controllers",
+      "Summary": null
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/resourceserver/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/resourceserver/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "api/resourceserver/toc.json"
+        },
+        ".html": {
+          "relative_path": "api/resourceserver/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "articles/toc.json"
+        },
+        ".html": {
+          "relative_path": "articles/toc.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".json": {
+          "relative_path": "toc.json"
+        },
+        ".html": {
+          "relative_path": "toc.html"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
