@@ -13,15 +13,15 @@ references:
   commentId: T:AuthServer.Controllers.AccountController
   fullName: AuthServer.Controllers.AccountController
   nameWithType: AccountController
-- uid: AuthServer.Controllers.AccountController.#ctor(AuthServer.Data.Repositories.IAccountRepository,AuthServer.Data.Repositories.IRoleRepository,AuthServer.Service.IAuthService)
-  name: AccountController(IAccountRepository, IRoleRepository, IAuthService)
-  href: api/authserver/AuthServer.Controllers.AccountController.html#AuthServer_Controllers_AccountController__ctor_AuthServer_Data_Repositories_IAccountRepository_AuthServer_Data_Repositories_IRoleRepository_AuthServer_Service_IAuthService_
-  commentId: M:AuthServer.Controllers.AccountController.#ctor(AuthServer.Data.Repositories.IAccountRepository,AuthServer.Data.Repositories.IRoleRepository,AuthServer.Service.IAuthService)
-  name.vb: New(IAccountRepository, IRoleRepository, IAuthService)
-  fullName: AuthServer.Controllers.AccountController.AccountController(AuthServer.Data.Repositories.IAccountRepository, AuthServer.Data.Repositories.IRoleRepository, AuthServer.Service.IAuthService)
-  fullName.vb: AuthServer.Controllers.AccountController.New(AuthServer.Data.Repositories.IAccountRepository, AuthServer.Data.Repositories.IRoleRepository, AuthServer.Service.IAuthService)
-  nameWithType: AccountController.AccountController(IAccountRepository, IRoleRepository, IAuthService)
-  nameWithType.vb: AccountController.New(IAccountRepository, IRoleRepository, IAuthService)
+- uid: AuthServer.Controllers.AccountController.#ctor(AuthServer.Data.Repositories.AccountRepository,AuthServer.Data.Repositories.RoleRepository,AuthServer.Service.AuthService,AuthServer.Service.JwtService)
+  name: AccountController(AccountRepository, RoleRepository, AuthService, JwtService)
+  href: api/authserver/AuthServer.Controllers.AccountController.html#AuthServer_Controllers_AccountController__ctor_AuthServer_Data_Repositories_AccountRepository_AuthServer_Data_Repositories_RoleRepository_AuthServer_Service_AuthService_AuthServer_Service_JwtService_
+  commentId: M:AuthServer.Controllers.AccountController.#ctor(AuthServer.Data.Repositories.AccountRepository,AuthServer.Data.Repositories.RoleRepository,AuthServer.Service.AuthService,AuthServer.Service.JwtService)
+  name.vb: New(AccountRepository, RoleRepository, AuthService, JwtService)
+  fullName: AuthServer.Controllers.AccountController.AccountController(AuthServer.Data.Repositories.AccountRepository, AuthServer.Data.Repositories.RoleRepository, AuthServer.Service.AuthService, AuthServer.Service.JwtService)
+  fullName.vb: AuthServer.Controllers.AccountController.New(AuthServer.Data.Repositories.AccountRepository, AuthServer.Data.Repositories.RoleRepository, AuthServer.Service.AuthService, AuthServer.Service.JwtService)
+  nameWithType: AccountController.AccountController(AccountRepository, RoleRepository, AuthService, JwtService)
+  nameWithType.vb: AccountController.New(AccountRepository, RoleRepository, AuthService, JwtService)
 - uid: AuthServer.Controllers.AccountController.#ctor*
   name: AccountController
   href: api/authserver/AuthServer.Controllers.AccountController.html#AuthServer_Controllers_AccountController__ctor_
@@ -158,15 +158,15 @@ references:
   commentId: T:AuthServer.Controllers.AuthController
   fullName: AuthServer.Controllers.AuthController
   nameWithType: AuthController
-- uid: AuthServer.Controllers.AuthController.#ctor(AuthServer.Service.IRequestLogger,AuthServer.Service.IJwtService,AuthServer.Data.Repositories.IAccountRepository,AuthServer.Service.IAuthService)
-  name: AuthController(IRequestLogger, IJwtService, IAccountRepository, IAuthService)
-  href: api/authserver/AuthServer.Controllers.AuthController.html#AuthServer_Controllers_AuthController__ctor_AuthServer_Service_IRequestLogger_AuthServer_Service_IJwtService_AuthServer_Data_Repositories_IAccountRepository_AuthServer_Service_IAuthService_
-  commentId: M:AuthServer.Controllers.AuthController.#ctor(AuthServer.Service.IRequestLogger,AuthServer.Service.IJwtService,AuthServer.Data.Repositories.IAccountRepository,AuthServer.Service.IAuthService)
-  name.vb: New(IRequestLogger, IJwtService, IAccountRepository, IAuthService)
-  fullName: AuthServer.Controllers.AuthController.AuthController(AuthServer.Service.IRequestLogger, AuthServer.Service.IJwtService, AuthServer.Data.Repositories.IAccountRepository, AuthServer.Service.IAuthService)
-  fullName.vb: AuthServer.Controllers.AuthController.New(AuthServer.Service.IRequestLogger, AuthServer.Service.IJwtService, AuthServer.Data.Repositories.IAccountRepository, AuthServer.Service.IAuthService)
-  nameWithType: AuthController.AuthController(IRequestLogger, IJwtService, IAccountRepository, IAuthService)
-  nameWithType.vb: AuthController.New(IRequestLogger, IJwtService, IAccountRepository, IAuthService)
+- uid: AuthServer.Controllers.AuthController.#ctor(AuthServer.Service.RequestLogger,AuthServer.Service.JwtService,AuthServer.Data.Repositories.AccountRepository,AuthServer.Service.AuthService)
+  name: AuthController(RequestLogger, JwtService, AccountRepository, AuthService)
+  href: api/authserver/AuthServer.Controllers.AuthController.html#AuthServer_Controllers_AuthController__ctor_AuthServer_Service_RequestLogger_AuthServer_Service_JwtService_AuthServer_Data_Repositories_AccountRepository_AuthServer_Service_AuthService_
+  commentId: M:AuthServer.Controllers.AuthController.#ctor(AuthServer.Service.RequestLogger,AuthServer.Service.JwtService,AuthServer.Data.Repositories.AccountRepository,AuthServer.Service.AuthService)
+  name.vb: New(RequestLogger, JwtService, AccountRepository, AuthService)
+  fullName: AuthServer.Controllers.AuthController.AuthController(AuthServer.Service.RequestLogger, AuthServer.Service.JwtService, AuthServer.Data.Repositories.AccountRepository, AuthServer.Service.AuthService)
+  fullName.vb: AuthServer.Controllers.AuthController.New(AuthServer.Service.RequestLogger, AuthServer.Service.JwtService, AuthServer.Data.Repositories.AccountRepository, AuthServer.Service.AuthService)
+  nameWithType: AuthController.AuthController(RequestLogger, JwtService, AccountRepository, AuthService)
+  nameWithType.vb: AuthController.New(RequestLogger, JwtService, AccountRepository, AuthService)
 - uid: AuthServer.Controllers.AuthController.#ctor*
   name: AuthController
   href: api/authserver/AuthServer.Controllers.AuthController.html#AuthServer_Controllers_AuthController__ctor_
@@ -235,15 +235,15 @@ references:
   commentId: T:AuthServer.Controllers.AuthenticationRecoveryController
   fullName: AuthServer.Controllers.AuthenticationRecoveryController
   nameWithType: AuthenticationRecoveryController
-- uid: AuthServer.Controllers.AuthenticationRecoveryController.#ctor(AuthServer.Data.Repositories.IAuthenticationRecoveryRepository)
-  name: AuthenticationRecoveryController(IAuthenticationRecoveryRepository)
-  href: api/authserver/AuthServer.Controllers.AuthenticationRecoveryController.html#AuthServer_Controllers_AuthenticationRecoveryController__ctor_AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_
-  commentId: M:AuthServer.Controllers.AuthenticationRecoveryController.#ctor(AuthServer.Data.Repositories.IAuthenticationRecoveryRepository)
-  name.vb: New(IAuthenticationRecoveryRepository)
-  fullName: AuthServer.Controllers.AuthenticationRecoveryController.AuthenticationRecoveryController(AuthServer.Data.Repositories.IAuthenticationRecoveryRepository)
-  fullName.vb: AuthServer.Controllers.AuthenticationRecoveryController.New(AuthServer.Data.Repositories.IAuthenticationRecoveryRepository)
-  nameWithType: AuthenticationRecoveryController.AuthenticationRecoveryController(IAuthenticationRecoveryRepository)
-  nameWithType.vb: AuthenticationRecoveryController.New(IAuthenticationRecoveryRepository)
+- uid: AuthServer.Controllers.AuthenticationRecoveryController.#ctor(AuthServer.Data.Repositories.AuthenticationRecoveryRepository)
+  name: AuthenticationRecoveryController(AuthenticationRecoveryRepository)
+  href: api/authserver/AuthServer.Controllers.AuthenticationRecoveryController.html#AuthServer_Controllers_AuthenticationRecoveryController__ctor_AuthServer_Data_Repositories_AuthenticationRecoveryRepository_
+  commentId: M:AuthServer.Controllers.AuthenticationRecoveryController.#ctor(AuthServer.Data.Repositories.AuthenticationRecoveryRepository)
+  name.vb: New(AuthenticationRecoveryRepository)
+  fullName: AuthServer.Controllers.AuthenticationRecoveryController.AuthenticationRecoveryController(AuthServer.Data.Repositories.AuthenticationRecoveryRepository)
+  fullName.vb: AuthServer.Controllers.AuthenticationRecoveryController.New(AuthServer.Data.Repositories.AuthenticationRecoveryRepository)
+  nameWithType: AuthenticationRecoveryController.AuthenticationRecoveryController(AuthenticationRecoveryRepository)
+  nameWithType.vb: AuthenticationRecoveryController.New(AuthenticationRecoveryRepository)
 - uid: AuthServer.Controllers.AuthenticationRecoveryController.#ctor*
   name: AuthenticationRecoveryController
   href: api/authserver/AuthServer.Controllers.AuthenticationRecoveryController.html#AuthServer_Controllers_AuthenticationRecoveryController__ctor_
@@ -334,15 +334,15 @@ references:
   commentId: T:AuthServer.Controllers.JwksController
   fullName: AuthServer.Controllers.JwksController
   nameWithType: JwksController
-- uid: AuthServer.Controllers.JwksController.#ctor(AuthServer.Service.IJwtService,AuthServer.Service.IRequestLogger)
-  name: JwksController(IJwtService, IRequestLogger)
-  href: api/authserver/AuthServer.Controllers.JwksController.html#AuthServer_Controllers_JwksController__ctor_AuthServer_Service_IJwtService_AuthServer_Service_IRequestLogger_
-  commentId: M:AuthServer.Controllers.JwksController.#ctor(AuthServer.Service.IJwtService,AuthServer.Service.IRequestLogger)
-  name.vb: New(IJwtService, IRequestLogger)
-  fullName: AuthServer.Controllers.JwksController.JwksController(AuthServer.Service.IJwtService, AuthServer.Service.IRequestLogger)
-  fullName.vb: AuthServer.Controllers.JwksController.New(AuthServer.Service.IJwtService, AuthServer.Service.IRequestLogger)
-  nameWithType: JwksController.JwksController(IJwtService, IRequestLogger)
-  nameWithType.vb: JwksController.New(IJwtService, IRequestLogger)
+- uid: AuthServer.Controllers.JwksController.#ctor(AuthServer.Service.JwtService,AuthServer.Service.RequestLogger)
+  name: JwksController(JwtService, RequestLogger)
+  href: api/authserver/AuthServer.Controllers.JwksController.html#AuthServer_Controllers_JwksController__ctor_AuthServer_Service_JwtService_AuthServer_Service_RequestLogger_
+  commentId: M:AuthServer.Controllers.JwksController.#ctor(AuthServer.Service.JwtService,AuthServer.Service.RequestLogger)
+  name.vb: New(JwtService, RequestLogger)
+  fullName: AuthServer.Controllers.JwksController.JwksController(AuthServer.Service.JwtService, AuthServer.Service.RequestLogger)
+  fullName.vb: AuthServer.Controllers.JwksController.New(AuthServer.Service.JwtService, AuthServer.Service.RequestLogger)
+  nameWithType: JwksController.JwksController(JwtService, RequestLogger)
+  nameWithType.vb: JwksController.New(JwtService, RequestLogger)
 - uid: AuthServer.Controllers.JwksController.#ctor*
   name: JwksController
   href: api/authserver/AuthServer.Controllers.JwksController.html#AuthServer_Controllers_JwksController__ctor_
@@ -372,15 +372,15 @@ references:
   commentId: T:AuthServer.Controllers.RoleController
   fullName: AuthServer.Controllers.RoleController
   nameWithType: RoleController
-- uid: AuthServer.Controllers.RoleController.#ctor(AuthServer.Data.Repositories.IRoleRepository)
-  name: RoleController(IRoleRepository)
-  href: api/authserver/AuthServer.Controllers.RoleController.html#AuthServer_Controllers_RoleController__ctor_AuthServer_Data_Repositories_IRoleRepository_
-  commentId: M:AuthServer.Controllers.RoleController.#ctor(AuthServer.Data.Repositories.IRoleRepository)
-  name.vb: New(IRoleRepository)
-  fullName: AuthServer.Controllers.RoleController.RoleController(AuthServer.Data.Repositories.IRoleRepository)
-  fullName.vb: AuthServer.Controllers.RoleController.New(AuthServer.Data.Repositories.IRoleRepository)
-  nameWithType: RoleController.RoleController(IRoleRepository)
-  nameWithType.vb: RoleController.New(IRoleRepository)
+- uid: AuthServer.Controllers.RoleController.#ctor(AuthServer.Data.Repositories.RoleRepository)
+  name: RoleController(RoleRepository)
+  href: api/authserver/AuthServer.Controllers.RoleController.html#AuthServer_Controllers_RoleController__ctor_AuthServer_Data_Repositories_RoleRepository_
+  commentId: M:AuthServer.Controllers.RoleController.#ctor(AuthServer.Data.Repositories.RoleRepository)
+  name.vb: New(RoleRepository)
+  fullName: AuthServer.Controllers.RoleController.RoleController(AuthServer.Data.Repositories.RoleRepository)
+  fullName.vb: AuthServer.Controllers.RoleController.New(AuthServer.Data.Repositories.RoleRepository)
+  nameWithType: RoleController.RoleController(RoleRepository)
+  nameWithType.vb: RoleController.New(RoleRepository)
 - uid: AuthServer.Controllers.RoleController.#ctor*
   name: RoleController
   href: api/authserver/AuthServer.Controllers.RoleController.html#AuthServer_Controllers_RoleController__ctor_
@@ -728,19 +728,6 @@ references:
   isSpec: "True"
   fullName: AuthServer.Data.Dto.CreateAccountDto.RecoveryQuestion
   nameWithType: CreateAccountDto.RecoveryQuestion
-- uid: AuthServer.Data.Dto.CreateAccountDto.Role
-  name: Role
-  href: api/authserver/AuthServer.Data.Dto.CreateAccountDto.html#AuthServer_Data_Dto_CreateAccountDto_Role
-  commentId: P:AuthServer.Data.Dto.CreateAccountDto.Role
-  fullName: AuthServer.Data.Dto.CreateAccountDto.Role
-  nameWithType: CreateAccountDto.Role
-- uid: AuthServer.Data.Dto.CreateAccountDto.Role*
-  name: Role
-  href: api/authserver/AuthServer.Data.Dto.CreateAccountDto.html#AuthServer_Data_Dto_CreateAccountDto_Role_
-  commentId: Overload:AuthServer.Data.Dto.CreateAccountDto.Role
-  isSpec: "True"
-  fullName: AuthServer.Data.Dto.CreateAccountDto.Role
-  nameWithType: CreateAccountDto.Role
 - uid: AuthServer.Data.Dto.CreateRoleDto
   name: CreateRoleDto
   href: api/authserver/AuthServer.Data.Dto.CreateRoleDto.html
@@ -1544,311 +1531,6 @@ references:
   isSpec: "True"
   fullName: AuthServer.Data.Repositories.AuthenticationRecoveryRepository.UpdateAsync
   nameWithType: AuthenticationRecoveryRepository.UpdateAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository
-  name: IAccountRepository
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html
-  commentId: T:AuthServer.Data.Repositories.IAccountRepository
-  fullName: AuthServer.Data.Repositories.IAccountRepository
-  nameWithType: IAccountRepository
-- uid: AuthServer.Data.Repositories.IAccountRepository.AddAsync(AuthServer.Data.Models.Account)
-  name: AddAsync(Account)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_AddAsync_AuthServer_Data_Models_Account_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.AddAsync(AuthServer.Data.Models.Account)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.AddAsync(AuthServer.Data.Models.Account)
-  nameWithType: IAccountRepository.AddAsync(Account)
-- uid: AuthServer.Data.Repositories.IAccountRepository.AddAsync*
-  name: AddAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_AddAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.AddAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.AddAsync
-  nameWithType: IAccountRepository.AddAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.DeleteAsync(System.Guid)
-  name: DeleteAsync(Guid)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_DeleteAsync_System_Guid_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.DeleteAsync(System.Guid)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.DeleteAsync(System.Guid)
-  nameWithType: IAccountRepository.DeleteAsync(Guid)
-- uid: AuthServer.Data.Repositories.IAccountRepository.DeleteAsync*
-  name: DeleteAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_DeleteAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.DeleteAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.DeleteAsync
-  nameWithType: IAccountRepository.DeleteAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetAllAsync
-  name: GetAllAsync()
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetAllAsync
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.GetAllAsync
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetAllAsync()
-  nameWithType: IAccountRepository.GetAllAsync()
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetAllAsync*
-  name: GetAllAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetAllAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.GetAllAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetAllAsync
-  nameWithType: IAccountRepository.GetAllAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync(System.String)
-  name: GetByEmailAsync(string)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByEmailAsync_System_String_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync(System.String)
-  name.vb: GetByEmailAsync(String)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync(string)
-  fullName.vb: AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync(String)
-  nameWithType: IAccountRepository.GetByEmailAsync(string)
-  nameWithType.vb: IAccountRepository.GetByEmailAsync(String)
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync*
-  name: GetByEmailAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByEmailAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByEmailAsync
-  nameWithType: IAccountRepository.GetByEmailAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync(System.String,System.String)
-  name: GetByEmailOrPhoneAsync(string, string)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByEmailOrPhoneAsync_System_String_System_String_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync(System.String,System.String)
-  name.vb: GetByEmailOrPhoneAsync(String, String)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync(string, string)
-  fullName.vb: AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync(String, String)
-  nameWithType: IAccountRepository.GetByEmailOrPhoneAsync(string, string)
-  nameWithType.vb: IAccountRepository.GetByEmailOrPhoneAsync(String, String)
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync*
-  name: GetByEmailOrPhoneAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByEmailOrPhoneAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByEmailOrPhoneAsync
-  nameWithType: IAccountRepository.GetByEmailOrPhoneAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync(System.Guid)
-  name: GetByIdAsync(Guid)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByIdAsync_System_Guid_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync(System.Guid)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync(System.Guid)
-  nameWithType: IAccountRepository.GetByIdAsync(Guid)
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync*
-  name: GetByIdAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByIdAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByIdAsync
-  nameWithType: IAccountRepository.GetByIdAsync
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken(System.String)
-  name: GetByRefreshToken(string)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByRefreshToken_System_String_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken(System.String)
-  name.vb: GetByRefreshToken(String)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken(string)
-  fullName.vb: AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken(String)
-  nameWithType: IAccountRepository.GetByRefreshToken(string)
-  nameWithType.vb: IAccountRepository.GetByRefreshToken(String)
-- uid: AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken*
-  name: GetByRefreshToken
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_GetByRefreshToken_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.GetByRefreshToken
-  nameWithType: IAccountRepository.GetByRefreshToken
-- uid: AuthServer.Data.Repositories.IAccountRepository.UpdateAsync(AuthServer.Data.Models.Account)
-  name: UpdateAsync(Account)
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_UpdateAsync_AuthServer_Data_Models_Account_
-  commentId: M:AuthServer.Data.Repositories.IAccountRepository.UpdateAsync(AuthServer.Data.Models.Account)
-  fullName: AuthServer.Data.Repositories.IAccountRepository.UpdateAsync(AuthServer.Data.Models.Account)
-  nameWithType: IAccountRepository.UpdateAsync(Account)
-- uid: AuthServer.Data.Repositories.IAccountRepository.UpdateAsync*
-  name: UpdateAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAccountRepository.html#AuthServer_Data_Repositories_IAccountRepository_UpdateAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAccountRepository.UpdateAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAccountRepository.UpdateAsync
-  nameWithType: IAccountRepository.UpdateAsync
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository
-  name: IAuthenticationRecoveryRepository
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html
-  commentId: T:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository
-  nameWithType: IAuthenticationRecoveryRepository
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  name: AddAsync(AuthenticationRecovery)
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_AddAsync_AuthServer_Data_Models_AuthenticationRecovery_
-  commentId: M:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  nameWithType: IAuthenticationRecoveryRepository.AddAsync(AuthenticationRecovery)
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync*
-  name: AddAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_AddAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.AddAsync
-  nameWithType: IAuthenticationRecoveryRepository.AddAsync
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync(System.Int32)
-  name: DeleteAsync(int)
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_DeleteAsync_System_Int32_
-  commentId: M:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync(System.Int32)
-  name.vb: DeleteAsync(Integer)
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync(int)
-  fullName.vb: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync(Integer)
-  nameWithType: IAuthenticationRecoveryRepository.DeleteAsync(int)
-  nameWithType.vb: IAuthenticationRecoveryRepository.DeleteAsync(Integer)
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync*
-  name: DeleteAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_DeleteAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.DeleteAsync
-  nameWithType: IAuthenticationRecoveryRepository.DeleteAsync
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync
-  name: GetAllAsync()
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_GetAllAsync
-  commentId: M:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync()
-  nameWithType: IAuthenticationRecoveryRepository.GetAllAsync()
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync*
-  name: GetAllAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_GetAllAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetAllAsync
-  nameWithType: IAuthenticationRecoveryRepository.GetAllAsync
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync(System.Int32)
-  name: GetByIdAsync(int)
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_GetByIdAsync_System_Int32_
-  commentId: M:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync(System.Int32)
-  name.vb: GetByIdAsync(Integer)
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync(int)
-  fullName.vb: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync(Integer)
-  nameWithType: IAuthenticationRecoveryRepository.GetByIdAsync(int)
-  nameWithType.vb: IAuthenticationRecoveryRepository.GetByIdAsync(Integer)
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync*
-  name: GetByIdAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_GetByIdAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.GetByIdAsync
-  nameWithType: IAuthenticationRecoveryRepository.GetByIdAsync
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  name: UpdateAsync(AuthenticationRecovery)
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_UpdateAsync_AuthServer_Data_Models_AuthenticationRecovery_
-  commentId: M:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync(AuthServer.Data.Models.AuthenticationRecovery)
-  nameWithType: IAuthenticationRecoveryRepository.UpdateAsync(AuthenticationRecovery)
-- uid: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync*
-  name: UpdateAsync
-  href: api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html#AuthServer_Data_Repositories_IAuthenticationRecoveryRepository_UpdateAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.UpdateAsync
-  nameWithType: IAuthenticationRecoveryRepository.UpdateAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository
-  name: IRoleRepository
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html
-  commentId: T:AuthServer.Data.Repositories.IRoleRepository
-  fullName: AuthServer.Data.Repositories.IRoleRepository
-  nameWithType: IRoleRepository
-- uid: AuthServer.Data.Repositories.IRoleRepository.AddAsync(AuthServer.Data.Models.Role)
-  name: AddAsync(Role)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_AddAsync_AuthServer_Data_Models_Role_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.AddAsync(AuthServer.Data.Models.Role)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.AddAsync(AuthServer.Data.Models.Role)
-  nameWithType: IRoleRepository.AddAsync(Role)
-- uid: AuthServer.Data.Repositories.IRoleRepository.AddAsync*
-  name: AddAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_AddAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.AddAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.AddAsync
-  nameWithType: IRoleRepository.AddAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository.DeleteAsync(System.Int32)
-  name: DeleteAsync(int)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_DeleteAsync_System_Int32_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.DeleteAsync(System.Int32)
-  name.vb: DeleteAsync(Integer)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.DeleteAsync(int)
-  fullName.vb: AuthServer.Data.Repositories.IRoleRepository.DeleteAsync(Integer)
-  nameWithType: IRoleRepository.DeleteAsync(int)
-  nameWithType.vb: IRoleRepository.DeleteAsync(Integer)
-- uid: AuthServer.Data.Repositories.IRoleRepository.DeleteAsync*
-  name: DeleteAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_DeleteAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.DeleteAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.DeleteAsync
-  nameWithType: IRoleRepository.DeleteAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository.Exists(System.String)
-  name: Exists(string)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_Exists_System_String_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.Exists(System.String)
-  name.vb: Exists(String)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.Exists(string)
-  fullName.vb: AuthServer.Data.Repositories.IRoleRepository.Exists(String)
-  nameWithType: IRoleRepository.Exists(string)
-  nameWithType.vb: IRoleRepository.Exists(String)
-- uid: AuthServer.Data.Repositories.IRoleRepository.Exists*
-  name: Exists
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_Exists_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.Exists
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.Exists
-  nameWithType: IRoleRepository.Exists
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetAllAsync
-  name: GetAllAsync()
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetAllAsync
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.GetAllAsync
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetAllAsync()
-  nameWithType: IRoleRepository.GetAllAsync()
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetAllAsync*
-  name: GetAllAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetAllAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.GetAllAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetAllAsync
-  nameWithType: IRoleRepository.GetAllAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync(System.Int32)
-  name: GetByIdAsync(int)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetByIdAsync_System_Int32_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync(System.Int32)
-  name.vb: GetByIdAsync(Integer)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync(int)
-  fullName.vb: AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync(Integer)
-  nameWithType: IRoleRepository.GetByIdAsync(int)
-  nameWithType.vb: IRoleRepository.GetByIdAsync(Integer)
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync*
-  name: GetByIdAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetByIdAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetByIdAsync
-  nameWithType: IRoleRepository.GetByIdAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync(System.String)
-  name: GetByNameAsync(string)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetByNameAsync_System_String_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync(System.String)
-  name.vb: GetByNameAsync(String)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync(string)
-  fullName.vb: AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync(String)
-  nameWithType: IRoleRepository.GetByNameAsync(string)
-  nameWithType.vb: IRoleRepository.GetByNameAsync(String)
-- uid: AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync*
-  name: GetByNameAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_GetByNameAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.GetByNameAsync
-  nameWithType: IRoleRepository.GetByNameAsync
-- uid: AuthServer.Data.Repositories.IRoleRepository.UpdateAsync(AuthServer.Data.Models.Role)
-  name: UpdateAsync(Role)
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_UpdateAsync_AuthServer_Data_Models_Role_
-  commentId: M:AuthServer.Data.Repositories.IRoleRepository.UpdateAsync(AuthServer.Data.Models.Role)
-  fullName: AuthServer.Data.Repositories.IRoleRepository.UpdateAsync(AuthServer.Data.Models.Role)
-  nameWithType: IRoleRepository.UpdateAsync(Role)
-- uid: AuthServer.Data.Repositories.IRoleRepository.UpdateAsync*
-  name: UpdateAsync
-  href: api/authserver/AuthServer.Data.Repositories.IRoleRepository.html#AuthServer_Data_Repositories_IRoleRepository_UpdateAsync_
-  commentId: Overload:AuthServer.Data.Repositories.IRoleRepository.UpdateAsync
-  isSpec: "True"
-  fullName: AuthServer.Data.Repositories.IRoleRepository.UpdateAsync
-  nameWithType: IRoleRepository.UpdateAsync
 - uid: AuthServer.Data.Repositories.RoleRepository
   name: RoleRepository
   href: api/authserver/AuthServer.Data.Repositories.RoleRepository.html
@@ -2166,15 +1848,15 @@ references:
   commentId: T:AuthServer.Service.AuthService
   fullName: AuthServer.Service.AuthService
   nameWithType: AuthService
-- uid: AuthServer.Service.AuthService.#ctor(AuthServer.Data.Repositories.IAccountRepository,AuthServer.Service.IJwtService)
-  name: AuthService(IAccountRepository, IJwtService)
-  href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService__ctor_AuthServer_Data_Repositories_IAccountRepository_AuthServer_Service_IJwtService_
-  commentId: M:AuthServer.Service.AuthService.#ctor(AuthServer.Data.Repositories.IAccountRepository,AuthServer.Service.IJwtService)
-  name.vb: New(IAccountRepository, IJwtService)
-  fullName: AuthServer.Service.AuthService.AuthService(AuthServer.Data.Repositories.IAccountRepository, AuthServer.Service.IJwtService)
-  fullName.vb: AuthServer.Service.AuthService.New(AuthServer.Data.Repositories.IAccountRepository, AuthServer.Service.IJwtService)
-  nameWithType: AuthService.AuthService(IAccountRepository, IJwtService)
-  nameWithType.vb: AuthService.New(IAccountRepository, IJwtService)
+- uid: AuthServer.Service.AuthService.#ctor(AuthServer.Data.Repositories.AccountRepository,AuthServer.Service.JwtService)
+  name: AuthService(AccountRepository, JwtService)
+  href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService__ctor_AuthServer_Data_Repositories_AccountRepository_AuthServer_Service_JwtService_
+  commentId: M:AuthServer.Service.AuthService.#ctor(AuthServer.Data.Repositories.AccountRepository,AuthServer.Service.JwtService)
+  name.vb: New(AccountRepository, JwtService)
+  fullName: AuthServer.Service.AuthService.AuthService(AuthServer.Data.Repositories.AccountRepository, AuthServer.Service.JwtService)
+  fullName.vb: AuthServer.Service.AuthService.New(AuthServer.Data.Repositories.AccountRepository, AuthServer.Service.JwtService)
+  nameWithType: AuthService.AuthService(AccountRepository, JwtService)
+  nameWithType.vb: AuthService.New(AccountRepository, JwtService)
 - uid: AuthServer.Service.AuthService.#ctor*
   name: AuthService
   href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService__ctor_
@@ -2236,25 +1918,6 @@ references:
   isSpec: "True"
   fullName: AuthServer.Service.BackupSchedulerService.ExecuteAsync
   nameWithType: BackupSchedulerService.ExecuteAsync
-- uid: AuthServer.Service.IAuthService
-  name: IAuthService
-  href: api/authserver/AuthServer.Service.IAuthService.html
-  commentId: T:AuthServer.Service.IAuthService
-  fullName: AuthServer.Service.IAuthService
-  nameWithType: IAuthService
-- uid: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  name: Login(HttpResponse, LoginPayloadDto)
-  href: api/authserver/AuthServer.Service.IAuthService.html#AuthServer_Service_IAuthService_Login_Microsoft_AspNetCore_Http_HttpResponse_AuthServer_Data_Dto_LoginPayloadDto_
-  commentId: M:AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  fullName: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, AuthServer.Data.Dto.LoginPayloadDto)
-  nameWithType: IAuthService.Login(HttpResponse, LoginPayloadDto)
-- uid: AuthServer.Service.IAuthService.Login*
-  name: Login
-  href: api/authserver/AuthServer.Service.IAuthService.html#AuthServer_Service_IAuthService_Login_
-  commentId: Overload:AuthServer.Service.IAuthService.Login
-  isSpec: "True"
-  fullName: AuthServer.Service.IAuthService.Login
-  nameWithType: IAuthService.Login
 - uid: AuthServer.Service.IBackupService
   name: IBackupService
   href: api/authserver/AuthServer.Service.IBackupService.html
@@ -2290,134 +1953,6 @@ references:
   isSpec: "True"
   fullName: AuthServer.Service.IBackupService.CreateBackup
   nameWithType: IBackupService.CreateBackup
-- uid: AuthServer.Service.IJwtService
-  name: IJwtService
-  href: api/authserver/AuthServer.Service.IJwtService.html
-  commentId: T:AuthServer.Service.IJwtService
-  fullName: AuthServer.Service.IJwtService
-  nameWithType: IJwtService
-- uid: AuthServer.Service.IJwtService.Audiences
-  name: Audiences
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_Audiences
-  commentId: P:AuthServer.Service.IJwtService.Audiences
-  fullName: AuthServer.Service.IJwtService.Audiences
-  nameWithType: IJwtService.Audiences
-- uid: AuthServer.Service.IJwtService.Audiences*
-  name: Audiences
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_Audiences_
-  commentId: Overload:AuthServer.Service.IJwtService.Audiences
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.Audiences
-  nameWithType: IJwtService.Audiences
-- uid: AuthServer.Service.IJwtService.CreateToken(System.Guid,System.String,System.String,System.TimeSpan)
-  name: CreateToken(Guid, string, string, TimeSpan)
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_CreateToken_System_Guid_System_String_System_String_System_TimeSpan_
-  commentId: M:AuthServer.Service.IJwtService.CreateToken(System.Guid,System.String,System.String,System.TimeSpan)
-  name.vb: CreateToken(Guid, String, String, TimeSpan)
-  fullName: AuthServer.Service.IJwtService.CreateToken(System.Guid, string, string, System.TimeSpan)
-  fullName.vb: AuthServer.Service.IJwtService.CreateToken(System.Guid, String, String, System.TimeSpan)
-  nameWithType: IJwtService.CreateToken(Guid, string, string, TimeSpan)
-  nameWithType.vb: IJwtService.CreateToken(Guid, String, String, TimeSpan)
-- uid: AuthServer.Service.IJwtService.CreateToken*
-  name: CreateToken
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_CreateToken_
-  commentId: Overload:AuthServer.Service.IJwtService.CreateToken
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.CreateToken
-  nameWithType: IJwtService.CreateToken
-- uid: AuthServer.Service.IJwtService.DecryptKey
-  name: DecryptKey
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_DecryptKey
-  commentId: P:AuthServer.Service.IJwtService.DecryptKey
-  fullName: AuthServer.Service.IJwtService.DecryptKey
-  nameWithType: IJwtService.DecryptKey
-- uid: AuthServer.Service.IJwtService.DecryptKey*
-  name: DecryptKey
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_DecryptKey_
-  commentId: Overload:AuthServer.Service.IJwtService.DecryptKey
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.DecryptKey
-  nameWithType: IJwtService.DecryptKey
-- uid: AuthServer.Service.IJwtService.EncryptKey
-  name: EncryptKey
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_EncryptKey
-  commentId: P:AuthServer.Service.IJwtService.EncryptKey
-  fullName: AuthServer.Service.IJwtService.EncryptKey
-  nameWithType: IJwtService.EncryptKey
-- uid: AuthServer.Service.IJwtService.EncryptKey*
-  name: EncryptKey
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_EncryptKey_
-  commentId: Overload:AuthServer.Service.IJwtService.EncryptKey
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.EncryptKey
-  nameWithType: IJwtService.EncryptKey
-- uid: AuthServer.Service.IJwtService.ExtractClaims(System.String)
-  name: ExtractClaims(string)
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_ExtractClaims_System_String_
-  commentId: M:AuthServer.Service.IJwtService.ExtractClaims(System.String)
-  name.vb: ExtractClaims(String)
-  fullName: AuthServer.Service.IJwtService.ExtractClaims(string)
-  fullName.vb: AuthServer.Service.IJwtService.ExtractClaims(String)
-  nameWithType: IJwtService.ExtractClaims(string)
-  nameWithType.vb: IJwtService.ExtractClaims(String)
-- uid: AuthServer.Service.IJwtService.ExtractClaims*
-  name: ExtractClaims
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_ExtractClaims_
-  commentId: Overload:AuthServer.Service.IJwtService.ExtractClaims
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.ExtractClaims
-  nameWithType: IJwtService.ExtractClaims
-- uid: AuthServer.Service.IJwtService.SigningCredentials
-  name: SigningCredentials
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_SigningCredentials
-  commentId: P:AuthServer.Service.IJwtService.SigningCredentials
-  fullName: AuthServer.Service.IJwtService.SigningCredentials
-  nameWithType: IJwtService.SigningCredentials
-- uid: AuthServer.Service.IJwtService.SigningCredentials*
-  name: SigningCredentials
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_SigningCredentials_
-  commentId: Overload:AuthServer.Service.IJwtService.SigningCredentials
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.SigningCredentials
-  nameWithType: IJwtService.SigningCredentials
-- uid: AuthServer.Service.IJwtService.TryVerifyAppClaims(System.Security.Claims.ClaimsPrincipal,System.String@)
-  name: TryVerifyAppClaims(ClaimsPrincipal, out string?)
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_TryVerifyAppClaims_System_Security_Claims_ClaimsPrincipal_System_String__
-  commentId: M:AuthServer.Service.IJwtService.TryVerifyAppClaims(System.Security.Claims.ClaimsPrincipal,System.String@)
-  name.vb: TryVerifyAppClaims(ClaimsPrincipal, String)
-  fullName: AuthServer.Service.IJwtService.TryVerifyAppClaims(System.Security.Claims.ClaimsPrincipal, out string?)
-  fullName.vb: AuthServer.Service.IJwtService.TryVerifyAppClaims(System.Security.Claims.ClaimsPrincipal, String)
-  nameWithType: IJwtService.TryVerifyAppClaims(ClaimsPrincipal, out string?)
-  nameWithType.vb: IJwtService.TryVerifyAppClaims(ClaimsPrincipal, String)
-- uid: AuthServer.Service.IJwtService.TryVerifyAppClaims*
-  name: TryVerifyAppClaims
-  href: api/authserver/AuthServer.Service.IJwtService.html#AuthServer_Service_IJwtService_TryVerifyAppClaims_
-  commentId: Overload:AuthServer.Service.IJwtService.TryVerifyAppClaims
-  isSpec: "True"
-  fullName: AuthServer.Service.IJwtService.TryVerifyAppClaims
-  nameWithType: IJwtService.TryVerifyAppClaims
-- uid: AuthServer.Service.IRequestLogger
-  name: IRequestLogger
-  href: api/authserver/AuthServer.Service.IRequestLogger.html
-  commentId: T:AuthServer.Service.IRequestLogger
-  fullName: AuthServer.Service.IRequestLogger
-  nameWithType: IRequestLogger
-- uid: AuthServer.Service.IRequestLogger.PrintRequest(System.String,Microsoft.AspNetCore.Http.HttpRequest)
-  name: PrintRequest(string, HttpRequest)
-  href: api/authserver/AuthServer.Service.IRequestLogger.html#AuthServer_Service_IRequestLogger_PrintRequest_System_String_Microsoft_AspNetCore_Http_HttpRequest_
-  commentId: M:AuthServer.Service.IRequestLogger.PrintRequest(System.String,Microsoft.AspNetCore.Http.HttpRequest)
-  name.vb: PrintRequest(String, HttpRequest)
-  fullName: AuthServer.Service.IRequestLogger.PrintRequest(string, Microsoft.AspNetCore.Http.HttpRequest)
-  fullName.vb: AuthServer.Service.IRequestLogger.PrintRequest(String, Microsoft.AspNetCore.Http.HttpRequest)
-  nameWithType: IRequestLogger.PrintRequest(string, HttpRequest)
-  nameWithType.vb: IRequestLogger.PrintRequest(String, HttpRequest)
-- uid: AuthServer.Service.IRequestLogger.PrintRequest*
-  name: PrintRequest
-  href: api/authserver/AuthServer.Service.IRequestLogger.html#AuthServer_Service_IRequestLogger_PrintRequest_
-  commentId: Overload:AuthServer.Service.IRequestLogger.PrintRequest
-  isSpec: "True"
-  fullName: AuthServer.Service.IRequestLogger.PrintRequest
-  nameWithType: IRequestLogger.PrintRequest
 - uid: AuthServer.Service.JwtClaimsTransformer
   name: JwtClaimsTransformer
   href: api/authserver/AuthServer.Service.JwtClaimsTransformer.html
