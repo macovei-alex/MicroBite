@@ -620,6 +620,62 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.UnitTests.Services.AuthServiceTestsWithNSubstitute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.UnitTests.Services.AuthServiceTestsWithNSubstitute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.UnitTests.Services.AuthServiceTestsWithNSubstitute",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.UnitTests.Services.BackupSchedulerServiceTestsWithNSubstitute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.UnitTests.Services.BackupSchedulerServiceTestsWithNSubstitute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.UnitTests.Services.BackupSchedulerServiceTestsWithNSubstitute",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.UnitTests.Services.JwtClaimsTransformerTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.UnitTests.Services.JwtClaimsTransformerTests.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.UnitTests.Services.JwtClaimsTransformerTests",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.UnitTests.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.UnitTests.Services.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.UnitTests.Services",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/authserver/AuthServer.Utils.ClaimsPrincipalExtensionMethods.yml",
       "output": {
         ".html": {
