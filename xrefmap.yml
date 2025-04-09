@@ -2184,12 +2184,15 @@ references:
   fullName.vb: AuthServer.Service.AuthService.New
   nameWithType: AuthService.AuthService
   nameWithType.vb: AuthService.New
-- uid: AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  name: Login(HttpResponse, LoginPayloadDto)
-  href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService_Login_Microsoft_AspNetCore_Http_HttpResponse_AuthServer_Data_Dto_LoginPayloadDto_
-  commentId: M:AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  fullName: AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, AuthServer.Data.Dto.LoginPayloadDto)
-  nameWithType: AuthService.Login(HttpResponse, LoginPayloadDto)
+- uid: AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,System.Boolean,AuthServer.Data.Dto.LoginPayloadDto)
+  name: Login(HttpResponse, bool, LoginPayloadDto)
+  href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService_Login_Microsoft_AspNetCore_Http_HttpResponse_System_Boolean_AuthServer_Data_Dto_LoginPayloadDto_
+  commentId: M:AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,System.Boolean,AuthServer.Data.Dto.LoginPayloadDto)
+  name.vb: Login(HttpResponse, Boolean, LoginPayloadDto)
+  fullName: AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, bool, AuthServer.Data.Dto.LoginPayloadDto)
+  fullName.vb: AuthServer.Service.AuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, Boolean, AuthServer.Data.Dto.LoginPayloadDto)
+  nameWithType: AuthService.Login(HttpResponse, bool, LoginPayloadDto)
+  nameWithType.vb: AuthService.Login(HttpResponse, Boolean, LoginPayloadDto)
 - uid: AuthServer.Service.AuthService.Login*
   name: Login
   href: api/authserver/AuthServer.Service.AuthService.html#AuthServer_Service_AuthService_Login_
@@ -2241,12 +2244,15 @@ references:
   commentId: T:AuthServer.Service.IAuthService
   fullName: AuthServer.Service.IAuthService
   nameWithType: IAuthService
-- uid: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  name: Login(HttpResponse, LoginPayloadDto)
-  href: api/authserver/AuthServer.Service.IAuthService.html#AuthServer_Service_IAuthService_Login_Microsoft_AspNetCore_Http_HttpResponse_AuthServer_Data_Dto_LoginPayloadDto_
-  commentId: M:AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,AuthServer.Data.Dto.LoginPayloadDto)
-  fullName: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, AuthServer.Data.Dto.LoginPayloadDto)
-  nameWithType: IAuthService.Login(HttpResponse, LoginPayloadDto)
+- uid: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,System.Boolean,AuthServer.Data.Dto.LoginPayloadDto)
+  name: Login(HttpResponse, bool, LoginPayloadDto)
+  href: api/authserver/AuthServer.Service.IAuthService.html#AuthServer_Service_IAuthService_Login_Microsoft_AspNetCore_Http_HttpResponse_System_Boolean_AuthServer_Data_Dto_LoginPayloadDto_
+  commentId: M:AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse,System.Boolean,AuthServer.Data.Dto.LoginPayloadDto)
+  name.vb: Login(HttpResponse, Boolean, LoginPayloadDto)
+  fullName: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, bool, AuthServer.Data.Dto.LoginPayloadDto)
+  fullName.vb: AuthServer.Service.IAuthService.Login(Microsoft.AspNetCore.Http.HttpResponse, Boolean, AuthServer.Data.Dto.LoginPayloadDto)
+  nameWithType: IAuthService.Login(HttpResponse, bool, LoginPayloadDto)
+  nameWithType.vb: IAuthService.Login(HttpResponse, Boolean, LoginPayloadDto)
 - uid: AuthServer.Service.IAuthService.Login*
   name: Login
   href: api/authserver/AuthServer.Service.IAuthService.html#AuthServer_Service_IAuthService_Login_
