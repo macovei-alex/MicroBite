@@ -4,10 +4,10 @@ using Isopoh.Cryptography.Argon2;
 
 namespace AuthServer.Service;
 
-public class AuthService(AccountRepository accountRepository, JwtService jwtService) : IAuthService
+public class AuthService(IAccountRepository accountRepository, IJwtService jwtService) : IAuthService
 {
-	private readonly AccountRepository _accountRepository = accountRepository;
-	private readonly JwtService _jwtService = jwtService;
+	private readonly IAccountRepository _accountRepository = accountRepository;
+	private readonly IJwtService _jwtService = jwtService;
 
 	public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload)
 	{
