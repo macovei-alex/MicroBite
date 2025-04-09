@@ -1217,6 +1217,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/resourceserver/ResourceServer.Data.Security.Role.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/resourceserver/ResourceServer.Data.Security.Role.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "ResourceServer.Data.Security.Role",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/resourceserver/ResourceServer.Data.Security.yml",
       "output": {
         ".html": {

@@ -1265,6 +1265,12 @@ references:
   commentId: T:AuthServer.Data.Models.Role
   fullName: AuthServer.Data.Models.Role
   nameWithType: Role
+- uid: AuthServer.Data.Models.Role.Admin
+  name: Admin
+  href: api/authserver/AuthServer.Data.Models.Role.html#AuthServer_Data_Models_Role_Admin
+  commentId: F:AuthServer.Data.Models.Role.Admin
+  fullName: AuthServer.Data.Models.Role.Admin
+  nameWithType: Role.Admin
 - uid: AuthServer.Data.Models.Role.Id
   name: Id
   href: api/authserver/AuthServer.Data.Models.Role.html#AuthServer_Data_Models_Role_Id
@@ -1291,6 +1297,12 @@ references:
   isSpec: "True"
   fullName: AuthServer.Data.Models.Role.Name
   nameWithType: Role.Name
+- uid: AuthServer.Data.Models.Role.User
+  name: User
+  href: api/authserver/AuthServer.Data.Models.Role.html#AuthServer_Data_Models_Role_User
+  commentId: F:AuthServer.Data.Models.Role.User
+  fullName: AuthServer.Data.Models.Role.User
+  nameWithType: Role.User
 - uid: AuthServer.Data.Repositories
   name: AuthServer.Data.Repositories
   href: api/authserver/AuthServer.Data.Repositories.html
@@ -5570,6 +5582,24 @@ references:
   isSpec: "True"
   fullName: ResourceServer.Data.Security.JwtUser.Role
   nameWithType: JwtUser.Role
+- uid: ResourceServer.Data.Security.Role
+  name: Role
+  href: api/resourceserver/ResourceServer.Data.Security.Role.html
+  commentId: T:ResourceServer.Data.Security.Role
+  fullName: ResourceServer.Data.Security.Role
+  nameWithType: Role
+- uid: ResourceServer.Data.Security.Role.Admin
+  name: Admin
+  href: api/resourceserver/ResourceServer.Data.Security.Role.html#ResourceServer_Data_Security_Role_Admin
+  commentId: F:ResourceServer.Data.Security.Role.Admin
+  fullName: ResourceServer.Data.Security.Role.Admin
+  nameWithType: Role.Admin
+- uid: ResourceServer.Data.Security.Role.User
+  name: User
+  href: api/resourceserver/ResourceServer.Data.Security.Role.html#ResourceServer_Data_Security_Role_User
+  commentId: F:ResourceServer.Data.Security.Role.User
+  fullName: ResourceServer.Data.Security.Role.User
+  nameWithType: Role.User
 - uid: ResourceServer.Service
   name: ResourceServer.Service
   href: api/resourceserver/ResourceServer.Service.html
