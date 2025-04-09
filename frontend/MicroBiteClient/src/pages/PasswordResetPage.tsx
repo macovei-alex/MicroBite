@@ -6,8 +6,10 @@ import axios from "axios";
 import NamedInput from "../components/NamedInput";
 import Button from "../components/Button";
 import PageTitle from "../components/PageTitle";
+import { useMediaQuery } from "react-responsive";
 
 export default function PasswordResetPage() {
+  const isDesktop = useMediaQuery({ minWidth: 1024 });
   const navigate = useNavigate();
   const [userData, setUserData] = useState<PasswordResetData>({
     email: "",
@@ -114,6 +116,13 @@ export default function PasswordResetPage() {
             value={userData.email}
             onChange={handleChange}
           />
+          {!isDesktop.valueOf() && (
+            <Button
+              text="Get Security Question"
+              onClick={fetchSecurityQuestion}
+              disabled={isLoading}
+            />
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Security Question
@@ -128,13 +137,13 @@ export default function PasswordResetPage() {
                   className="w-full p-3 rounded-md outline-none"
                 />
               </div>
-              <button
-                onClick={fetchSecurityQuestion}
-                disabled={isLoading}
-                className="bg-blue-500 text-white px-3 rounded-md enabled:hover:bg-blue-700 transition duration-500 font-medium disabled:opacity-60 enabled:cursor-pointer"
-              >
-                Get security question
-              </button>
+              {isDesktop.valueOf() && (
+                <Button
+                  text="Get Security Question"
+                  onClick={fetchSecurityQuestion}
+                  disabled={isLoading}
+                />
+              )}
             </div>
           </div>
           <NamedInput

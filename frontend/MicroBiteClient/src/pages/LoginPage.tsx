@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96 pb-12">
+      <div className="bg-white p-8 rounded-lg shadow-md w-88 sm:w-96 pb-12">
         <PageTitle text="Login" />
 
         <ErrorLabel error={error} />
