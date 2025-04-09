@@ -37,7 +37,7 @@ public class AccountController(
 		return Ok(await _repository.GetAllAsync());
 	}
 
-	[HttpPost]
+	[HttpPost("/api/register")]
 	public async Task<IActionResult> Create([FromBody] CreateAccountDto accountDto)
 	{
 		if (!ModelState.IsValid)
@@ -51,10 +51,10 @@ public class AccountController(
 			return Conflict("An account with the same email or phone number already exists.");
 		}
 
-		var role = await _roleRepository.GetByNameAsync(accountDto.Role);
+		var role = await _roleRepository.GetByNameAsync("user");
 		if (role == null)
 		{
-			return BadRequest("The provided role does not exist");
+			return BadRequest("Database problems."); //you must add the role ,,user" in the database.
 		}
 
 		var passwordHash = Argon2.Hash(accountDto.Password);

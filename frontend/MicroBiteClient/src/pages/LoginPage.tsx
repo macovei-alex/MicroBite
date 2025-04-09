@@ -72,6 +72,15 @@ export default function LoginPage() {
             Forgot your password?
           </Link>
           <Button text="Login" type="submit" disabled={authContext.isAuthenticating} />
+          <div className="text-center mt-4">
+            <span className="text-gray-600">Don't have an account? </span>
+            <Link
+              to="/register"
+              className="text-blue-500 hover:underline font-medium"
+            >
+              Register here
+            </Link>
+          </div>
         </form>
       </div>
     </div>

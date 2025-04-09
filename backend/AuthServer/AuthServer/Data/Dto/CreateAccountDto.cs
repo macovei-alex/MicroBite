@@ -18,9 +18,6 @@ public class CreateAccountDto
 	public required string PhoneNumber { get; set; }
 
 	[Required]
-	public required string Role { get; set; }
-
-	[Required]
 	[StringLength(256, MinimumLength = 10)]
 	public required string Password { get; set; }
 

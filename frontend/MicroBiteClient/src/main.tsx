@@ -17,6 +17,7 @@ import CartProvider from "./cart/context/CartContextProvider.tsx";
 import OrderHistoryPage from "./pages/OrderHistoryPage.tsx";
 import OrderStatusUpdatesContextProvider from "./orders/context/OrderStatusUpdatesContextProvider.tsx";
 import AdminUserOrdersPage from "./pages/AdminUserOrdersPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ createRoot(document.getElementById("root")!).render(
                 <Route index path="/" element={<HomePage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage/>}/>
                 <Route path="/password-reset" element={<PasswordResetPage />} />
                 <Route element={<AuthProtectedOutlet redirectTo="/login" />}>
                   <Route path="/menu" element={<MenuPage />} />
