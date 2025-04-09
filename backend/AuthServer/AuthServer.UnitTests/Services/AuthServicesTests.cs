@@ -11,13 +11,23 @@ namespace AuthServer.UnitTests.Services;
 [TestClass]
 public class AuthServiceTestsWithNSubstitute
 {
+    private IAccountRepository _mockAccountRepository;
+    private IJwtService _mockJwtService;
+    private HttpResponse _mockHttpResponse;
+    private IResponseCookies _mockCookies;
+
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        _mockAccountRepository = Substitute.For<IAccountRepository>();
+        _mockJwtService = Substitute.For<IJwtService>();
+        _mockHttpResponse = Substitute.For<HttpResponse>();
+        _mockCookies = Substitute.For<IResponseCookies>();
+    }
+
     [TestMethod]
     public async Task Login_ValidCredentials_ReturnsTokenPairAndSetsRefreshTokenCookie_FullAccount()
     {
-        var mockAccountRepository = Substitute.For<IAccountRepository>();
-        var mockJwtService = Substitute.For<IJwtService>();
-        var mockHttpResponse = Substitute.For<HttpResponse>();
-        var mockCookies = Substitute.For<IResponseCookies>();
         var loginPayload = new LoginPayloadDto
         {
             Email = "test@example.com",
@@ -27,27 +37,27 @@ public class AuthServiceTestsWithNSubstitute
         var mockAccount = CreateFullAccount();
         var expectedAccessToken = "mockAccessToken";
         var expectedRefreshToken = "newMockRefreshToken";
-        mockAccountRepository.GetByEmailAsync(loginPayload.Email).Returns(Task.FromResult(mockAccount));
-        await mockAccountRepository.UpdateAsync(Arg.Any<Account>());
-        mockJwtService.CreateToken(mockAccount.Id, mockAccount.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay)
+        _mockAccountRepository.GetByEmailAsync(loginPayload.Email).Returns(Task.FromResult(mockAccount));
+        await _mockAccountRepository.UpdateAsync(Arg.Any<Account>());
+        _mockJwtService.CreateToken(mockAccount.Id, mockAccount.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay)
             .Returns(expectedAccessToken);
-        mockJwtService.CreateToken(mockAccount.Id, mockAccount.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay)
+        _mockJwtService.CreateToken(mockAccount.Id, mockAccount.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay)
             .Returns(expectedRefreshToken);
-        mockHttpResponse.Cookies.Returns(mockCookies);
-        var authService = new AuthService(mockAccountRepository, mockJwtService);
+        _mockHttpResponse.Cookies.Returns(_mockCookies);
+        var authService = new AuthService(_mockAccountRepository, _mockJwtService);
 
-        var result = authService.Login(mockHttpResponse, loginPayload);
+        var result = authService.Login(_mockHttpResponse, loginPayload);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(expectedAccessToken, result.AccessToken);
         Assert.AreEqual(expectedRefreshToken, result.RefreshToken);
 
-        mockCookies.Received(1).Append(
+        _mockCookies.Received(1).Append(
             "refreshToken",
             expectedRefreshToken,
             Arg.Is<CookieOptions>(o => o.HttpOnly && !o.Secure && o.SameSite == SameSiteMode.Strict));
 
-        await mockAccountRepository.Received(1).UpdateAsync(Arg.Is<Account>(a =>
+        await _mockAccountRepository.Received(1).UpdateAsync(Arg.Is<Account>(a =>
             a.Id == mockAccount.Id &&
             a.RefreshToken == expectedRefreshToken));
     }
@@ -55,9 +65,6 @@ public class AuthServiceTestsWithNSubstitute
     [TestMethod]
     public async Task Login_InvalidPassword_ThrowsArgumentException_FullAccountAsync()
     {
-        var mockAccountRepository = Substitute.For<IAccountRepository>();
-        var mockJwtService = Substitute.For<IJwtService>();
-        var mockHttpResponse = Substitute.For<HttpResponse>();
         var loginPayload = new LoginPayloadDto
         {
             Email = "test@example.com",
@@ -65,14 +72,14 @@ public class AuthServiceTestsWithNSubstitute
             ClientId = "testClient"
         };
         var mockAccount = CreateFullAccount();
-        mockAccountRepository.GetByEmailAsync(loginPayload.Email).Returns(Task.FromResult(mockAccount));
+        _mockAccountRepository.GetByEmailAsync(loginPayload.Email).Returns(Task.FromResult(mockAccount));
 
-        var authService = new AuthService(mockAccountRepository, mockJwtService);
+        var authService = new AuthService(_mockAccountRepository, _mockJwtService);
 
-        Assert.ThrowsException<ArgumentException>(() => authService.Login(mockHttpResponse, loginPayload));
-        await mockAccountRepository.DidNotReceive().UpdateAsync(Arg.Any<Account>());
-        mockHttpResponse.Cookies.DidNotReceive().Append(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CookieOptions>());
-        mockJwtService.DidNotReceive().CreateToken(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
+        Assert.ThrowsException<ArgumentException>(() => authService.Login(_mockHttpResponse, loginPayload));
+        await _mockAccountRepository.DidNotReceive().UpdateAsync(Arg.Any<Account>());
+        _mockHttpResponse.Cookies.DidNotReceive().Append(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CookieOptions>());
+        _mockJwtService.DidNotReceive().CreateToken(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<string>(), Arg.Any<TimeSpan>());
     }
 
     private static Account CreateFullAccount() => new Account
