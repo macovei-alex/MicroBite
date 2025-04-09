@@ -7,3 +7,7 @@ global using Microsoft.AspNetCore.Http;
 global using NSubstitute;
 global using Microsoft.Extensions.Logging;
 global using NSubstitute.ExceptionExtensions;
+global using AuthServer.Data.Security;
+global using Microsoft.IdentityModel.Tokens;
+global using System.Security.Claims;
+global using System.Text.Json;
