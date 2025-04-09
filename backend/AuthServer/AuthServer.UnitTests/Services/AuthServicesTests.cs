@@ -1,12 +1,4 @@
-﻿using AuthServer.Data.Dto;
-using AuthServer.Data.Models;
-using AuthServer.Data.Repositories;
-using AuthServer.Service;
-using Isopoh.Cryptography.Argon2;
-using Microsoft.AspNetCore.Http;
-using NSubstitute;
-
-namespace AuthServer.UnitTests.Services;
+﻿namespace AuthServer.UnitTests.Services;
 
 [TestClass]
 public class AuthServiceTestsWithNSubstitute

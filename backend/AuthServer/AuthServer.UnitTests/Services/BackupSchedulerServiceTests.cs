@@ -1,9 +1,4 @@
-﻿using AuthServer.Service;
-using Microsoft.Extensions.Logging;
-using NSubstitute;
-using NSubstitute.ExceptionExtensions;
-
-namespace AuthServer.UnitTests.Services;
+﻿namespace AuthServer.UnitTests.Services;
 
 [TestClass]
 public class BackupSchedulerServiceTestsWithNSubstitute
