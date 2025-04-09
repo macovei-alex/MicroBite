@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 
 namespace AuthServer.Service;
 
-public class JwtService
+public class JwtService : IJwtService
 {
 	public static readonly TimeSpan DefaultAccessTokenExpirationDelay = TimeSpan.FromMinutes(10);
 	public static readonly TimeSpan DefaultRefreshTokenExpirationDelay = TimeSpan.FromMinutes(30);

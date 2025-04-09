@@ -2,16 +2,15 @@
 using AuthServer.Data.Models;
 using AuthServer.Data.Repositories;
 using AuthServer.Data.Dto;
-using Microsoft.EntityFrameworkCore;
 using AuthServer.Utils;
 
 namespace AuthServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class RoleController(RoleRepository repository) : ControllerBase
+public class RoleController(IRoleRepository repository) : ControllerBase
 {
-	private readonly RoleRepository _repository = repository;
+	private readonly IRoleRepository _repository = repository;
 
 	[HttpGet("{id}")]
 	public async Task<ActionResult<Role>> GetById(int id)

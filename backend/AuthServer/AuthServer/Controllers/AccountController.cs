@@ -11,17 +11,13 @@ namespace AuthServer.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AccountController(
-	AccountRepository repository,
-	RoleRepository roleRepository,
-	AuthService authService,
-	JwtService jwtService
-) : ControllerBase
+public class AccountController(IAccountRepository repository,
+							IRoleRepository roleRepository,
+							IAuthService authService) : ControllerBase
 {
-	private readonly AccountRepository _repository = repository;
-	private readonly RoleRepository _roleRepository = roleRepository;
-	private readonly AuthService _authService = authService;
-	private readonly JwtService _jwtService = jwtService;
+	private readonly IAccountRepository _repository = repository;
+	private readonly IRoleRepository _roleRepository = roleRepository;
+	private readonly IAuthService _authService = authService;
 
 	[HttpGet("{id}")]
 	[Authorize]

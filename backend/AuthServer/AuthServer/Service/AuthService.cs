@@ -4,22 +4,17 @@ using Isopoh.Cryptography.Argon2;
 
 namespace AuthServer.Service;
 
-public class AuthService(AccountRepository accountRepository, JwtService jwtService)
+public class AuthService(IAccountRepository accountRepository, IJwtService jwtService) : IAuthService
 {
-	private readonly AccountRepository _accountRepository = accountRepository;
-	private readonly JwtService _jwtService = jwtService;
+	private readonly IAccountRepository _accountRepository = accountRepository;
+	private readonly IJwtService _jwtService = jwtService;
 
 	public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload)
 	{
-		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result;
-		if (account == null)
-		{
-			throw new ArgumentException("No user account matched the provided credentials");
-		}
+		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result ?? throw new ArgumentException("No user account matched the provided credentials");
+
 		if (!Argon2.Verify(account.PasswordHash, loginPayload.Password))
-		{
 			throw new ArgumentException("Incorrect username or password");
-		}
 
 		var accessToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultAccessTokenExpirationDelay);
 		var refreshToken = _jwtService.CreateToken(account.Id, account.Role.Name, loginPayload.ClientId, JwtService.DefaultRefreshTokenExpirationDelay);

@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿namespace AuthServer.Service;
 
-namespace AuthServer.Service;
-
-public class RequestLogger
+public class RequestLogger : IRequestLogger
 {
 	private readonly SemaphoreSlim _semaphore = new(1, 1);
-
 
 	public async Task PrintRequest(string requestName, HttpRequest request)
 	{
@@ -16,15 +13,13 @@ public class RequestLogger
 			Console.WriteLine($"Request: {requestName} {{");
 
 			foreach (var header in request.Headers)
-			{
 				Console.WriteLine($"\tHeader: {header.Key} = {header.Value}");
-			}
+
 			Console.WriteLine();
 
 			foreach (var cookie in request.Cookies)
-			{
 				Console.WriteLine($"\tCookie: {cookie.Key} = {cookie.Value}");
-			}
+
 			Console.WriteLine();
 
 			request.EnableBuffering();

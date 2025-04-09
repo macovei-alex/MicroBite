@@ -27,17 +27,13 @@ public class JwtUser
 	public static JwtUser CreateFromIdentity(ClaimsIdentity identity)
 	{
 		if (identity.FindFirst(ClaimNames.NotBefore) == null)
-		{
 			throw new InvalidOperationException($"Missing ( {ClaimNames.NotBefore} ) claims");
-		}
+
 		if (identity.FindFirst(ClaimNames.ExpiresAt) == null)
-		{
 			throw new InvalidOperationException($"Missing ( {ClaimNames.ExpiresAt} ) claimslaims");
-		}
+
 		if (identity.FindFirst(ClaimNames.IssuedAt) == null)
-		{
 			throw new InvalidOperationException($"Missing ( {ClaimNames.IssuedAt} ) claims");
-		}
 
 		return new JwtUser
 		{

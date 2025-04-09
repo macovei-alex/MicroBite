@@ -3,7 +3,7 @@ using AuthServer.Data.Models;
 
 namespace AuthServer.Data.Repositories;
 
-public class AccountRepository(AppDbContext context)
+public class AccountRepository(AppDbContext context) : IAccountRepository
 {
 	private readonly AppDbContext _context = context;
 
@@ -79,6 +79,7 @@ public class AccountRepository(AppDbContext context)
 				existingAccount.Role = account.Role;
 			}
 		}
+
 		if (account.AuthenticationRecovery != null)
 		{
 			var existingRecovery = await _context.AuthenticationRecoveries.FindAsync(account.AuthenticationRecovery.Id);
@@ -93,13 +94,15 @@ public class AccountRepository(AppDbContext context)
 				existingAccount.AuthenticationRecovery = account.AuthenticationRecovery;
 			}
 		}
+
 		return await _context.SaveChangesAsync() > 0;
 	}
 
 	public async Task<bool> DeleteAsync(Guid id)
 	{
 		var account = await _context.Accounts.FindAsync(id);
-		if (account == null) return false;
+		if (account == null)
+			return false;
 
 		_context.Accounts.Remove(account);
 		return await _context.SaveChangesAsync() > 0;
