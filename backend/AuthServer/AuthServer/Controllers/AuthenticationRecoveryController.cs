@@ -8,9 +8,9 @@ namespace AuthServer.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 [Authorize]
-public class AuthenticationRecoveryController(AuthenticationRecoveryRepository repository) : ControllerBase
+public class AuthenticationRecoveryController(IAuthenticationRecoveryRepository repository) : ControllerBase
 {
-	private readonly AuthenticationRecoveryRepository _repository = repository;
+	private readonly IAuthenticationRecoveryRepository _repository = repository;
 
 	[HttpGet("{id}")]
 	public async Task<ActionResult<AuthenticationRecovery>> GetById(int id)

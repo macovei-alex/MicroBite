@@ -1,32 +1,25 @@
-﻿namespace AuthServer.Service
+﻿namespace AuthServer.Service;
+
+public class BackupSchedulerService(IBackupService backupService, ILogger<BackupSchedulerService> logger) : BackgroundService
 {
-    public class BackupSchedulerService : BackgroundService
+    private readonly IBackupService _backupService = backupService;
+    private readonly ILogger<BackupSchedulerService> _logger = logger;
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        private readonly IBackupService _backupService;
-        private readonly ILogger<BackupSchedulerService> _logger;
-
-        public BackupSchedulerService(IBackupService backupService, ILogger<BackupSchedulerService> logger)
+        while (!stoppingToken.IsCancellationRequested)
         {
-            _backupService = backupService;
-            _logger = logger;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                try
-                {
-                    await _backupService.CreateBackup();
-                    await _backupService.CleanOldBackups(7); // Șterge backup-uri mai vechi de 7 zile
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Backup scheduling error");
-                }
-
-                await Task.Delay(TimeSpan.FromHours(24), stoppingToken); // Backup zilnic daca serverul ruleaza mai mult de 24 de ore
+                await _backupService.CreateBackup();
+                await _backupService.CleanOldBackups(7);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Backup scheduling error");
+            }
+
+            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
         }
     }
 }

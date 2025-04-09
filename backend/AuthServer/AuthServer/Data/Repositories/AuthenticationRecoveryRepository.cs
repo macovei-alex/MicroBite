@@ -3,7 +3,7 @@ using AuthServer.Data.Models;
 
 namespace AuthServer.Data.Repositories;
 
-public class AuthenticationRecoveryRepository(AppDbContext context)
+public class AuthenticationRecoveryRepository(AppDbContext context) : IAuthenticationRecoveryRepository
 {
     private readonly AppDbContext _context = context;
 

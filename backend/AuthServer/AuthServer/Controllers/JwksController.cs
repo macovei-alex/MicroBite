@@ -6,10 +6,10 @@ namespace AuthServer.Controllers;
 
 [ApiController]
 [Route("api/.well-known/jwks.json")]
-public class JwksController(JwtService jwtService, RequestLogger requestLogger) : ControllerBase
+public class JwksController(IJwtService jwtService, IRequestLogger requestLogger) : ControllerBase
 {
-	private readonly JwtService _jwtService = jwtService;
-	private readonly RequestLogger _requestLogger = requestLogger;
+	private readonly IJwtService _jwtService = jwtService;
+	private readonly IRequestLogger _requestLogger = requestLogger;
 
 	[HttpGet]
 	public async Task<ActionResult<JwksDto[]>> GetJwks()
