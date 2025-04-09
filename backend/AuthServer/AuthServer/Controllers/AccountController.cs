@@ -54,7 +54,7 @@ public class AccountController(
 		var role = await _roleRepository.GetByNameAsync("user");
 		if (role == null)
 		{
-			return BadRequest("Database problems."); //you must add the role ,,user" in the database.
+			return BadRequest("The role \"user\" could not be found in the database");
 		}
 
 		var passwordHash = Argon2.Hash(accountDto.Password);

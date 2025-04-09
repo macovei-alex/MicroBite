@@ -8,6 +8,7 @@ type NamedInputProps = {
   ref?: React.Ref<HTMLInputElement>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   labelClassName?: string;
+  disabled?: boolean;
 };
 
 export default function NamedInput({
@@ -20,6 +21,7 @@ export default function NamedInput({
   ref,
   onChange,
   labelClassName,
+  disabled,
 }: NamedInputProps) {
   return (
     <div>
@@ -35,6 +37,7 @@ export default function NamedInput({
         onChange={onChange}
         className="w-full p-2 border border-gray-300 rounded outline-none focus:ring-3 focus:ring-blue-500 transition duration-500"
         required={required}
+        disabled={disabled}
       />
     </div>
   );
