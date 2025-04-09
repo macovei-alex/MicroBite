@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const config = Object.freeze({
-  AUTH_BASE_URL: import.meta.env.VITE_AUTH_BASE_URL || "http://localhost:5095/api",
-  RES_BASE_URL: import.meta.env.VITE_RES_BASE_URL || "http://localhost:5247/api",
+  AUTH_BASE_URL: import.meta.env.VITE_AUTH_BASE_URL || "https://localhost:7261/api",
+  RES_BASE_URL: import.meta.env.VITE_RES_BASE_URL || "https://localhost:7039/api",
   CLIENT_ID: "MicroBiteClient",
   NON_REFRESHING_ROUTES: ["api/auth/refresh"],
 });

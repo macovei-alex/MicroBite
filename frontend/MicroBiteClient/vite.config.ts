@@ -1,4 +1,6 @@
 import { defineConfig } from "vite";
+import fs from "fs";
+import path from "path";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -6,10 +8,15 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    host: true,
+    host: "localhost",
+    port: 5173,
     watch: {
       usePolling: true,
-      interval: 100,
+      interval: 200,
+    },
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, "certs/dev-key.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "certs/dev.pem")),
     },
   },
 });
