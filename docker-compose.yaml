@@ -7,9 +7,14 @@ services:
     volumes:
       - ./frontend/MicroBiteClient:/app
       - /app/node_modules
+    develop:
+      watch:
+        - path: ./frontend/MicroBiteClient/package.json
+          action: rebuild
     environment:
-      VITE_AUTH_BASE_URL: http://localhost:5095/api
-      VITE_RES_BASE_URL: http://localhost:5247/api
+      VITE_USE_HTTPS: true
+      VITE_AUTH_BASE_URL: https://localhost:7261/api
+      VITE_RES_BASE_URL: https://localhost:7039/api
     depends_on:
       - auth-api
       - res-api
@@ -23,12 +28,16 @@ services:
           action: rebuild
     ports:
       - "5095:5095"
+      - "7261:7261"
     volumes:
       - ./backend/AuthServer/dataProtectionKeys:/root/.aspnet/DataProtection-Keys
     environment:
       ConnectionStrings__AuthDb: Host=auth-db;Port=5432;Database=MicroBiteAuth;Username=postgres;Password=1q2w3e
     depends_on:
       - auth-db
+    entrypoint:
+      # delay start to wait for auth-db
+      /bin/sh -c "sleep 2 && dotnet AuthServer.dll"
 
   auth-db:
     image: postgres:16
@@ -48,6 +57,7 @@ services:
       context: ./backend/ResourceServer
     ports:
       - "5247:5247"
+      - "7039:7039"
     develop:
       watch:
         - path: ./backend/ResourceServer/ResourceServer
@@ -60,6 +70,9 @@ services:
     depends_on:
       - res-db
       - auth-api
+    entrypoint:
+      # delay start to wait for res-db
+      /bin/sh -c "sleep 2 && dotnet ResourceServer.dll"
 
   res-db:
     image: postgres:16
