@@ -340,6 +340,48 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.IAccountRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.IAccountRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.IAccountRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.IAuthenticationRecoveryRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.IAuthenticationRecoveryRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Data.Repositories.IRoleRepository.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Data.Repositories.IRoleRepository.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Data.Repositories.IRoleRepository",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/authserver/AuthServer.Data.Repositories.RoleRepository.yml",
       "output": {
         ".html": {
@@ -452,6 +494,20 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.IAuthService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.IAuthService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.IAuthService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/authserver/AuthServer.Service.IBackupService.yml",
       "output": {
         ".html": {
@@ -462,6 +518,34 @@
       "Uid": null,
       "IsMRef": true,
       "Title": "AuthServer.Service.IBackupService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.IJwtService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.IJwtService.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.IJwtService",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/authserver/AuthServer.Service.IRequestLogger.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/authserver/AuthServer.Service.IRequestLogger.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "AuthServer.Service.IRequestLogger",
       "Summary": null
     },
     {
