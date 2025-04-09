@@ -51,10 +51,10 @@ public class AccountController(
 			return Conflict("An account with the same email or phone number already exists.");
 		}
 
-		var role = await _roleRepository.GetByNameAsync("user");
+		var role = await _roleRepository.GetByNameAsync(Role.User);
 		if (role == null)
 		{
-			return BadRequest("The role \"user\" could not be found in the database");
+			return BadRequest($"The role ( {Role.User} ) could not be found in the database");
 		}
 
 		var passwordHash = Argon2.Hash(accountDto.Password);

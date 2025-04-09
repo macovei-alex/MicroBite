@@ -88,7 +88,7 @@ public class OrderController(
 	}
 
 	[HttpPut("status/{id}")]
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = Role.Admin)]
 	public IActionResult UpdateStatus(int id, [FromBody] UpdateOrderStatusDto statusDto)
 	{
 		try

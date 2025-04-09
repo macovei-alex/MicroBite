@@ -11,4 +11,7 @@ public class Role
 
 	[Required]
 	public required string Name { get; set; }
+
+	public const string User = "user";
+	public const string Admin = "admin";
 }

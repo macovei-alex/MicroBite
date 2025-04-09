@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ResourceServer.Data.DTO;
 using ResourceServer.Data.Models;
 using ResourceServer.Data.Repositories;
+using ResourceServer.Data.Security;
 
 namespace ResourceServer.Controllers;
 
@@ -26,7 +27,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpPost]
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = Role.Admin)]
 	public ActionResult<Product> Create([FromBody] Product product)
 	{
 		try
@@ -41,7 +42,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpPut("{id}")]
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = Role.Admin)]
 	public IActionResult Update(int id, [FromBody] Product product)
 	{
 		return _productRepository.Update(id, product)
@@ -50,7 +51,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpDelete("{id}")]
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = Role.Admin)]
 	public IActionResult Delete(int id)
 	{
 		return _productRepository.Delete(id)
@@ -59,7 +60,7 @@ public class ProductController(IProductRepository productRepository) : Controlle
 	}
 
 	[HttpPost("all")]
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = Role.Admin)]
 	public ActionResult<Product> CreateAll([FromBody] List<ProductCreateDto> products)
 	{
 		if (products.Count == 0)
