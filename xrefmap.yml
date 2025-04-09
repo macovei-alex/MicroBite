@@ -728,19 +728,6 @@ references:
   isSpec: "True"
   fullName: AuthServer.Data.Dto.CreateAccountDto.RecoveryQuestion
   nameWithType: CreateAccountDto.RecoveryQuestion
-- uid: AuthServer.Data.Dto.CreateAccountDto.Role
-  name: Role
-  href: api/authserver/AuthServer.Data.Dto.CreateAccountDto.html#AuthServer_Data_Dto_CreateAccountDto_Role
-  commentId: P:AuthServer.Data.Dto.CreateAccountDto.Role
-  fullName: AuthServer.Data.Dto.CreateAccountDto.Role
-  nameWithType: CreateAccountDto.Role
-- uid: AuthServer.Data.Dto.CreateAccountDto.Role*
-  name: Role
-  href: api/authserver/AuthServer.Data.Dto.CreateAccountDto.html#AuthServer_Data_Dto_CreateAccountDto_Role_
-  commentId: Overload:AuthServer.Data.Dto.CreateAccountDto.Role
-  isSpec: "True"
-  fullName: AuthServer.Data.Dto.CreateAccountDto.Role
-  nameWithType: CreateAccountDto.Role
 - uid: AuthServer.Data.Dto.CreateRoleDto
   name: CreateRoleDto
   href: api/authserver/AuthServer.Data.Dto.CreateRoleDto.html
