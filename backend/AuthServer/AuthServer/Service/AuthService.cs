@@ -9,7 +9,7 @@ public class AuthService(IAccountRepository accountRepository, IJwtService jwtSe
 	private readonly IAccountRepository _accountRepository = accountRepository;
 	private readonly IJwtService _jwtService = jwtService;
 
-	public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload)
+	public TokenPairDto Login(HttpResponse response, bool isHttps, LoginPayloadDto loginPayload)
 	{
 		var account = _accountRepository.GetByEmailAsync(loginPayload.Email).Result ?? throw new ArgumentException("No user account matched the provided credentials");
 
@@ -22,7 +22,7 @@ public class AuthService(IAccountRepository accountRepository, IJwtService jwtSe
 		account.RefreshToken = refreshToken;
 		_accountRepository.UpdateAsync(account).Wait();
 
-		SetRefreshTokenCookie(response, refreshToken);
+		SetRefreshTokenCookie(response, isHttps, refreshToken);
 
 		return new TokenPairDto
 		{
@@ -31,12 +31,12 @@ public class AuthService(IAccountRepository accountRepository, IJwtService jwtSe
 		};
 	}
 
-	private static void SetRefreshTokenCookie(HttpResponse response, string token)
+	private static void SetRefreshTokenCookie(HttpResponse response, bool isHttps, string token)
 	{
 		response.Cookies.Append("refreshToken", token, new CookieOptions
 		{
 			HttpOnly = true,
-			Secure = false,
+			Secure = isHttps,
 			SameSite = SameSiteMode.Strict,
 			Expires = DateTime.UtcNow + JwtService.DefaultRefreshTokenExpirationDelay - TimeSpan.FromSeconds(30)
 		});

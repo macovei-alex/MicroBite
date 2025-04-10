@@ -1,6 +1,7 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS base
 WORKDIR /app
 EXPOSE 5095
+RUN apk add --no-cache postgresql-client
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Debug
@@ -19,6 +20,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=build /src/AuthServer/dev/* ./dev/
-ENV ASPNETCORE_URLS=http://0.0.0.0:5095
+COPY ./AuthServer/certs/localhost.pfx /app/certs/localhost.pfx
+ENV ASPNETCORE_URLS=https://0.0.0.0:7261
 ENV ASPNETCORE_ENVIRONMENT=Development
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/localhost.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password="dev-cert-password"
 ENTRYPOINT [ "dotnet", "AuthServer.dll" ]

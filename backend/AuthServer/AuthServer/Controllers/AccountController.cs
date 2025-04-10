@@ -177,7 +177,7 @@ public class AccountController(IAccountRepository repository,
 
 		try
 		{
-			var tokenPair = _authService.Login(Response, new LoginPayloadDto
+			var tokenPair = _authService.Login(Response, Request.IsHttps, new LoginPayloadDto
 			{
 				Email = passwordChangePayload.Email,
 				Password = passwordChangePayload.NewPassword,

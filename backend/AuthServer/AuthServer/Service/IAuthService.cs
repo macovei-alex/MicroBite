@@ -4,5 +4,5 @@ namespace AuthServer.Service;
 
 public interface IAuthService
 {
-    public TokenPairDto Login(HttpResponse response, LoginPayloadDto loginPayload);
+	public TokenPairDto Login(HttpResponse response, bool isHttps, LoginPayloadDto loginPayload);
 }
