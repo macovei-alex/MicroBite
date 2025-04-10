@@ -38,7 +38,11 @@ public class JwtKeysService(IMemoryCache cache, IConfiguration config)
 
 	private async Task<List<JwksDto>> FetchJwksAsync()
 	{
-		using var httpClient = new HttpClient();
+		var handler = new HttpClientHandler
+		{
+			ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+		};
+		using var httpClient = new HttpClient(handler);
 		var jwkResponse = await httpClient.GetStringAsync(_jwkUrl);
 		return JsonSerializer.Deserialize<JwksEndpointPayloadDto>(jwkResponse)!.Keys;
 	}
