@@ -522,6 +522,19 @@ references:
   isSpec: "True"
   fullName: AuthServer.Data.AppDbContext.AuthenticationRecoveries
   nameWithType: AppDbContext.AuthenticationRecoveries
+- uid: AuthServer.Data.AppDbContext.InitializeDataIfNeeded
+  name: InitializeDataIfNeeded()
+  href: api/authserver/AuthServer.Data.AppDbContext.html#AuthServer_Data_AppDbContext_InitializeDataIfNeeded
+  commentId: M:AuthServer.Data.AppDbContext.InitializeDataIfNeeded
+  fullName: AuthServer.Data.AppDbContext.InitializeDataIfNeeded()
+  nameWithType: AppDbContext.InitializeDataIfNeeded()
+- uid: AuthServer.Data.AppDbContext.InitializeDataIfNeeded*
+  name: InitializeDataIfNeeded
+  href: api/authserver/AuthServer.Data.AppDbContext.html#AuthServer_Data_AppDbContext_InitializeDataIfNeeded_
+  commentId: Overload:AuthServer.Data.AppDbContext.InitializeDataIfNeeded
+  isSpec: "True"
+  fullName: AuthServer.Data.AppDbContext.InitializeDataIfNeeded
+  nameWithType: AppDbContext.InitializeDataIfNeeded
 - uid: AuthServer.Data.AppDbContext.Roles
   name: Roles
   href: api/authserver/AuthServer.Data.AppDbContext.html#AuthServer_Data_AppDbContext_Roles
@@ -3584,6 +3597,19 @@ references:
   fullName.vb: ResourceServer.Data.AppDbContext.New
   nameWithType: AppDbContext.AppDbContext
   nameWithType.vb: AppDbContext.New
+- uid: ResourceServer.Data.AppDbContext.InitializeDataIfNeeded
+  name: InitializeDataIfNeeded()
+  href: api/resourceserver/ResourceServer.Data.AppDbContext.html#ResourceServer_Data_AppDbContext_InitializeDataIfNeeded
+  commentId: M:ResourceServer.Data.AppDbContext.InitializeDataIfNeeded
+  fullName: ResourceServer.Data.AppDbContext.InitializeDataIfNeeded()
+  nameWithType: AppDbContext.InitializeDataIfNeeded()
+- uid: ResourceServer.Data.AppDbContext.InitializeDataIfNeeded*
+  name: InitializeDataIfNeeded
+  href: api/resourceserver/ResourceServer.Data.AppDbContext.html#ResourceServer_Data_AppDbContext_InitializeDataIfNeeded_
+  commentId: Overload:ResourceServer.Data.AppDbContext.InitializeDataIfNeeded
+  isSpec: "True"
+  fullName: ResourceServer.Data.AppDbContext.InitializeDataIfNeeded
+  nameWithType: AppDbContext.InitializeDataIfNeeded
 - uid: ResourceServer.Data.AppDbContext.OrderItems
   name: OrderItems
   href: api/resourceserver/ResourceServer.Data.AppDbContext.html#ResourceServer_Data_AppDbContext_OrderItems
