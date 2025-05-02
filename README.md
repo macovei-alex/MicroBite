@@ -1,12 +1,20 @@
 # MicroBite
 
-git clone https://github.com/macovei-alex/MicroBite/tree/main
-cd MicroBite
+## Instructiuni
 
-openssl req -x509 -newkey rsa:2048 -nodes -keyout localhost.key -out localhost.crt -days 365 -subj "/CN=localhost"
-openssl pkcs12 -export -out localhost.pfx -inkey localhost.key -in localhost.crt -passout pass:dev-cert-password
-copy localhost.pfx backend\AuthServer\AuthServer\certs\localhost.pfx
-copy localhost.pfx backend\ResourceServer\ResourceServer\certs\localhost.pfx
-del localhost.pfx localhost.crt localhost.key
+```bash
+# aducerea codului sursa
+git clone https://github.com/macovei-alex/MicroBite && cd MicroBite
 
+# construirea containerelor si pornirea, configurarea serverelor de baze de date
+# erori de la API-uri sunt de asteptat
 docker compose up --build
+
+# pornirea tuturor containerelor
+# ar trebui sa se faca fara erori
+docker compose up
+```
+
+Dupa rularea instructiunilor puteti deschide URL-ul http://localhost:5173 in browser. De aici fie puteti sa va conectati folosind contul implicit generat de administrator (email: admin@admin.com, password: adminadmin), ori puteti sa va creati un cont nou de utilizator dand clic pe "Register here".
+
+Implicit exista cateva produse adaugate la prima pornire a API-ului de resurse.

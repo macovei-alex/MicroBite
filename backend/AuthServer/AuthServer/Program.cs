@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication;
+using AuthServer.Data.Models;
+using Isopoh.Cryptography.Argon2;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -92,7 +94,33 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
 	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-	db.Database.Migrate();
+	db.Database.EnsureCreated();
+
+	var roles = db.Roles.Select(r => r.Name);
+	if (!roles.Contains(Role.Admin))
+	{
+		db.Roles.Add(new Role { Name = Role.Admin });
+	}
+	if (!roles.Contains(Role.User))
+	{
+		db.Roles.Add(new Role { Name = Role.User });
+	}
+	db.SaveChanges();
+
+	var accountRoles = db.Accounts.Select(u => u.Role.Name);
+	if (!accountRoles.Contains(Role.Admin))
+	{
+		db.Accounts.Add(new Account
+		{
+			FirstName = "admin",
+			LastName = "admin",
+			Email = "admin@admin.com",
+			PasswordHash = Argon2.Hash("adminadmin"),
+			Role = db.Roles.First(r => r.Name == Role.Admin),
+			PhoneNumber = "1234567890",
+		});
+	}
+	db.SaveChanges();
 }
 
 app.UseCors("AllowAnyOrigin");

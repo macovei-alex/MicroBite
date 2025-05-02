@@ -74,6 +74,13 @@ if (app.Environment.IsDevelopment())
 	// toggle between launchUrl in launchSettings.json to change the default documentation UI
 }
 
+using (var scope = app.Services.CreateScope())
+{
+	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+	db.Database.EnsureCreated();
+	db.InitializeDataIfNeeded();
+}
+
 app.UseCors("AllowAnyOrigin");
 
 app.UseHttpsRedirection();

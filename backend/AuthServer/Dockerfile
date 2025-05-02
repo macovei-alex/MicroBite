@@ -20,9 +20,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY --from=build /src/AuthServer/dev/* ./dev/
-COPY ./AuthServer/certs/localhost.pfx /app/certs/localhost.pfx
 ENV ASPNETCORE_URLS=https://0.0.0.0:7261
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/localhost.pfx
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="dev-cert-password"
 ENTRYPOINT [ "dotnet", "AuthServer.dll" ]

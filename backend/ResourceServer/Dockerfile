@@ -19,9 +19,6 @@ RUN dotnet publish ResourceServer.csproj -c ${BUILD_CONFIGURATION} -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./ResourceServer/certs/localhost.pfx /app/certs/localhost.pfx
 ENV ASPNETCORE_URLS=https://0.0.0.0:7039
 ENV ASPNETCORE_ENVIRONMENT=Development
-ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/localhost.pfx
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="dev-cert-password"
 ENTRYPOINT [ "dotnet", "ResourceServer.dll" ]
