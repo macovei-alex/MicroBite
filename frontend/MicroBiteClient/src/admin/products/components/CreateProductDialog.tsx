@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { Product } from "../../../api/types/Product";
 import { BaseDialogProps as BaseDialogProps } from "../types/BaseDialogProps";
 import axios from "axios";
@@ -98,6 +98,14 @@ export default function CreateProductDialog({ isVisible, closeDialog }: CreatePr
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (!categoriesQuery.data) return;
+    const selectedCategory = categoriesQuery.data[0];
+    if (selectedCategory) {
+      setProduct((prev) => ({ ...prev, category: selectedCategory }));
+    }
+  }, [categoriesQuery.data]);
 
   if (!isVisible) return null;
 

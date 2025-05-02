@@ -402,3 +402,4 @@ FodyWeavers.xsd
 Migrations/
 dataProtectionKeys/
 auth_backups/
+*.pfx
